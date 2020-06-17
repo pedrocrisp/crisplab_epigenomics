@@ -1,9 +1,9 @@
 #!/bin/bash -l
-#PBS -l walltime=20:00:00,nodes=1:ppn=1,mem=16gb
+#PBS -A UQ-SCI-SAFS
 #PBS -N trim_galore
 #PBS -r n
 #PBS -m abe
-#PBS -M pcrisp@umn.edu
+#PBS -M p.crisp@uq.edu.au
 
 ########## QC #################
 set -xeuo pipefail
@@ -33,8 +33,8 @@ echo working dir is now $PWD
 
 ########## Modules #################
 
-module load fastqc/0.11.5
-module load cutadapt/1.8.1
+module load fastqc/0.11.4
+module load cutadapt/1.18
 
 ########## Set up dirs #################
 
@@ -50,33 +50,33 @@ fastqcfolder=analysis/fastqc
 mkdir -p $fastqcfolder
 
 # check if single or paired end by looking for R2 file
-if [ -e "reads/${ID}_R2_001.fastq.gz" ]; then
+if [ -e "reads/${ID}_R2*.fastq.gz" ]; then
 
 echo "paired reads"
 
 #uncompress reads because trim_galore throws the error `gzip: stdout: Broken pipe` if I input .gz files
-gunzip reads/${ID}_R1_001.fastq.gz
-gunzip reads/${ID}_R2_001.fastq.gz
+gunzip reads/${ID}_R1*.fastq.gz
+gunzip reads/${ID}_R2*.fastq.gz
 
 ########## Run #################
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}_R1_001.fastq reads/${ID}_R2_001.fastq
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}_R1*.fastq reads/${ID}_R2*.fastq
 
 #compress original reads again
-gzip reads/${ID}_R1_001.fastq
-gzip reads/${ID}_R2_001.fastq
+gzip reads/${ID}_R1*.fastq
+gzip reads/${ID}_R2*.fastq
 
 else
 echo "assuming single end"
 
 #uncompress reads because trim_galore throws the error `gzip: stdout: Broken pipe` if I input .gz files
-gunzip reads/${ID}_R1_001.fastq.gz
+gunzip reads/${ID}_R1*.fastq.gz
 
 ########## Run #################
 
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}_R1_001.fastq
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}_R1*.fastq
 
 #compress original reads again
-gzip reads/${ID}_R1_001.fastq
+gzip reads/${ID}_R1*.fastq
 
 fi
 
