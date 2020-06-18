@@ -58,10 +58,7 @@ cat $0 > ${log_folder}/qsub_runner.log
 #-v additional variables to pass to the qsub script including the PBS_array list and the dir structures
 qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
--o ${log_folder}/${step}_o \
--e ${log_folder}/${step}_e \
+-o ${log_folder}/${step}_${PBS_ARRAY_INDEX}_o \
+-e ${log_folder}/${step}_${PBS_ARRAY_INDEX}_e \
 -v LIST=${sample_list} \
 $script_to_qsub
-
-#to run
-#bash /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/01-trim_galore_qsub.sh <sample_list.txt>
