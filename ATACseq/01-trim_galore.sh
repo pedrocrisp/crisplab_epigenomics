@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -A UQ-SCI-SAFS
 #PBS -N trim_galore
-#PBS -r n
+#PBS -r y
 #PBS -m abe
 #PBS -M p.crisp@uq.edu.au
 
