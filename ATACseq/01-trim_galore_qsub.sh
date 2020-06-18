@@ -56,7 +56,7 @@ cat $0 > ${log_folder}/qsub_runner.log
 #submit qsub and pass args
 #-o and -e pass the file locations for std out/error
 #-v additional variables to pass to the qsub script including the PBS_array list and the dir structures
-qsub -J "1-${qsub_t}" \
+qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o \
 -e ${log_folder}/${step}_e \
