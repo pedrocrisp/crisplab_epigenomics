@@ -61,6 +61,7 @@ qsub -t $qsub_t \
 -o ${log_folder}/${step}_o \
 -e ${log_folder}/${step}_e \
 -v LIST=${sample_list} \
+-r n \
 $script_to_qsub
 
 #to run
