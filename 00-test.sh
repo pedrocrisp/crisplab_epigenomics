@@ -21,7 +21,7 @@ echo PBS: job name is $PBS_JOBNAME
 echo PBS: node file is $PBS_NODEFILE
 echo PBS: current home directory is $PBS_O_HOME
 echo PBS: PATH = $PBS_O_PATH
-echo PBS: array_ID is ${PBS_ARRAYID}
+echo PBS: array_ID is ${PBS_ARRAY_INDEX}
 echo ------------------------------------------------------
 
 echo working dir is $PWD
