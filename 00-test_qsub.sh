@@ -3,10 +3,10 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 01-trim_galore_qsub.sh <sample_list.txt>"
+bash 00-test_qsub.sh <walltime> <mem>"
 
 #define stepo in the pipeline - should be the same name as the script
-step=01-trim_galore
+step=00-test
 
 ######### Setup ################
 sample_list=$1
@@ -48,7 +48,7 @@ log_folder=logs/${timestamp}_${step}
 mkdir $log_folder
 
 #script path and cat a record of what was run
-script_dir=~/gitrepos/crisplab_epigenomics/ATACseq
+script_dir=~/gitrepos/crisplab_epigenomics
 script_to_qsub=${script_dir}/${step}.sh
 cat $script_to_qsub > ${log_folder}/script.log
 cat $0 > ${log_folder}/qsub_runner.log
