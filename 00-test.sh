@@ -44,6 +44,6 @@ ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
 echo ${ID}
 
-echo ${ID} > ${ID}.txt
+cat ${ID} > ${ID}.txt
 
 echo Done testing
