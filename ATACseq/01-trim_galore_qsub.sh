@@ -58,7 +58,7 @@ cat $0 > ${log_folder}/qsub_runner.log
 #-v additional variables to pass to the qsub script including the PBS_array list and the dir structures
 qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
--o ${log_folder}/${step}_o_${TASK_ID} \
--e ${log_folder}/${step}_e_${TASK_ID} \
+-o ${log_folder}/${step}_o^array_index^ \
+-e ${log_folder}/${step}_e^array_index^ \
 -v LIST=${sample_list} \
 $script_to_qsub
