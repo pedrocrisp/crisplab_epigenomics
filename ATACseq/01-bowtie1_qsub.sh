@@ -15,7 +15,7 @@ bt1_threads=$3
 bt1_genome=$4
 walltime=$5
 mem=$6
-if [ "$#" -lt "8" ]
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
