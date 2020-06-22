@@ -49,8 +49,13 @@ mkdir -p $trimmedfolder
 fastqcfolder=analysis/fastqc
 mkdir -p $fastqcfolder
 
+# check how many satqs there are - assumes "fastq" suffix
+fastqs="$(find ./reads -type f -name ${ID}*.fastq*)"
+# convert to array to count elements
+fastqs_count=($fastqs)
+
 # check if single or paired end by looking for R2 file
-if [ -e "reads/${ID}_R2*.fastq.gz" ]; then
+if (( "${#fastqs_count[@]}" == 2 )); then
 
 echo "paired reads"
 

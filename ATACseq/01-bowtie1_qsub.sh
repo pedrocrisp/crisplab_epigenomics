@@ -33,7 +33,7 @@ qsub_t=1
 else
 qsub_t="1-${number_of_samples}"
 fi
-echo "argument to be passed to qsub -t is '$qsub_t'"
+echo "argument to be passed to qsub -J is '$qsub_t'"
 
 #find script to run, makes it file system agnostic
 if

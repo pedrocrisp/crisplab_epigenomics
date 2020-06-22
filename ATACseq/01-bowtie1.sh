@@ -48,7 +48,7 @@ echo sample being mapped is $ID
 # enter analysis folder
 cd analysis
 
-# I just changed this bit to deal with nested and non-nested folder structures - it may break old analyses?...
+# check how many satqs there are
 fastqs="$(find $reads_folder -type f -name ${ID}*.fq*)"
 # convert to array to count elements
 fastqs_count=($fastqs)
