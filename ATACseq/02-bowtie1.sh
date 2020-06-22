@@ -91,7 +91,7 @@ bowtie \
 -v 2 \
 --best \
 –strata \
--p $bt2_threads \
+-p $bt1_threads \
 -1 $fq_1 \
 -2 $fq_2 \
 -t \
@@ -107,7 +107,7 @@ bowtie \
 -v 2 \
 --best \
 –strata \
--p $bt2_threads \
+-p $bt1_threads \
 -1 $fastqs \
 -t \
 $bt1_genome \
