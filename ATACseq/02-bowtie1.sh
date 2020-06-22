@@ -92,11 +92,11 @@ bowtie \
 --best \
 –strata \
 -p $bt1_threads \
--1 $fq_1 \
--2 $fq_2 \
 -t \
 $bt1_genome \
--S "$outsam"
+-S \
+-1 $fq_1 \
+-2 $fq_2 > "$outsam"
 
 else
 echo "assuming single end"
@@ -108,10 +108,10 @@ bowtie \
 --best \
 –strata \
 -p $bt1_threads \
--1 $fastqs \
 -t \
 $bt1_genome \
--S "$outsam"
+-S \
+$fastqs > "$outsam"
 
 fi
 
