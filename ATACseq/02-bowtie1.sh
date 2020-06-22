@@ -90,7 +90,7 @@ bowtie \
 -m 1 \
 -v 2 \
 --best \
--–strata \
+--strata \
 -p $bt1_threads \
 -t \
 $bt1_genome \
@@ -106,7 +106,7 @@ bowtie \
 -m 1 \
 -v 2 \
 --best \
--–strata \
+--strata \
 -p $bt1_threads \
 -t \
 $bt1_genome \
