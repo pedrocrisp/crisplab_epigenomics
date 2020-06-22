@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 01-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt2_threads> <bt2_genome.fa> <multimapping_rate> <MAPQ_threshold>"
+bash 01-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt1_threads> <bt1_genome.fa> <walltime> <mem>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=02-bowtie1
@@ -11,20 +11,18 @@ step=02-bowtie1
 ######### Setup ################
 sample_list=$1
 reads_folder=$2
-bt2_threads=$3
-bt2_genome=$4
-multimapping_rate=$5
-MAPQ_threshold=$6
-walltime=$7
-mem=$8
+bt1_threads=$3
+bt1_genome=$4
+walltime=$5
+mem=$6
 if [ "$#" -lt "8" ]
 then
 echo $usage
 exit -1
 else
-echo "initiating bowtie jobs on $reads_folder folder, bowtie2 can use $bt2_threads threads"
+echo "initiating bowtie jobs on $reads_folder folder, bowtie can use $bt1_threads threads"
 cat $sample_list
-echo genome reference is $bt2_genome
+echo genome reference is $bt1_genome
 fi
 
 #number of samples
@@ -71,10 +69,5 @@ qsub -t $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=8,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},reads_folder=$reads_folder,bt2_threads=$bt2_threads,bt2_genome=$bt2_genome,multimapping_rate=$multimapping_rate,MAPQ_threshold=$MAPQ_threshold \
+-v LIST=${sample_list},reads_folder=$reads_folder,bt1_threads=$bt1_threads,bt1_genome=$bt1_genome \
 $script_to_qsub
-
-# to run
-# bash /home/springer/pcrisp/gitrepos/NGS-pipelines/smallRNAseqPipe1/05-bowtie2_batch_qsub.sh <sample_list.txt> <reads_folder> <bt2_threads> <bt2_genome.fa> <multimapping_rate>
-# eg
-# bash /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/02-bsmap_qsub.sh samples.txt /home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.fa

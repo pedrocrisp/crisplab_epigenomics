@@ -33,7 +33,7 @@ echo working dir is now $PWD
 
 ########## Modules #################
 
-module load bowtie2/2.3.4.1
+module load bowtie/1.1.2
 module load samtools/1.9
 
 ########## Set up dirs #################
@@ -64,75 +64,61 @@ outbam="${outdir}/${ID}_sorted.bam"
 
 ########## Run #################
 
-#-x bowtie index
-#--phred33
-#--end-to-end dont trim reads to enable alignment
-#--mm memory-mapped I/O to load index allow multiple processes to use index
-#-p number of threds to use
-#-U fastq file path, and specifies reads are not paired
-#-S file to write SAM alignemnts too (although default is stdout anyhow)
-#-D and -R tell bowtie to try a little harder than normal to find alignments
-#-L reduce substring length to 10 (default 22) as these are short reads
-#-i reduce substring interval? more sensitive?
-#-N max # mismatches in seed alignment; can be 0 or 1 (0)
-#-D give up extending after <int> failed extends in a row (15)
-# -k report N mapping locations
-# --score-min L,0,0 sets formular for min aln score for alignment to be reported, eg readlength 36 * -0.6 + -0.6) = min 0; this means only report exact matches
-# Bowtie 2 does not "find" alignments in any specific order,
-# so for reads that have more than N distinct, valid alignments,
-# Bowtie 2 does not guarantee that the N alignments reported are the best possible in terms of alignment score.
-# Still, this mode can be effective and fast in situations where the user cares more about whether a read aligns
-# (or aligns a certain number of times) than where exactly it originated.
+# -X 1000 \ max insert
+# -m 1 \ only report unique mapping reads (max one valid alignment, exclude others)
+# -v 2 \ allow up to 2 mismatches *CONSIDER INCREASEING IF READS ARE LONGER*
+# --best \ bowtie guarantees the reported alignment(s) are the best in terms of the number of mismatches
+# –strata \ Specifying --strata in addition to -a and --best causes bowtie to report only those alignments in the best alignment stratum
+# -p $bt2_threads \ threads
+# -1 $fq_1 \ forward
+# -2 $fq_2 \ reverse
+# -t \ report timings
+# $bt1_genome \ index
+# -S "$outsam" out sam
 
 if (( "${#fastqs_count[@]}" == 2 )); then
 
 echo "paired reads"
 
-# this is pretty non generic but I need a quick fix...
-# this will only work if the suffix is consistent with trimmgalore output
-fq_1="${reads_folder}/${ID}_R1_001_val_1.fq"
-fq_2="${reads_folder}/${ID}_R2_001_val_2.fq"
+# this is assume there is only one fq per sample - in R1 and R2 format for PE
+# also assumes the suffix in "fq"
+fq_1="${reads_folder}/${ID}_R1*.fq"
+fq_2="${reads_folder}/${ID}_R2*.fq"
 
-bowtie2 \
--x $bt2_genome \
---phred33 \
---end-to-end \
---mm \
--k $multimapping_rate \
--D 20 \
--R 3 \
--N 0 \
--L 10 \
--i S,1,0.50 \
+bowtie \
+-X 1000 \
+-m 1 \
+-v 2 \
+--best \
+–strata \
 -p $bt2_threads \
 -1 $fq_1 \
 -2 $fq_2 \
+-t \
+$bt1_genome \
 -S "$outsam"
 
 else
 echo "assuming single end"
 
-bowtie2 \
--x $bt2_genome \
---phred33 \
---end-to-end \
---mm \
--k $multimapping_rate \
--D 20 \
--R 3 \
--N 0 \
--L 10 \
--i S,1,0.50 \
+bowtie \
+-X 1000 \
+-m 1 \
+-v 2 \
+--best \
+–strata \
 -p $bt2_threads \
--U $fastqs \
+-1 $fastqs \
+-t \
+$bt1_genome \
 -S "$outsam"
 
 fi
 
 
 ###### sort and index
-# filtering: -q 10 is MAPQ >= 10; 1 in 10 chance mapping location is wrong for example
-samtools view -q $MAPQ_threshold -b -@ $bt2_threads $outsam | samtools sort -m 8G -@ $bt2_threads -o $outbam
+# consider filtering: -q 10 is MAPQ >= 10; 1 in 10 chance mapping location is wrong for example
+samtools view -b -@ $bt1_threads $outsam | samtools sort -m 8G -@ $bt1_threads -o $outbam
 
 #Make an index of the sorted bam file
 samtools index ${outbam}
