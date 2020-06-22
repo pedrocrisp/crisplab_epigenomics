@@ -54,7 +54,7 @@ fastqs="$(find $reads_folder -type f -name ${ID}*.fq*)"
 fastqs_count=($fastqs)
 
 #make adaligned folder bowtie2 (caution this will not fail if dir already exists)
-outdir="align_bowtie2_k${multimapping_rate}_MAPQ${MAPQ_threshold}"
+outdir="${reads_folder}_align_bowtie2"
 mkdir -p ${outdir}
 
 # output structure
