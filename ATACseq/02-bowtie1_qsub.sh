@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 01-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt1_threads> <bt1_genome.fa> <walltime> <mem>"
+bash 02-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt1_threads> <bt1_genome.fa> <walltime> <mem>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=02-bowtie1
