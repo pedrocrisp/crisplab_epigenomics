@@ -26,6 +26,7 @@ echo genome reference is $bt1_genome
 fi
 
 #number of samples
+# qsub -J only takes a range to hack for 1 samples is to specify 1-2 eventhough 2 does not exist
 number_of_samples=`wc -l $sample_list | awk '{print $1}'`
 if [[ "$number_of_samples" -eq 1 ]]
 then
