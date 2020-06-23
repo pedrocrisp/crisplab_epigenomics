@@ -29,7 +29,7 @@ fi
 number_of_samples=`wc -l $sample_list | awk '{print $1}'`
 if [[ "$number_of_samples" -eq 1 ]]
 then
-qsub_t="1-${number_of_samples}"
+qsub_t="1-2"
 else
 qsub_t="1-${number_of_samples}"
 fi

@@ -2,7 +2,7 @@
 #PBS -A UQ-SCI-SAFS
 #PBS -N bowtie1
 #PBS -r y
-#PBS -m abe
+#PBS -m abej
 #PBS -M p.crisp@uq.edu.au
 
 ########## QC #################
