@@ -22,10 +22,11 @@ cat $sample_list
 fi
 
 #number of samples
+# qsub -J only takes a range to hack for 1 samples create a second sample in the input list called "NULL" - should work?
 number_of_samples=`wc -l $sample_list | awk '{print $1}'`
 if [[ "$number_of_samples" -eq 1 ]]
 then
-qsub_t="1-2"
+qsub_t=1
 else
 qsub_t="1-${number_of_samples}"
 fi
