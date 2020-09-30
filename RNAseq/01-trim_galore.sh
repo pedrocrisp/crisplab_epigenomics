@@ -60,33 +60,33 @@ if (( "${#fastqs_count[@]}" == 2 )); then
 echo "paired reads"
 
 #uncompress reads because trim_galore throws the error `gzip: stdout: Broken pipe` if I input .gz files
-gunzip reads/${ID}*1.fastq.gz
-gunzip reads/${ID}*2.fastq.gz
+#gunzip reads/${ID}*1.fastq.gz
+#gunzip reads/${ID}*2.fastq.gz
 
 ########## Run #################
 trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}*1.fastq reads/${ID}*2.fastq
 
 #compress original reads again
-gzip reads/${ID}*1.fastq
-gzip reads/${ID}*2.fastq
+#gzip reads/${ID}*1.fastq
+#gzip reads/${ID}*2.fastq
 
-gzip $trimmedfolder/${ID}*1_trimmed.fq
-gzip $trimmedfolder/${ID}*2_trimmed.fq
+#gzip $trimmedfolder/${ID}*1_trimmed.fq
+#gzip $trimmedfolder/${ID}*2_trimmed.fq
 
 else
 echo "assuming single end"
 
 #uncompress reads because trim_galore throws the error `gzip: stdout: Broken pipe` if I input .gz files
-gunzip reads/${ID}*1.fastq.gz
+#gunzip reads/${ID}*1.fastq.gz
 
 ########## Run #################
 
 trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}*1.fastq
 
 #compress original reads again
-gzip reads/${ID}*1.fastq
+#gzip reads/${ID}*1.fastq
 
-gzip $trimmedfolder/${ID}*1_trimmed.fq
+#gzip $trimmedfolder/${ID}*1_trimmed.fq
 
 fi
 
