@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 01-qc_qsub.sh <sample_list.txt>"
+bash 01-qc_qsub.sh <sample_list.txt> <walltime> <memory>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=01-qc
