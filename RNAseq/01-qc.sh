@@ -55,7 +55,7 @@ if (( "${#fastqs_count[@]}" == 2 )); then
 echo "paired reads"
 
 ########## Run #################
-fastqc -o r$fastqcfolder $fastqs reads/${ID}*1.fastq.gz reads/${ID}*2.fastq.gz
+fastqc -o $fastqcfolder $fastqs reads/${ID}*1.fastq.gz reads/${ID}*2.fastq.gz
 
 else
 echo "assuming single end"
