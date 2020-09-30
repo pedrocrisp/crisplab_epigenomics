@@ -64,7 +64,7 @@ echo "paired reads"
 #gunzip reads/${ID}*2.fastq.gz
 
 ########## Run #################
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}*1.fastq reads/${ID}*2.fastq
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}*1.fastq.gz reads/${ID}*2.fastq.gz
 
 #compress original reads again
 #gzip reads/${ID}*1.fastq
@@ -81,7 +81,7 @@ echo "assuming single end"
 
 ########## Run #################
 
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}*1.fastq
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}*1.fastq.gz
 
 #compress original reads again
 #gzip reads/${ID}*1.fastq
