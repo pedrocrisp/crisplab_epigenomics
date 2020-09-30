@@ -70,6 +70,9 @@ trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder
 gzip reads/${ID}*1.fastq
 gzip reads/${ID}*2.fastq
 
+gzip $trimmedfolder/${ID}*1_trimmed.fq
+gzip $trimmedfolder/${ID}*2_trimmed.fq
+
 else
 echo "assuming single end"
 
@@ -82,6 +85,8 @@ trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder
 
 #compress original reads again
 gzip reads/${ID}*1.fastq
+
+gzip $trimmedfolder/${ID}*1_trimmed.fq
 
 fi
 
