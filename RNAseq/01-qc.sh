@@ -55,17 +55,14 @@ if (( "${#fastqs_count[@]}" == 2 )); then
 echo "paired reads"
 
 ########## Run #################
-fastqc -o r$fastqcfolder $fastqs reads/${ID}_R1*q.gz reads/${ID}_R2*q.gz
+fastqc -o r$fastqcfolder $fastqs reads/${ID}*1.fastq.gz reads/${ID}*2.fastq.gz
 
 else
 echo "assuming single end"
 
-#uncompress reads because trim_galore throws the error `gzip: stdout: Broken pipe` if I input .gz files
-gunzip reads/${ID}_R1*.fastq.gz
-
 ########## Run #################
 
-fastqc -o r$fastqcfolder $fastqs reads/${ID}_R1*q.gz
+fastqc -o r$fastqcfolder $fastqs reads/${ID}*1.fastq.gz
 
 fi
 
