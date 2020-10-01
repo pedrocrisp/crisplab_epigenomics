@@ -1,9 +1,7 @@
 #!/bin/bash
-#PBS -A UQ-SCI-SAFS
 #PBS -N trim_galore
 #PBS -r y
 #PBS -m abej
-#PBS -M p.crisp@uq.edu.au
 
 ########## QC #################
 set -xeuo pipefail
