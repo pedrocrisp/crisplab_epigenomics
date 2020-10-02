@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N fastqc
+#PBS -N 05-subread
 #PBS -r y
 #PBS -m abej
 
@@ -31,7 +31,7 @@ echo working dir is now $PWD
 
 ########## Modules #################
 
-module load fastqc/0.11.4
+module load samtools/1.10
 
 ########## Set up dirs #################
 
@@ -39,29 +39,40 @@ module load fastqc/0.11.4
 #use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAYID} eg 2 from {list}
 ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
-fastqcfolder=analysis/fastqc
-mkdir -p $fastqcfolder
+outdir="${aligner}"
+mkdir ${outdir}
+outsam="${outdir}/${ID}.sam"
+fastqcfolder=analysis/trimmed
 
 # check how many satqs there are - assumes "fastq" suffix
-fastqs="$(find ./reads -type f -name ${ID}*.fastq*)"
+fastqs="$(find ./fastqcfolder -type f -name ${ID}*.fastq.gz)"
 # convert to array to count elements
 fastqs_count=($fastqs)
 
 # check if single or paired end by looking for R2 file
-if (( "${#fastqs_count[@]}" == 2 )); then
-
-echo "paired reads"
-
-########## Run #################
-fastqc -o $fastqcfolder $fastqs reads/${ID}*1.fastq.gz reads/${ID}*2.fastq.gz
-
+if ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "subread-align" ])
+then
+echo paired reads
+echo aligning with subread-align
+$aligner -T 6 -t 0 -i $index --SAMoutput -r $fastqs -o "$outsam"
+elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "subread-align" ])
+then
+fq1="$(echo $fastqs |cut -d ' ' -f 1)"
+fq2="$(echo $fastqs |cut -d ' ' -f 2)"
+$aligner -T 6 -t 0 -i $index --SAMoutput -r ${fq1} -R ${fq2} -o "$outsam"
+elif ([ "${#fastqs_count[@]}" == 1 ] && [ ${aligner} == "subjunc" ])
+then
+$aligner -T 6 -i $index --SAMoutput -r $fastqs -o "$outsam"
+elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "subjunc" ])
+then
+fq1="$(echo $fastqs |cut -d ' ' -f 1)"
+fq2="$(echo $fastqs |cut -d ' ' -f 2)"
+$aligner -T 6 -i $index --SAMoutput -r ${fq1} -R ${fq2} -o "$outsam"
 else
-echo "assuming single end"
-
-########## Run #################
-
-fastqc -o $fastqcfolder $fastqs reads/${ID}*1.fastq.gz
-
+echo "ERROR: not able to align multiple fq files per pair"
+echo "fastqs:"
+echo "${fastqs}"
+exit 1
 fi
 
-echo Done QC now you should run multiqc in output directory to summarise
+echo Done aligning
