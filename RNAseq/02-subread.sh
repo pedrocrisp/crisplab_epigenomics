@@ -40,7 +40,7 @@ module load samtools/1.10
 ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
 outdir=analysis/${aligner}
-mkdir ${outdir}
+mkdir -p ${outdir}
 outsam="${outdir}/${ID}.sam"
 outbam="${outdir}/${ID}.bam"
 fastqcfolder=analysis/trimmed
