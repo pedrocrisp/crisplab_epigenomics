@@ -86,7 +86,8 @@ echo Done aligning
 
 # filter sam output and convert to bam
 # sort
-samtools view -Sbhu -q 3 $outsam | \
+# consider a -q mapping score filter -q 3
+samtools view -Sbhu $outsam | \
 samtools sort -T ${ID} -m 2G -o $outbam -
 #Make an index of the sorted bam file
 samtools index ${outbam}

@@ -3,19 +3,21 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-subread_qsub.sh <sample_list.txt> <walltime> <memory> <account_department> <genome_index> <aligner>"
+bash 03-featureCounts_qsub.sh <sample_list.txt> <walltime> <memory> <account_department> <alignFolder> <strand> <format> <reference>"
 
 #define stepo in the pipeline - should be the same name as the script
-step=02-subread
+step=03-featureCounts
 
 ######### Setup ################
 sample_list=$1
 walltime=$2
 mem=$3
 account_department=$4
-index=$5
-aligner=$6
-if [ "$#" -lt "6" ]
+alignFolder=$5
+strand=$6
+format=$7
+reference=$8
+if [ "$#" -lt "8" ]
 then
 echo $usage
 exit -1
@@ -64,6 +66,6 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=6,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},index=$index,aligner=$aligner \
+-v LIST=${sample_list},strand=$strand,format=$format,reference=$reference \
 -A $account_department \
 $script_to_qsub
