@@ -51,21 +51,27 @@ fastqs="$(find $fastqcfolder -type f -name ${ID}*.fq.gz)"
 fastqs_count=($fastqs)
 
 # check if single or paired end by looking for R2 file
-if ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "subread-align" ])
+if ([ "${#fastqs_count[@]}" == 1 ] && [ ${aligner} == "subread-align" ])
 then
-echo paired reads
+echo single reads
 echo aligning with subread-align
 $aligner -T 6 -t 0 -i $index --SAMoutput -r $fastqs -o "$outsam"
 elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "subread-align" ])
 then
+echo paired reads
+echo aligning with subread-align
 fq1="$(echo $fastqs |cut -d ' ' -f 1)"
 fq2="$(echo $fastqs |cut -d ' ' -f 2)"
 $aligner -T 6 -t 0 -i $index --SAMoutput -r ${fq1} -R ${fq2} -o "$outsam"
 elif ([ "${#fastqs_count[@]}" == 1 ] && [ ${aligner} == "subjunc" ])
 then
+echo single reads
+echo aligning with subjunc
 $aligner -T 6 -i $index --SAMoutput -r $fastqs -o "$outsam"
 elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "subjunc" ])
 then
+echo paired reads
+echo aligning with subjunc
 fq1="$(echo $fastqs |cut -d ' ' -f 1)"
 fq2="$(echo $fastqs |cut -d ' ' -f 2)"
 $aligner -T 6 -i $index --SAMoutput -r ${fq1} -R ${fq2} -o "$outsam"
