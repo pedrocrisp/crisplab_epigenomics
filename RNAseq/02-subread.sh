@@ -46,7 +46,7 @@ outbam="${outdir}/${ID}.bam"
 fastqcfolder=analysis/trimmed
 
 # check how many satqs there are - assumes "fastq" suffix
-fastqs="$(find ./fastqcfolder -type f -name ${ID}*.fq.gz)"
+fastqs="$(find $fastqcfolder -type f -name ${ID}*.fq.gz)"
 # convert to array to count elements
 fastqs_count=($fastqs)
 
