@@ -65,5 +65,5 @@ qsub -J $qsub_t \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
 -v LIST=${sample_list},index=$index,aligner=$aligner \
--A $account_department=$4 \
+-A $account_department \
 $script_to_qsub
