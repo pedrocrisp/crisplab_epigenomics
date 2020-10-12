@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N 05-subread
+#PBS -N 02-subread
 #PBS -r y
 #PBS -m abej
 
@@ -42,10 +42,11 @@ ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 outdir="${aligner}"
 mkdir ${outdir}
 outsam="${outdir}/${ID}.sam"
+outbam="${outdir}/${ID}.bam"
 fastqcfolder=analysis/trimmed
 
 # check how many satqs there are - assumes "fastq" suffix
-fastqs="$(find ./fastqcfolder -type f -name ${ID}*.fastq.gz)"
+fastqs="$(find ./fastqcfolder -type f -name ${ID}*.fq.gz)"
 # convert to array to count elements
 fastqs_count=($fastqs)
 
@@ -76,3 +77,12 @@ exit 1
 fi
 
 echo Done aligning
+
+# filter sam output and convert to bam
+# sort
+samtools view -Sbhu -q 3 $outsam | \
+samtools sort -T ${ID} -m 2G -o $outbam -
+#Make an index of the sorted bam file
+samtools index ${outbam}
+
+rm $outsam
