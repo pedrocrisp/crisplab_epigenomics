@@ -39,7 +39,7 @@ module load samtools/1.10
 #use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAYID} eg 2 from {list}
 ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
-outdir="${aligner}"
+outdir=analysis/${aligner}
 mkdir ${outdir}
 outsam="${outdir}/${ID}.sam"
 outbam="${outdir}/${ID}.bam"
