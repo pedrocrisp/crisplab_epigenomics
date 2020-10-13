@@ -66,6 +66,6 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=6,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},strand=$strand,format=$format,reference=$reference \
+-v LIST=${sample_list},strand=$strand,format=$format,reference=$reference,alignFolder=$alignFolder \
 -A $account_department \
 $script_to_qsub
