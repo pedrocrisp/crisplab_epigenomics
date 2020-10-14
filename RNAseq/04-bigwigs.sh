@@ -45,7 +45,7 @@ sample_dir=$alignFolder
 outdir=analysis/bigWig_intermediate
 mkdir -p ${outdir}
 
-bigWigs_outdir=anlysis/bigWigs
+bigWigs_outdir=analysis/bigWigs
 mkdir -p ${outdir}
 
 # Condition statement: if library is stranded $3 == stranded and bigWigs are made for each strand.  If library is nonstranded $3 == nonstranded and nonstrandspecific bigWig is made.  If no strand info is specified, script will error
