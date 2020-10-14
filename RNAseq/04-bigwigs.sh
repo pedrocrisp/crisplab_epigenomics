@@ -42,7 +42,7 @@ ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 sample=$ID
 sample_dir=$alignFolder
 
-outdir=anlysis/bigWig_intermediate
+outdir=analysis/bigWig_intermediate
 mkdir -p ${outdir}
 
 bigWigs_outdir=anlysis/bigWigs
