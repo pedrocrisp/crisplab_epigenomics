@@ -49,6 +49,7 @@ featureCounts \
 -F SAF \
 -s $strand \
 -a $reference \
+-T 6 \
 -o "$outdir/${ID}.counts" \
 "${alignFolder}/${ID}.bam"
 elif ([ ${format} == "PE" ])
@@ -60,6 +61,7 @@ featureCounts \
 -C \
 -s $strand \
 -a $reference \
+-T 6 \
 -o "$outdir/${ID}.counts" \
 "${alignFolder}/${ID}.bam"
 else
