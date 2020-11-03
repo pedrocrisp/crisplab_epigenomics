@@ -33,8 +33,8 @@ echo working dir is now $PWD
 
 ########## Modules #################
 
-module load fastqc/0.11.5
-module load cutadapt/1.8.1
+module load fastqc/0.11.4
+module load cutadapt/1.18
 
 ########## Set up dirs #################
 
