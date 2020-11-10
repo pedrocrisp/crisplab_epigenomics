@@ -2,23 +2,20 @@
 #set -xe
 set -xeuo pipefail
 
+#Peter Crisp
+#2019-12-12
+#Bash qsub script for create_genome_tile_mC_counts.R
+
 usage="USAGE:
-bash 04-filter_qsub.sh <sample_list.txt> <paired_end> <walltime> <memory>
-for example:
-bash \
-/home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/04-filter-WGBS-regular_qsub.sh \
-single_sample.txt \
-yes \
-24:00:00 \
-40
+create_genome_tile_mC_counts-qsub <sample_list> <genome_prefix> <walltime> <memory>
 "
 
 #define stepo in the pipeline - should be the same name as the script
-step=04-filter-WGBS-regular
+step=create_genome_tile_mC_counts
 
 ######### Setup ################
 sample_list=$1
-paired_end=$2
+genome_prefix=$2
 walltime=$3
 mem=$4
 
@@ -27,7 +24,7 @@ then
 echo $usage
 exit -1
 else
-echo "Submitting samples listed in '$sample_list' for filtering"
+echo "Submitting samples listed in '$sample_list' for analysis"
 cat $sample_list
 fi
 
@@ -76,8 +73,8 @@ cat $0 > ${log_folder}/qsub_runner.log
 #-o and -e pass the file locations for std out/error
 #-v additional variables to pass to the qsub script including the PBS_array list and the dir structures
 qsub -J $qsub_t \
--l walltime=${walltime},nodes=1:ppn=8,mem=${mem}gb \
+-l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},paired_end=$paired_end \
+-v LIST=${sample_list},genome_prefix=$genome_prefix \
 $script_to_qsub
