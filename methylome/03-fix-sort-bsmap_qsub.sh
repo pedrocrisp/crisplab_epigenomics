@@ -3,25 +3,30 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-bsmap_qsub.sh <sample_list.txt> <genome.fa> <adapter_seq> <walltime> <memory>"
+bash 03-fix-sort-bsmap_qsub.sh <sample_list.txt> <walltime> <memory>
+for example:
+bash \
+/home/uqpcrisp/gitrepos/crisplab_epigenomics/methylome/03-fix-sort-bsmap_qsub.sh \
+single_sample.txt
+48:00:00
+40
+"
 
-#define step in the pipeline - should be the same name as the script
-step=02-bsmap
+#define stepo in the pipeline - should be the same name as the script
+step=03-fix-sort-bsmap
 
 ######### Setup ################
 sample_list=$1
-genome_reference=$2
-adapter_seq=$3
-walltime=$4
-mem=$5
-if [ "$#" -lt "5" ]
+walltime=$2
+mem=$3
+
+if [ "$#" -lt "3" ]
 then
 echo $usage
 exit -1
 else
-echo "Submitting samples listed in '$sample_list' for trimming"
+echo "Submitting samples listed in '$sample_list' for fixing and sorting"
 cat $sample_list
-echo genome reference is $genome_reference
 fi
 
 #number of samples
@@ -69,8 +74,8 @@ cat $0 > ${log_folder}/qsub_runner.log
 #-o and -e pass the file locations for std out/error
 #-v additional variables to pass to the qsub script including the PBS_array list and the dir structures
 qsub -J $qsub_t \
--l walltime=${walltime},nodes=1:ppn=8,mem=${mem}gb \
+-l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},genome_reference=$genome_reference,adapter_seq=$adapter_seq \
+-v LIST=${sample_list} \
 $script_to_qsub

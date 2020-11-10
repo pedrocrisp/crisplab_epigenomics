@@ -1,0 +1,11 @@
+# samtools
+# -b bam
+# -h include the header
+# -q 3 filter MAPQ lower than 3
+
+
+hisat2 \
+--rna-strandness $strandedness \
+-x $reference_genome \
+-1 <m1> -2 <m2> \
+| samtools view -Sbh -q 3 -o {output[0]} -
