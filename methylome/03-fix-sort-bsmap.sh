@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #PBS -A UQ-SCI-SAFS
-#PBS -N bsmapping
+#PBS -N fix_sort
 #PBS -r y
 #PBS -m abej
 #PBS -M p.crisp@uq.edu.au
