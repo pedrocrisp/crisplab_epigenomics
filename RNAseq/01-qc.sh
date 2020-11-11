@@ -39,7 +39,7 @@ module load fastqc/0.11.4
 #use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAYID} eg 2 from {list}
 ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
-fastqcfolder=analysis/fastqc
+fastqcfolder=analysis/fastqc_raw
 mkdir -p $fastqcfolder
 
 # check how many satqs there are - assumes "fastq" suffix
