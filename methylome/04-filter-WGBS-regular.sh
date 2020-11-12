@@ -33,7 +33,7 @@ echo working dir is now $PWD
 
 ########## Modules #################
 # requires java 1.8
-module load java
+module load Java/1.8.0_45
 #module load bedtools
 module load bamtools
 #bsmap requires samtools < 1.0.0
