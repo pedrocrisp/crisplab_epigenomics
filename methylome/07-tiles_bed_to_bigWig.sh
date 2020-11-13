@@ -50,7 +50,7 @@ mkdir -p tiles
 
         # 100 bp tiles using Qing's perl script
         # the output file format is actually a bed it is a zero-based coordinate
-        perl ~/gitrepos/springerlab_methylation/SeqCap/met_context_window.pl ./BSMAPratio/${ID}_BSMAP_out.txt 100
+        perl ~/gitrepos/crisplab_epigenomics/methylome/met_context_window.pl ./BSMAPratio/${ID}_BSMAP_out.txt 100
 
         #move output into tiles folder
         mv -v ./BSMAPratio/${ID}_BSMAP_out.txt.100.*.bed ./tiles/
@@ -59,7 +59,7 @@ mkdir -p tiles
         # 1. fix chr ends in BED file
         # 2. output one-based coordinate .txt file for analysis in R
         # 3. output zero-based coordinate bedGraph file (omit excess columns and sort)
-        R -f ~/gitrepos/springerlab_methylation/SeqCap/07-tiles_bed_to_bigWig.R \
+        R -f ~/gitrepos/crisplab_epigenomics/methylome/07-tiles_bed_to_bigWig.R \
         --args ${ID} tiles ${reference_tile_file}
 
         #make bedGraph by sorting and removing cols 4 and 5 with awk
