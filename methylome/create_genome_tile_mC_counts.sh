@@ -64,7 +64,7 @@ echo $genome
 
 bedtools getfasta -fi ../${genome}.fa \
 -bed ${genome}_100pb_tiles_for_sites_calc.bed \
-> ${genome}_100bp_tiles.fa
+-fo ${genome}_100bp_tiles.fa
 
 # these fasta records contain the 100 nt tile plus 2 nt either side for classifying sites bridging the tiles
 
