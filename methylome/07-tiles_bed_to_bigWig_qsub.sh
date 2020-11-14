@@ -19,6 +19,8 @@ step=07-tiles_bed_to_bigWig
 sample_list=$1
 chrom_sizes=$2
 reference_tile_file=$3
+walltime=$4
+mem=$5
 
 if [ "$#" -lt "3" ]
 then
