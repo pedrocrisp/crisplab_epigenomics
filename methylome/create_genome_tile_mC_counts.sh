@@ -87,7 +87,7 @@ printf ">CG\nCG\n>CHG\nC[ATC]G\n>CHH\nC[ACT][ACT]" > contexts_motifs.fa
 
 time \
 cat ${genome}_100bp_tiles.fa | \
-seqkit locate -i -d -f contexts_motifs.fa | \
+seqkit locate -i -r -f contexts_motifs.fa | \
 awk '(NR==1) ||
 ($1 ~ /:0-102/) && ($2 == "CG") && ($4 == "+") && ($5 >= 1) && ($6 <= 101) ||
 ($1 ~ /:0-102/) && ($2 == "CG") && ($4 == "-") && ($5 >= 1) && ($6 <= 100)  ||
@@ -117,7 +117,7 @@ printf ">CG\nCG\n>CHG\nC[ATC]G\n>CHH\nC[ACT][ACT]\n>N\nN" > contexts_motifs_N.fa
 #N
 
 cat ${genome}_100bp_tiles.fa | \
-seqkit locate -i -d -f contexts_motifs_N.fa | \
+seqkit locate -i -r -f contexts_motifs_N.fa | \
 awk '(NR==1) ||
 ($1 ~ /:0-102/) && ($2 == "CG") && ($4 == "+") && ($5 >= 1) && ($6 <= 101) ||
 ($1 ~ /:0-102/) && ($2 == "CG") && ($4 == "-") && ($5 >= 1) && ($6 <= 100)  ||
