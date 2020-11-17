@@ -24,7 +24,7 @@ options(scipen=999)
 # genome = "Sbicolor_454_v3.0.1"
 chrom.sizes_file <- read_tsv(paste0("../", genome, ".chrom.sizes"), col_names = c("chr", "size"))
 
-# # This method creates a whole tile at the end of the chromosomes, eventhough it will often be a partial tile. 
+# # This method creates a whole tile at the end of the chromosomes, even though it will often be a partial tile. 
 # # This tile get omitted in the next step by bedtools getfasta because it is beyond the end of the chromosome
 #  reference_tiles_table <- data.table(chrom.sizes_file)[, seq(1, size, by=100), by=chr]
 
@@ -33,7 +33,7 @@ reference_tiles_table <- data.table(chrom.sizes_file)[, seq(1, size - (size %% 1
 
 ### make into proper bed (zero based)
 reference_tiles <- as.tibble(reference_tiles_table)
-reference_tiles_2 <- reference_tiles %>% rename(start = V1) %>% 
+reference_tiles_2 <- reference_tiles %>% rename(start = V1) %>%
   mutate(end = start+99, start_zBased = start-1)
 
 reference_tiles_2
@@ -69,7 +69,7 @@ write.table(reference_tiles_bed, paste0(genome, "_100bp_tiles.bed"),  sep = "\t"
 
 ############ 100 bp tile reference for calling sites (+2nt) #############
 
-# tiles <- read_tsv("../ZmaysPH207_443_v1_0_100bp_tiles_zBased.txt", col_names = F, 
+# tiles <- read_tsv("../ZmaysPH207_443_v1_0_100bp_tiles_zBased.txt", col_names = F,
 #                   cols_only(
 #                     X1 = col_character(),
 #                     X2 = col_integer(),
@@ -78,7 +78,7 @@ write.table(reference_tiles_bed, paste0(genome, "_100bp_tiles.bed"),  sep = "\t"
 
 reference_tiles_2 %>% distinct(chr)
 
-tiles_for_sites <- reference_tiles_2 %>% 
+tiles_for_sites <- reference_tiles_2 %>%
   # slice(1:10) %>%
   group_by(chr) %>%
   mutate(new_start = ifelse(start_zBased >= 2, start_zBased - 2, 0),

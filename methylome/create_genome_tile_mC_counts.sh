@@ -41,7 +41,9 @@ module load R/3.5.0-gnu
 ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
 echo sample being mapped is $ID
-echo genome is $genome_prefix
+
+genome=$ID
+echo genome is $genome
 
 mkdir -p sites
 cd sites
@@ -50,7 +52,7 @@ cd sites
 
 # Run R module to creat 100bp tile bed file
 R -f ~/gitrepos/crisplab_epigenomics/methylome/create_genome_tile_mC_counts_tiles.R \
---args $genome_prefix
+--args $genome
 
 ##########              #################
 ########## Run MODULE 2 #################
@@ -58,9 +60,6 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome/create_genome_tile_mC_counts_tile
 # Run module to count number of CG/CHG/CHH sites in Each 100bp tile
 
 module load bedtools/2.25.0
-
-genome=$genome_prefix
-echo $genome
 
 bedtools getfasta -fi ../${genome}.fa \
 -bed ${genome}_100pb_tiles_for_sites_calc.bed \
@@ -142,6 +141,6 @@ csvtk -t freq -k -f 1,2 > ${genome}_100bp_tiles_sites_Ns.tsv
 
 # Run R module to count sites in each 100 bp tile
 R -f ~/gitrepos/crisplab_epigenomics/methylome/create_genome_tile_mC_counts.R \
---args $genome_prefix
+--args $genome
 
 echo finished summarising

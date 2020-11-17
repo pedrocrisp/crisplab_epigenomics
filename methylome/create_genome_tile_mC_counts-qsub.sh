@@ -7,7 +7,7 @@ set -xeuo pipefail
 #Bash qsub script for create_genome_tile_mC_counts.R
 
 usage="USAGE:
-create_genome_tile_mC_counts-qsub <sample_list> <genome_prefix> <walltime> <memory>
+create_genome_tile_mC_counts-qsub <sample_list> <walltime> <memory>
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -15,11 +15,10 @@ step=create_genome_tile_mC_counts
 
 ######### Setup ################
 sample_list=$1
-genome_prefix=$2
-walltime=$3
-mem=$4
+walltime=$2
+mem=$3
 
-if [ "$#" -lt "4" ]
+if [ "$#" -lt "3" ]
 then
 echo $usage
 exit -1
@@ -76,5 +75,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},genome_prefix=$genome_prefix \
+-v LIST=${sample_list} \
 $script_to_qsub
