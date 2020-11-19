@@ -53,6 +53,7 @@ mkdir -p tiles
 # ID="UMR_McrBC_MF_90"
 # chrc_sizes="/90days/uqpcrisp/tmp_refseqs/Nbenth/NbLab330.genome.chrom.sizes"
 # tile_file="/90days/uqpcrisp/tmp_refseqs/Nbenth/sites/NbLab330.genome_100bp_tiles.bed"
+# CPM_filter_UMRs=5
 
 # bedgraph
 bedtools genomecov -bg -ibam $bam_dir/${ID}_sorted.bam -g $chrc_sizes | sort -k1,1 -k2,2n - > bigWigs/${ID}_sorted.bedgraph
@@ -60,7 +61,27 @@ bedtools genomecov -bg -ibam $bam_dir/${ID}_sorted.bam -g $chrc_sizes | sort -k1
 bedGraphToBigWig bigWigs/${ID}_sorted.bedgraph $chrc_sizes bigWigs/${ID}.bw
 
 #### summarise coverage into 100bp tiles
-bedtools closest -t all -a bigWigs/${ID}_sorted.bedgraph -b $tile_file |
+# 5' coverage only
+# the -a includes 0 counts, remove if not needed...
+bedtools genomecov -bga -5 -ibam $bam_dir/${ID}_sorted.bam -g $chrc_sizes | sort -k1,1 -k2,2n - > bigWigs/${ID}_sorted_5prime.bedgraph
+
+# use closest to overlap with 100bp tile then summarise with groupby
+bedtools closest -t all -a bigWigs/${ID}_sorted_5prime.bedgraph -b $tile_file |
 bedtools groupby -g 5,6,7 -c 4 > tiles/${ID}_100bp.bed
+
+#### normalise to CPM
+# norm factor (CPM) 4 decimal places
+norm_factor=`awk 'BEGIN {sum1 += $4} END {print sum1/1000000}' tiles/${ID}_100bp.bed`
+echo norm factor $norm_factor
+#
+awk -F$"\\t" -v norm_factor=$norm_factor 'BEGIN {OFS = FS} (NR>1){
+  print $1, $2, $3, $4/norm_factor
+}' "tiles/${ID}_100bp.bed" > tiles/${ID}_100bp_CPM.bed
+
+#### filter
+awk -v CPM_filter_UMRs=$CPM_filter_UMRs '$4 > CPM_filter_UMRs' tiles/${ID}_100bp_CPM.bed |
+bedtools merge -c 4 -o sum -i - > tiles/${ID}_100bp_CPM_${CPM_filter_UMRs}_UMRs.bed
+
+#### merge to call UMRs
 
 echo finished summarising

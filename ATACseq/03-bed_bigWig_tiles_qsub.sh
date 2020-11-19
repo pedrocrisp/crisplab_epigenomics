@@ -20,10 +20,11 @@ sample_list=$1
 chrom_sizes=$2
 reference_tile_file=$3
 bam_dir=$4
-walltime=$5
-mem=$6
+CPM_filter_UMRs=$5
+walltime=$6
+mem=$7
 
-if [ "$#" -lt "6" ]
+if [ "$#" -lt "7" ]
 then
 echo $usage
 exit -1
@@ -80,5 +81,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},chrom_sizes=${chrom_sizes},reference_tile_file=${reference_tile_file},bam_dir=${bam_dir} \
+-v LIST=${sample_list},chrom_sizes=${chrom_sizes},reference_tile_file=${reference_tile_file},bam_dir=${bam_dir},CPM_filter_UMRs=${CPM_filter_UMRs} \
 $script_to_qsub
