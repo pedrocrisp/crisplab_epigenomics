@@ -21,7 +21,7 @@ echo PBS: job name is $PBS_JOBNAME
 echo PBS: node file is $PBS_NODEFILE
 echo PBS: current home directory is $PBS_O_HOME
 echo PBS: PATH = $PBS_O_PATH
-echo PBS: array_ID is ${PBS_ARRAY_INDEXPBS_ARRAY_INDEX}
+echo PBS: array_ID is ${PBS_ARRAY_INDEX}
 echo ------------------------------------------------------
 
 echo working dir is $PWD
@@ -37,8 +37,8 @@ module load R/3.5.0-gnu
 ########## Set up dirs #################
 
 #get job ID
-#use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAY_INDEXPBS_ARRAY_INDEX} eg 2 from {list}
-ID="$(/bin/sed -n ${PBS_ARRAY_INDEXPBS_ARRAY_INDEX}p ${LIST})"
+#use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAY_INDEX} eg 2 from {list}
+ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 sample_to_crunch=$ID
 
 echo sample being mapped is $ID
