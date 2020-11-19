@@ -54,7 +54,7 @@ mkdir -p tiles
 # ID="UMR_McrBC_MF_90"
 # chrc_sizes="/90days/uqpcrisp/tmp_refseqs/Nbenth/NbLab330.genome.chrom.sizes"
 # tile_file="/90days/uqpcrisp/tmp_refseqs/Nbenth/sites/NbLab330.genome_100bp_tiles.bed"
-# CPM_filter_UMRs=5
+# CPM_filter_UMRs=0.5
 
 # bedgraph
 bedtools genomecov -bg -ibam $bam_dir/${ID}_sorted.bam -g $chrc_sizes | sort -k1,1 -k2,2n - > bedgraphs/${ID}_sorted.bedgraph
@@ -72,7 +72,7 @@ bedtools groupby -g 5,6,7 -c 4 > tiles/${ID}_100bp.bed
 
 #### normalise to CPM
 # norm factor (CPM) 4 decimal places
-norm_factor=`awk 'BEGIN {sum1 += $4} END {print sum1/1000000}' tiles/${ID}_100bp.bed`
+norm_factor=`awk -F$"\\t" 'BEGIN {OFS = FS} (NR>1){sum1 += $4+0} END {print sum1/1000000}' tiles/${ID}_100bp.bed`
 echo norm factor $norm_factor
 #
 awk -F$"\\t" -v norm_factor=$norm_factor 'BEGIN {OFS = FS} (NR>1){
