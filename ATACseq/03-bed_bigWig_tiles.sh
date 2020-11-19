@@ -44,6 +44,7 @@ echo sample being mapped is $ID
 
 #make adaligned folder bsmaped
 cd analysis
+mkdir -p bedgraphs
 mkdir -p bigWigs
 mkdir -p tiles
 
@@ -56,17 +57,17 @@ mkdir -p tiles
 # CPM_filter_UMRs=5
 
 # bedgraph
-bedtools genomecov -bg -ibam $bam_dir/${ID}_sorted.bam -g $chrc_sizes | sort -k1,1 -k2,2n - > bigWigs/${ID}_sorted.bedgraph
+bedtools genomecov -bg -ibam $bam_dir/${ID}_sorted.bam -g $chrc_sizes | sort -k1,1 -k2,2n - > bedgraphs/${ID}_sorted.bedgraph
 # bigwig
-bedGraphToBigWig bigWigs/${ID}_sorted.bedgraph $chrc_sizes bigWigs/${ID}.bw
+bedGraphToBigWig bedgraphs/${ID}_sorted.bedgraph $chrc_sizes bigWigs/${ID}.bw
 
 #### summarise coverage into 100bp tiles
 # 5' coverage only
 # the -a includes 0 counts, remove if not needed...
-bedtools genomecov -bga -5 -ibam $bam_dir/${ID}_sorted.bam -g $chrc_sizes | sort -k1,1 -k2,2n - > bigWigs/${ID}_sorted_5prime.bedgraph
+bedtools genomecov -bga -5 -ibam $bam_dir/${ID}_sorted.bam -g $chrc_sizes | sort -k1,1 -k2,2n - > bedgraphs/${ID}_sorted_5prime.bedgraph
 
 # use closest to overlap with 100bp tile then summarise with groupby
-bedtools closest -t all -a bigWigs/${ID}_sorted_5prime.bedgraph -b $tile_file |
+bedtools closest -t all -a bedgraphs/${ID}_sorted_5prime.bedgraph -b $tile_file |
 bedtools groupby -g 5,6,7 -c 4 > tiles/${ID}_100bp.bed
 
 #### normalise to CPM
