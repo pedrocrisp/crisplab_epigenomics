@@ -18,10 +18,11 @@ step=04-UMR_CPM_filter
 ######### Setup ################
 sample_list=$1
 CPM_filter_UMRs=$2
-walltime=$3
-mem=$4
+max_merge_gap=$3
+walltime=$4
+mem=$5
 
-if [ "$#" -lt "4" ]
+if [ "$#" -lt "5" ]
 then
 echo $usage
 exit -1
@@ -78,5 +79,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},CPM_filter_UMRs=${CPM_filter_UMRs} \
+-v LIST=${sample_list},CPM_filter_UMRs=${CPM_filter_UMRs},max_merge_gap=${max_merge_gap} \
 $script_to_qsub
