@@ -50,7 +50,7 @@ mkdir -p tiles
 
 #### filter
 awk -v CPM_filter_UMRs=$CPM_filter_UMRs '$4 > CPM_filter_UMRs' tiles/${ID}_100bp_CPM.bed |
-bedtools merge -d 100 -c 4 -o sum -i - > tiles/${ID}_100bp_CPM_${CPM_filter_UMRs}_UMRs.bed
+bedtools merge -d $max_merge_gap -c 4 -o sum -i - > tiles/${ID}_100bp_CPM_${CPM_filter_UMRs}_mgap_${max_merge_gap}_UMRs.bed
 
 #### merge to call UMRs
 
