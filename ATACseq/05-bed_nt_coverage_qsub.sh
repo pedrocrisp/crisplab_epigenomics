@@ -4,12 +4,6 @@ set -xeuo pipefail
 
 usage="USAGE:
 bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <chrom.sizes file> <bam folder> <walltime> <memory>
-for example:
-bash \
-/home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/07-tiles_bed_to_bigWig_qsub.sh \
-single_sample.txt \
-/home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.chrom.sizes \
-/home/springer/pcrisp/ws/refseqs/maize/maize_v4_100pb_tiles_zBased_sites.txt
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -22,7 +16,7 @@ bam_dir=$3
 walltime=$4
 mem=$5
 
-if [ "$#" -lt "7" ]
+if [ "$#" -lt "5" ]
 then
 echo $usage
 exit -1
