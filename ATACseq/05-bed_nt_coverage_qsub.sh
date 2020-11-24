@@ -19,8 +19,8 @@ step=05-bed_nt_coverage
 sample_list=$1
 chrom_sizes=$2
 bam_dir=$3
-walltime=$5
-mem=$6
+walltime=$4
+mem=$5
 
 if [ "$#" -lt "7" ]
 then
