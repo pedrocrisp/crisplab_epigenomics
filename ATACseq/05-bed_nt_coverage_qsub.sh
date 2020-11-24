@@ -19,7 +19,6 @@ step=05-bed_nt_coverage
 sample_list=$1
 chrom_sizes=$2
 bam_dir=$3
-CPM_filter_UMRs=$4
 walltime=$5
 mem=$6
 
@@ -80,5 +79,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},chrom_sizes=${chrom_sizes},bam_dir=${bam_dir},CPM_filter_UMRs=${CPM_filter_UMRs} \
+-v LIST=${sample_list},chrom_sizes=${chrom_sizes},bam_dir=${bam_dir} \
 $script_to_qsub
