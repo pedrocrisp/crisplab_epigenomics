@@ -72,10 +72,10 @@ bedtools groupby -g 5,6,7 -c 4 > tiles/${ID}_100bp.bed
 
 #### normalise to CPM
 # norm factor (CPM) 4 decimal places
-norm_factor=`awk -F$"\\t" 'BEGIN {OFS = FS} (NR>1){sum1 += $4+0} END {print sum1/1000000}' tiles/${ID}_100bp.bed`
+norm_factor=`awk -F$"\\t" 'BEGIN {OFS = FS} {sum1 += $4+0} END {print sum1/1000000}' tiles/${ID}_100bp.bed`
 echo norm factor $norm_factor
 #
-awk -F$"\\t" -v norm_factor=$norm_factor 'BEGIN {OFS = FS} (NR>1){
+awk -F$"\\t" -v norm_factor=$norm_factor 'BEGIN {OFS = FS} {
   print $1, $2, $3, $4/norm_factor
 }' "tiles/${ID}_100bp.bed" > tiles/${ID}_100bp_CPM.bed
 

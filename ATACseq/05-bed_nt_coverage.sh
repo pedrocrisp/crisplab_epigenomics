@@ -56,9 +56,8 @@ mkdir -p coverage_bed
 
 # bedgraph nt resolution
 # -pc Calculates coverage of intervals from left point of a pair reads to the right point.
-bedtools genomecov -d -ibam $bam_dir/${ID}_sorted.bam -g $chrom_sizes | sort -k1,1 -k2,2n - > coverage_bed/${ID}_nt_cov_sorted.bed
-# bigwig
-
-#### merge to call UMRs
+bedtools genomecov -d -ibam $bam_dir/${ID}_sorted.bam -g $chrom_sizes |
+awk -F$"\\t" 'BEGIN { OFS = FS } { print $1, $2-1, $2, $3 }' - |
+sort -k1,1 -k2,2n - > coverage_bed/${ID}_nt_cov_sorted.bed
 
 echo finished summarising
