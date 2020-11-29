@@ -55,7 +55,7 @@ computeMatrix scale-regions \
 -R $feature_bed \
 -S ${bigwig_dir}/${ID}.bw \
 -b 2000 -a 2000 \
--p 8 \
+-p 2 \
 --regionBodyLength 300 \
 --skipZeros \
 --sortRegions descend \
