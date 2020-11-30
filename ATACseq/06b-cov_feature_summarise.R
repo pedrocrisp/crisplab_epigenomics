@@ -12,7 +12,7 @@ print(args)
 sample_ID <- args[1]
 sample_ID
 
-out_dir <- args[1]
+out_dir <- args[2]
 out_dir
 
 # sample_ID = "UMR_McrBC_MF_merged"
