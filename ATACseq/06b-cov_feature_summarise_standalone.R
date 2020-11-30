@@ -66,7 +66,7 @@ matrix_test_zero_gather <- matrix_test_zero %>%
 
 matrix_test_zero_gather
 
-write.table(reference_tiles_sites, paste0(sample_ID, "mat_values_summarised.tab"), sep = "\t", quote = F, row.names = F)
+write.table(matrix_test_zero_gather, paste0(sample_ID, "mat_values_summarised.tab"), sep = "\t", quote = F, row.names = F)
 
 
 g <- ggplot(matrix_test_zero_gather, aes(x = bin, y = average_coverage)) +
