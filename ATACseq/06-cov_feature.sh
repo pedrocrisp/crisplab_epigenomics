@@ -51,12 +51,15 @@ mkdir -p $out_dir
 # deeptools to make coverage matrix
 # summarise 2kb either side of feature
 # -p 8 threds
+# skip regions with only zeros
+# treat missing data as zero
 computeMatrix scale-regions \
 -R $feature_bed \
 -S ${bigwig_dir}/${ID}.bw \
 -b 2000 -a 2000 \
 -p 2 \
 --regionBodyLength 300 \
+--missingDataAsZero \
 --skipZeros \
 --sortRegions descend \
 -o ${out_dir}/${ID}.mat.gz \
