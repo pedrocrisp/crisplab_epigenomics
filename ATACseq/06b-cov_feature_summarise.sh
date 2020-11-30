@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #PBS -A UQ-SCI-SAFS
-#PBS -N deeptools
+#PBS -N deeptools_sum
 #PBS -r y
 #PBS -m abej
 #PBS -M p.crisp@uq.edu.au
@@ -32,8 +32,7 @@ cd "$PBS_O_WORKDIR"
 echo working dir is now $PWD
 
 ########## Modules #################
-conda activate py3.7
-# module load R/3.5.0-gnu
+module load R/3.5.0-gnu
 ########## Set up dirs #################
 
 #get job ID
@@ -48,30 +47,8 @@ mkdir -p $out_dir
 
 ########## Run #################
 
-# deeptools to make coverage matrix
-# summarise 2kb either side of feature
-# -p 8 threds
-computeMatrix scale-regions \
--R $feature_bed \
--S ${bigwig_dir}/${ID}.bw \
--b 2000 -a 2000 \
--p 2 \
---regionBodyLength 300 \
---skipZeros \
---sortRegions descend \
--o ${out_dir}/${ID}.mat.gz \
---outFileNameMatrix ${out_dir}/${ID}.mat_values.tab \
---outFileSortedRegions ${out_dir}/${ID}.region_order.bed
-
-#plot
-plotProfile \
--m ${out_dir}/${ID}.mat.gz \
--out ${out_dir}/${ID}.mat_metaplot.png \
---numPlotsPerRow 1
-
-# heatmap
-plotHeatmap \
--m ${out_dir}/${ID}.mat.gz \
--out ${out_dir}/${ID}.mat_heatmap.png
+# Run R module to creat 100bp tile bed file
+R -f ~/gitrepos/crisplab_epigenomics/ATACseq/06b-cov_feature_summarise.R \
+--args $ID $out_dir
 
 echo finished summarising

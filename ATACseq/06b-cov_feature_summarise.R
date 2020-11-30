@@ -55,19 +55,19 @@ label_size = 25.4/72 * 8
 matrix_test <- read_tsv(paste0(out_dir, "/",sample_ID, ".mat_values.tab"), skip = 3, col_names = as.character(c(1:430)))
 
 # replace NaN with 0
-matrix_test_zero <- matrix_test %>% 
+matrix_test_zero <- matrix_test %>%
   # slice(1:10000) %>%
-  # select(-UMR_McrBC_MF_merged_429) %>% 
-  replace(., is.na(.), 0) 
+  # select(-UMR_McrBC_MF_merged_429) %>%
+  replace(., is.na(.), 0)
 
 # gather and summarise
-matrix_test_zero_gather <- matrix_test_zero %>% 
+matrix_test_zero_gather <- matrix_test_zero %>%
   gather(key = bin, value = coverage) %>%
   mutate(bin = as.double(bin)) %>%
   group_by(bin) %>%
   summarise(average_coverage = mean(coverage))
 
-matrix_test_zero_gather  
+matrix_test_zero_gather
 
 write.table(reference_tiles_sites, paste0(out_dir, "/", sample_ID, "mat_values_summarised.tab"), sep = "\t", quote = F, row.names = F)
 
