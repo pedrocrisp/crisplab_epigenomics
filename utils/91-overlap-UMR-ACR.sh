@@ -84,7 +84,7 @@ mkdir -p logs
 
 ########## Modules #################
 
-module load R/3.3.2
+module load R/3.5.0-gnu
 module load bedtools
 
 ########## overlaps ACR annotation #################

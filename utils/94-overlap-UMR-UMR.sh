@@ -83,7 +83,7 @@ mkdir -p logs
 
 ########## Modules #################
 
-module load R/3.3.2
+module load R/3.5.0-gnu
 module load bedtools
 
 ########## overlaps ACR annotation #################
@@ -99,7 +99,7 @@ bedtools closest \
 > tmp_${acr_outputFile}.bed
 
 ########## R module to parse ACR annotation output #################
-R -f ~/gitrepos/springerlab_methylation/utils/94-overlap-UMR-UMR-R1.R \
+R -f ~/gitrepos/crisplab_epigenomics/utils/94-overlap-UMR-UMR-R1.R \
 --args $acr_outputFile $summary_output_folder
 
 ########## overlaps UMR annotation #################
@@ -115,7 +115,7 @@ bedtools closest \
 > tmp_${umr_outputFile}.bed
 
 ########## R module to parse UMR annotation output #################
-R -f ~/gitrepos/springerlab_methylation/utils/94-overlap-UMR-UMR-R2.R \
+R -f ~/gitrepos/crisplab_epigenomics/utils/94-overlap-UMR-UMR-R2.R \
 --args $umr_outputFile $summary_output_folder
 
 # to run
