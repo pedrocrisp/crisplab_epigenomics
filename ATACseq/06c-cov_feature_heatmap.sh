@@ -50,7 +50,7 @@ mkdir -p $out_dir
 
 #plot
 plotProfile \
--m ${out_dir}/${ID}.mat.gz \
+-m ${mat_dir}/${ID}.mat.gz \
 -out ${out_dir}/${ID}.mat_metaplot.png \
 --numPlotsPerRow 1 \
 --yMin 0 \
@@ -58,7 +58,7 @@ plotProfile \
 
 # heatmap
 plotHeatmap \
--m ${out_dir}/${ID}.mat.gz \
+-m ${mat_dir}/${ID}.mat.gz \
 -out ${out_dir}/${ID}.mat_heatmap.png \
 --zMin 0 \
 --zMax 1.0
