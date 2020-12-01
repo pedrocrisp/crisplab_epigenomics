@@ -53,28 +53,34 @@ mkdir -p $out_dir
 # -p 8 threds
 # skip regions with only zeros
 # treat missing data as zero
+
+# CG
 computeMatrix scale-regions \
+--region NbLab330C01 \
 -R $feature_bed \
--S ${bigwig_dir}/${ID}.bw \
+-S ${bigwig_dir}/${ID}_BSMAP_out_CG.bigWig \
 -b 2000 -a 2000 \
 -p 2 \
 --regionBodyLength 300 \
---missingDataAsZero \
 --skipZeros \
 --sortRegions descend \
--o ${out_dir}/${ID}.mat.gz \
---outFileNameMatrix ${out_dir}/${ID}.mat_values.tab \
---outFileSortedRegions ${out_dir}/${ID}.region_order.bed
+-o ${out_dir}/${ID}.CG_mat.gz \
+--outFileNameMatrix ${out_dir}/${ID}.CG_mat_values.tab \
+--outFileSortedRegions ${out_dir}/${ID}.CG_region_order.bed
 
 #plot
 plotProfile \
--m ${out_dir}/${ID}.mat.gz \
--out ${out_dir}/${ID}.mat_metaplot.png \
---numPlotsPerRow 1
+-m ${out_dir}/${ID}.CG_mat.gz \
+-out ${out_dir}/${ID}.CG_mat_metaplot.png \
+--numPlotsPerRow 1 \
+--yMin 0 \
+--yMax 1.0
 
 # heatmap
 plotHeatmap \
--m ${out_dir}/${ID}.mat.gz \
--out ${out_dir}/${ID}.mat_heatmap.png
+-m ${out_dir}/${ID}.CG_mat.gz \
+-out ${out_dir}/${ID}.CG_mat_heatmap.png \
+--zMin 0 \
+--zMax 1.0
 
 echo finished summarising
