@@ -56,7 +56,6 @@ mkdir -p $out_dir
 
 # CG
 computeMatrix scale-regions \
---region NbLab330C01 \
 -R $feature_bed \
 -S ${bigwig_dir}/${ID}_BSMAP_out_CG.bigWig \
 -b 2000 -a 2000 \
