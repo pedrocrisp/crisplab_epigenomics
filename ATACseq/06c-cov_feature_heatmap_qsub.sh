@@ -14,11 +14,10 @@ step=06c-cov_feature_heatmap
 sample_list=$1
 walltime=$2
 mem=$3
-bigwig_dir=$4
-mat_dir=$5
-out_dir=$6
+mat_dir=$4
+out_dir=$5
 
-if [ "$#" -lt "6" ]
+if [ "$#" -lt "5" ]
 then
 echo $usage
 exit -1
@@ -75,5 +74,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},bigwig_dir=${bigwig_dir},out_dir=${out_dir},mat_dir=${mat_dir} \
+-v LIST=${sample_list},out_dir=${out_dir},mat_dir=${mat_dir} \
 $script_to_qsub
