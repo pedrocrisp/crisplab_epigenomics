@@ -48,7 +48,7 @@ mkdir -p $out_dir
 ########## Run #################
 
 # Run R module to creat 100bp tile bed file
-R -f ~/gitrepos/crisplab_epigenomics/ATACseq/08b-cov_feature_summarise.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome/08b-cov_feature_summarise.R \
 --args $ID $out_dir
 
 echo finished summarising
