@@ -7,7 +7,7 @@ bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <walltime> <memory> <bigWig f
 "
 
 #define stepo in the pipeline - should be the same name as the script
-step=06b-cov_feature_summarise
+step=08b-cov_feature_summarise
 
 ######### Setup ################
 sample_list=$1
