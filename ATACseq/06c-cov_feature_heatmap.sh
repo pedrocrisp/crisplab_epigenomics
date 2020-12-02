@@ -53,14 +53,14 @@ plotProfile \
 -m ${mat_dir}/${ID}.mat.gz \
 -out ${out_dir}/${ID}.mat_metaplot.png \
 --numPlotsPerRow 1 \
---yMin 0 \
---yMax 0.5
+--yMin $y_min \
+--yMax $y_max
 
 # heatmap
 plotHeatmap \
 -m ${mat_dir}/${ID}.mat.gz \
 -out ${out_dir}/${ID}.mat_heatmap.png \
---zMin 0 \
---zMax 1.0
+--zMin $y_min \
+--zMax $y_max
 
 echo finished summarising
