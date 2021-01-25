@@ -80,5 +80,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,chr=$chr \
+-v LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,chr=${chr} \
 $script_to_qsub
