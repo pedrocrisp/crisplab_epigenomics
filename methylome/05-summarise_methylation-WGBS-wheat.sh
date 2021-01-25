@@ -68,7 +68,7 @@ mkdir -p ConversionRate
         -d ${genome_reference} \
         -u \
         -z \
-        -c $chr \
+        -c chr1A_part1,chr1A_part2,chr1B_part1,chr1B_part2,chr1D_part1,chr1D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
         #awk funciton for extracting methylation info from methratio.py output. Check with Qing what this is meant to do. Also try to figure out how to split this over multiple lines
