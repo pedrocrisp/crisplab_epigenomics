@@ -13,7 +13,7 @@ single_sample.txt \
 "
 
 #define stepo in the pipeline - should be the same name as the script
-step=05-summarise_methylation-WGBS
+step=05-summarise_methylation-WGBS-wheat
 
 ######### Setup ################
 sample_list=$1
@@ -21,7 +21,8 @@ genome_reference=$2
 chrom_sizes_file=$3
 walltime=$4
 mem=$5
-if [ "$#" -lt "5" ]
+chr=$6
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
@@ -79,5 +80,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file \
+-v LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,chr=$chr \
 $script_to_qsub

@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #PBS -A UQ-SCI-SAFS
-#PBS -N summarise_methylation-WGBS
+#PBS -N summarise_methylation-WGBS-wheat
 #PBS -r y
 #PBS -m abej
 #PBS -M p.crisp@uq.edu.au
@@ -68,6 +68,7 @@ mkdir -p ConversionRate
         -d ${genome_reference} \
         -u \
         -z \
+        -c $chr \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
         #awk funciton for extracting methylation info from methratio.py output. Check with Qing what this is meant to do. Also try to figure out how to split this over multiple lines
