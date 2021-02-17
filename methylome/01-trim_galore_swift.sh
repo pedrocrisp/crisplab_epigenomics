@@ -49,7 +49,7 @@ mkdir -p $trimmedfolder
 fastqcfolder=analysis/fastqc
 mkdir -p $fastqcfolder
 
-# check if single or paired end by looking for R2 file
+# check if single or paired end or unzipped by looking for R2 file
 if [ -e "reads/${ID}_R2_001.fastq.gz" ]; then
 
 echo "paired reads"
@@ -57,6 +57,21 @@ echo "paired reads"
 #uncompress reads because trim_galore throws the error `gzip: stdout: Broken pipe` if I input .gz files
 gunzip reads/${ID}_R1_001.fastq.gz
 gunzip reads/${ID}_R2_001.fastq.gz
+
+########## Run #################
+# for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
+# Swift recommends symetrical trimming, so I trim from the R1 read too...
+
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" --clip_R1 20 --clip_R2 20 -o $trimmedfolder --paired reads/${ID}_R1_001.fastq reads/${ID}_R2_001.fastq
+
+#compress original reads again
+gzip reads/${ID}_R1_001.fastq
+gzip reads/${ID}_R2_001.fastq
+
+# check if single or paired end or unzipped by looking for R2 file
+elif [ -e "reads/${ID}_R2_001.fastq" ]; then
+
+echo "paired reads uncompressed"
 
 ########## Run #################
 # for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
