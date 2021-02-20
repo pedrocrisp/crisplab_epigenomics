@@ -280,7 +280,7 @@ dmls_bed_summarised
 
 ####### 4. Make results files and write out tables
 
-dmlTest_calls <- as.tibble(dmlTest) %>% left_join(dmls_tbl, by = colnames(dmlTest)) 
+dmlTest_calls <- as.tibble(dmlTest) %>% left_join(dmls_tbl, by = colnames(dmlTest))
 dmlTest_calls
 
 ### write DMR calls (large) file - only retain mu1 and mu2 cut of ther columns to make file smaller
