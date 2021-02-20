@@ -30,7 +30,7 @@ minCHHs=$7
 minCHH_cov=$8
 minCHGs=$9
 minCHG_cov=${10}
-minCGs=${11}}
+minCGs=${11}
 minCG_cov=${12}
 
 if [ "$#" -lt "12" ]
