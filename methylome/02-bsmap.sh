@@ -66,8 +66,8 @@ if [ -e "trimmed/${ID}_R2_001_val_2.fq" ]; then
 echo "paired reads"
 
 bsmap \
--a trimmed/${ID}_R1_001_val_1.fq \
--b trimmed/${ID}_R2_001_val_2.fq \
+-a trimmed/${ID}_R1_001_val_1.fq.gz \
+-b trimmed/${ID}_R2_001_val_2.fq.gz \
 -d ${genome_reference} \
 -o bsmapped/${ID}.sam \
 -v 5 \
@@ -80,7 +80,7 @@ else
 echo "assuming single end"
 
 bsmap \
--a trimmed/${ID}_R1_*.fq \
+-a trimmed/${ID}_R1_*.fq.gz \
 -d ${genome_reference} \
 -o bsmapped/${ID}.sam \
 -v 5 \
