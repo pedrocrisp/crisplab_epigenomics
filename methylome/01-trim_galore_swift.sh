@@ -83,17 +83,25 @@ trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder
 gzip reads/${ID}_R1_001.fastq
 gzip reads/${ID}_R2_001.fastq
 
+elif [ -e "reads/${ID}_R1_001.fastq.gz" ]; then
+  # single end compressed
+  ########## Run #################
+  # for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
+  # Swift recommends symetrical trimming, so I trim from the R1 read too...
+
+  trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" --clip_R1 20 -o $trimmedfolder reads/${ID}_R1_001.fastq.gz
+
 else
-echo "assuming single end"
+echo "assuming single end uncompresed"
 
 #uncompress reads because trim_galore throws the error `gzip: stdout: Broken pipe` if I input .gz files
-gunzip reads/${ID}_R1_001.fastq.gz
+#gunzip reads/${ID}_R1_001.fastq.gz
 
 ########## Run #################
 # for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
 # Swift recommends symetrical trimming, so I trim from the R1 read too...
 
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" --clip_R1 20 --clip_R2 20 -o $trimmedfolder reads/${ID}_R1_001.fastq
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" --clip_R1 20 -o $trimmedfolder reads/${ID}_R1_001.fastq
 
 #compress original reads again
 gzip reads/${ID}_R1_001.fastq
