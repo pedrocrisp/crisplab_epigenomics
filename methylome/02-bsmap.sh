@@ -61,7 +61,7 @@ mkdir -p bsmapped
         # -q 20: trim to q20
 
 # check if single or paired end by looking for R2 file
-if [ -e "trimmed/${ID}_R2_001_val_2.fq" ]; then
+if [ -e "trimmed/${ID}_R2_001_val_2.fq.gz" ]; then
 
 echo "paired reads"
 
