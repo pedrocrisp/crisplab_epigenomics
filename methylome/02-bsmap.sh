@@ -80,7 +80,7 @@ else
 echo "assuming single end"
 
 bsmap \
--a trimmed/${ID}_R1_*.fq.gz \
+-a trimmed/${ID}_R1_001_trimmed.fq.gz \
 -d ${genome_reference} \
 -o bsmapped/${ID}.sam \
 -v 5 \
