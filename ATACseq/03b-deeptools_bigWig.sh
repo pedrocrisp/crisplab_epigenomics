@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #PBS -A UQ-SCI-SAFS
-#PBS -N bigWigs_tiles
+#PBS -N deeptools_tiles
 #PBS -r y
 #PBS -m abej
 #PBS -M p.crisp@uq.edu.au
