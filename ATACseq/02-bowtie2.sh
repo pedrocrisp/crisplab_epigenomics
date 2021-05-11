@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -A UQ-SCI-SAFS
-#PBS -N bowtie1
+#PBS -N bowtie2
 #PBS -r y
 #PBS -m abej
 #PBS -M p.crisp@uq.edu.au
@@ -88,7 +88,7 @@ fq_2="${reads_folder}/${ID}_R2*.fq"
 bowtie \
 -X 1000 \
 -m 1 \
--v $max_mismatches \
+-v 2 \
 --best \
 --strata \
 -p $bt1_threads \
@@ -104,7 +104,7 @@ echo "assuming single end"
 bowtie \
 -X 1000 \
 -m 1 \
--v $max_mismatches \
+-v 2 \
 --best \
 --strata \
 -p $bt1_threads \

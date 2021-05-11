@@ -3,20 +3,19 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt1_threads> <bt1_genome.fa> <walltime> <mem>"
+bash 02-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt2_threads> <bt2_genome.fa> <walltime> <mem>"
 
 #define stepo in the pipeline - should be the same name as the script
-step=02-bowtie1
+step=02-bowtie2
 
 ######### Setup ################
 sample_list=$1
 reads_folder=$2
 bt1_threads=$3
 bt1_genome=$4
-max_mismatches=$5
-walltime=$6
-mem=$7
-if [ "$#" -lt "7" ]
+walltime=$5
+mem=$6
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
@@ -71,5 +70,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},reads_folder=$reads_folder,bt1_threads=$bt1_threads,bt1_genome=$bt1_genome,max_mismatches=$max_mismatches \
+-v LIST=${sample_list},reads_folder=$reads_folder,bt1_threads=$bt1_threads,bt1_genome=$bt1_genome \
 $script_to_qsub
