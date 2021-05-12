@@ -33,7 +33,7 @@ echo working dir is now $PWD
 
 ########## Modules #################
 
-module load bowtie/1.1.2
+module load bowtie2/2.3.4.3
 module load samtools/1.9
 
 ########## Set up dirs #################
@@ -54,7 +54,7 @@ fastqs="$(find $reads_folder -type f -name ${ID}*.fq*)"
 fastqs_count=($fastqs)
 
 #make adaligned folder bowtie2 (caution this will not fail if dir already exists)
-outdir="${reads_folder}_align_bowtie1"
+outdir="${reads_folder}_align_bowtie2"
 mkdir -p ${outdir}
 
 # output structure
@@ -64,17 +64,33 @@ outbam="${outdir}/${ID}_sorted.bam"
 
 ########## Run #################
 
-# -X 1000 \ max insert
-# -m 1 \ only report unique mapping reads (max one valid alignment, exclude others)
-# -v 2 \ allow up to 2 mismatches *CONSIDER INCREASEING IF READS ARE LONGER*
-# --best \ bowtie guarantees the reported alignment(s) are the best in terms of the number of mismatches
-# –strata \ Specifying --strata in addition to -a and --best causes bowtie to report only those alignments in the best alignment stratum
-# -p $bt2_threads \ threads
-# -1 $fq_1 \ forward
-# -2 $fq_2 \ reverse
-# -t \ report timings
-# $bt1_genome \ index
-# -S "$outsam" out sam
+# For reads longer than about 50 bp Bowtie 2 is generally faster, more sensitive, and uses less memory than Bowtie 1.
+# For relatively short reads (e.g. less than 50 bp) Bowtie 1 is sometimes faster and/or more sensitive.
+
+# Bowtie 2 supports local alignment, which doesn't require reads to align end-to-end.
+# Local alignments might be "trimmed" ("soft clipped") at one or both extremes in a way that optimizes alignment score.
+# Bowtie 2 also supports end-to-end alignment which, like Bowtie 1, requires that the read align entirely.
+
+#-x bowtie index
+#--phred33
+#--end-to-end dont trim reads to enable alignment
+# --local allows soft clipping
+#--mm memory-mapped I/O to load index allow multiple processes to use index
+#-p number of threds to use
+#-U fastq file path, and specifies reads are not paired
+#-S file to write SAM alignemnts too (although default is stdout anyhow)
+#-D and -R tell bowtie to try a little harder than normal to find alignments
+#-L reduce substring length to 10 (default 22) as these are short reads
+#-i reduce substring interval? more sensitive?
+#-N max # mismatches in seed alignment; can be 0 or 1 (0)
+#-D give up extending after <int> failed extends in a row (15)
+# -k report N mapping locations
+# --score-min L,0,0 sets formular for min aln score for alignment to be reported, eg readlength 36 * -0.6 + -0.6) = min 0; this means only report exact matches
+# Bowtie 2 does not "find" alignments in any specific order,
+# so for reads that have more than N distinct, valid alignments,
+# Bowtie 2 does not guarantee that the N alignments reported are the best possible in terms of alignment score.
+# Still, this mode can be effective and fast in situations where the user cares more about whether a read aligns
+# (or aligns a certain number of times) than where exactly it originated.
 
 if (( "${#fastqs_count[@]}" == 2 )); then
 
@@ -85,40 +101,39 @@ echo "paired reads"
 fq_1="${reads_folder}/${ID}_R1*.fq"
 fq_2="${reads_folder}/${ID}_R2*.fq"
 
-bowtie \
--X 1000 \
--m 1 \
--v 2 \
---best \
---strata \
--p $bt1_threads \
--t \
-$bt1_genome \
--S \
+bowtie2 \
+-x $bt2_genome \
+--phred33 \
+--local \
+--very-sensitive-local \
+-X 2000 \
+-p $bt2_threads \
 -1 $fq_1 \
--2 $fq_2 > "$outsam"
+-2 $fq_2 \
+-S "$outsam"
 
 else
 echo "assuming single end"
 
-bowtie \
--X 1000 \
--m 1 \
--v 2 \
---best \
---strata \
--p $bt1_threads \
--t \
-$bt1_genome \
--S \
-$fastqs > "$outsam"
+bowtie2 \
+-x $bt2_genome \
+--phred33 \
+--local \
+--very-sensitive-local \
+-X 2000 \
+-p $bt2_threads \
+-U $fastqs \
+-S "$outsam"
 
 fi
 
 
 ###### sort and index
-# consider filtering: -q 10 is MAPQ >= 10; 1 in 10 chance mapping location is wrong for example
-samtools view -b -@ $bt1_threads $outsam | samtools sort -m 8G -@ $bt1_threads -o $outbam
+# In Bowtie2, a read that aligns to more than 1 site equally well is never given higher than a MAPQ of 1
+# (even if it aligns to only 2 sites equally well as discussed above).
+# use mapq 10?
+# if you want multialigning reads you will have lower this
+samtools view -q 10 -b -@ $bt1_threads $outsam | samtools sort -m 8G -@ $bt1_threads -o $outbam
 
 #Make an index of the sorted bam file
 samtools index ${outbam}

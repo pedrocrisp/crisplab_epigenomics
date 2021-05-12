@@ -11,8 +11,8 @@ step=02-bowtie2
 ######### Setup ################
 sample_list=$1
 reads_folder=$2
-bt1_threads=$3
-bt1_genome=$4
+bt2_threads=$3
+bt2_genome=$4
 walltime=$5
 mem=$6
 if [ "$#" -lt "6" ]
@@ -20,9 +20,9 @@ then
 echo $usage
 exit -1
 else
-echo "initiating bowtie jobs on $reads_folder folder, bowtie can use $bt1_threads threads"
+echo "initiating bowtie jobs on $reads_folder folder, bowtie can use $bt2_threads threads"
 cat $sample_list
-echo genome reference is $bt1_genome
+echo genome reference is $bt2_genome
 fi
 
 #number of samples
@@ -70,5 +70,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},reads_folder=$reads_folder,bt1_threads=$bt1_threads,bt1_genome=$bt1_genome \
+-v LIST=${sample_list},reads_folder=$reads_folder,bt2_threads=$bt2_threads,bt2_genome=$bt2_genome \
 $script_to_qsub
