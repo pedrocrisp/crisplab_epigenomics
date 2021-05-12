@@ -57,14 +57,14 @@ mkdir -p tiles
 # CPM_filter_UMRs=0.5
 
 # bedgraph
-bedtools genomecov -bg -ibam $bam_dir/${ID}_sorted.bam -g $chrom_sizes | sort -k1,1 -k2,2n - > bedgraphs/${ID}_sorted.bedgraph
+bedtools genomecov -bg -ibam $bam_dir/${ID}_sorted.bam -g $chrom_sizes | LC_COLLATE=C sort -k1,1 -k2,2n - > bedgraphs/${ID}_sorted.bedgraph
 # bigwig
 bedGraphToBigWig bedgraphs/${ID}_sorted.bedgraph $chrom_sizes bigWigs/${ID}.bw
 
 #### summarise coverage into 100bp tiles
 # 5' coverage only
 # the -a includes 0 counts, remove if not needed...
-bedtools genomecov -bga -5 -ibam $bam_dir/${ID}_sorted.bam -g $chrom_sizes | sort -k1,1 -k2,2n - > bedgraphs/${ID}_sorted_5prime.bedgraph
+bedtools genomecov -bga -5 -ibam $bam_dir/${ID}_sorted.bam -g $chrom_sizes | LC_COLLATE=C sort -k1,1 -k2,2n - > bedgraphs/${ID}_sorted_5prime.bedgraph
 
 # use closest to overlap with 100bp tile then summarise with groupby
 bedtools closest -t all -a bedgraphs/${ID}_sorted_5prime.bedgraph -b $reference_tile_file |
