@@ -127,6 +127,9 @@ bowtie2 \
 
 fi
 
+# count total alignments before after filtering
+echo "${ID} total alignments before MAPQ filter (might include reads that map to multiple locations)"
+samtools view -c ${outsam}
 
 ###### sort and index
 # In Bowtie2, a read that aligns to more than 1 site equally well is never given higher than a MAPQ of 1
