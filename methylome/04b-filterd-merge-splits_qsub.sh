@@ -12,7 +12,7 @@ yes \
 24:00:00 \
 chr1-4 \
 chr5-7 \
-40
+80
 "
 
 #define stepo in the pipeline - should be the same name as the script

@@ -133,10 +133,14 @@ fi
 # (even if it aligns to only 2 sites equally well as discussed above).
 # use mapq 10?
 # if you want multialigning reads you will have lower this
-samtools view -q 10 -b -@ $bt1_threads $outsam | samtools sort -m 8G -@ $bt1_threads -o $outbam
+samtools view -q 10 -b -@ $bt2_threads $outsam | samtools sort -m 8G -@ $bt2_threads -o $outbam
 
 #Make an index of the sorted bam file
 samtools index ${outbam}
+
+# count total reads after filtering
+echo "${ID} total alignments after MAPQ filter (should only include reads that map to one location)"
+samtools view -c $outbam
 
 #Delete the temporary sam.
 rm -v ${outsam}
