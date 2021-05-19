@@ -44,14 +44,14 @@ echo sample being mapped is $ID
 
 #make adaligned folder bsmaped
 cd analysis
-mkdir -p bigWigs_deeptools
+mkdir -p ${bam_dir}_bigWigs_deeptools
 
 ########## Run #################
 # make normalised bigWigs
 # ising --extendReads as suggested for contiguous mapping data like ChIP to map whole of PE frag
 bamCoverage \
 --bam $bam_dir/${ID}_sorted.bam \
--o bigWigs_deeptools/${ID}.bw \
+-o ${bam_dir}_bigWigs_deeptools/${ID}.bw \
 --binSize 10 \
 --normalizeUsing CPM \
 --extendReads \
