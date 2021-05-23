@@ -44,9 +44,8 @@ echo sample being mapped is $ID
 
 cd analysis
 
-# make sure you already created a folder called bsmapped_filtered_merge and copied the bams over
-# eg
-# rsync -rhivPt bsmapped_filtered/*pairs_clipOverlap.bam bsmapped_filtered_merge/
+# created a folder called bsmapped_filtered_merge
+mkdir -p bsmapped_filtered_merge
 
 if [ "$paired_end" == "yes" ]
 then
@@ -56,8 +55,8 @@ then
 # merge
 samtools merge \
 bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap.bam \
-bsmapped_filtered_merge/${ID}_${split_1_name}_sorted_MarkDup_pairs_clipOverlap.bam \
-bsmapped_filtered_merge/${ID}_${split_2_name}_sorted_MarkDup_pairs_clipOverlap.bam
+bsmapped_filtered/${ID}_${split_1_name}_sorted_MarkDup_pairs_clipOverlap.bam \
+bsmapped_filtered/${ID}_${split_2_name}_sorted_MarkDup_pairs_clipOverlap.bam
 
 # grab header for later
 samtools view -H bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap.bam > \
