@@ -60,7 +60,7 @@ bsmapped_filtered/${ID}_${split_2_name}_sorted_MarkDup_pairs_clipOverlap.bam
 
 # grab header for later
 samtools view -H bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap.bam > \
-bsmapped_filtered_merge/${ID}_${split_2_name}_header.sam
+bsmapped_filtered_merge/${ID}_header.sam
 
 # view to sam (can merge output a sam? - yes)
 samtools view bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap.bam \
@@ -94,7 +94,7 @@ bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap_NH.sam > \
 bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap_NH_unique.sam
 
 # Add header, sort compress
-cat bsmapped_filtered_merge/${ID}_${split_2_name}_header.sam \
+cat bsmapped_filtered_merge/${ID}_header.sam \
 bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap_NH_unique.sam | \
 samtools sort \
 -O bam \
