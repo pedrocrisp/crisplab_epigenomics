@@ -69,7 +69,7 @@ samtools view bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOver
 # Add NH flag
 # This took around 60Gb and an hour
 awk -v FS='\t' -v OFS='\t' 'NR == FNR {T[$1]++; next} {print $0, "NH:i:"T[$1]}' \
-bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap.sam
+bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap.sam \
 bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap.sam > \
 bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap_NH.sam
 
