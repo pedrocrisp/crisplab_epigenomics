@@ -103,8 +103,8 @@ samtools sort \
 -o bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap_NH_unique_sorted.bam
 
 # Put his file back in the bsmapped folder
-# Use original sample name and giv suffix consistent with the pipeline.
-mv -rv bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap_NH_unique_sorted.bam \
+# Use original sample name and give suffix consistent with the pipeline.
+mv -v bsmapped_filtered_merge/${ID}_merged_sorted_MarkDup_pairs_clipOverlap_NH_unique_sorted.bam \
 bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
 # once this completes successfully delete all bams/sams in the merge folder (or uncomment this)
