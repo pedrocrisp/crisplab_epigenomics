@@ -1,5 +1,4 @@
 #!/bin/bash
-#PBS -A UQ-SCI-SAFS
 #PBS -N filter
 #PBS -r y
 #PBS -m abej
@@ -31,6 +30,10 @@ echo changing to PBS_O_WORKDIR
 cd "$PBS_O_WORKDIR"
 echo working dir is now $PWD
 
+########## Variables ###############
+
+export RUN_PICARD="java -jar $PICARD_PATH"
+
 ########## Modules #################
 
 # requires java 1.8
@@ -59,12 +62,12 @@ then
 #mark duplicates
 #requires sorted input - using samtools sort in bsmap step (co-ordinate sorted)
 # if co-ordinate sorted then pairs where the mate is unmapped or has secondary alignment are not marked as duplicate
-# ASSUME_SORTED=true because sorting performed with samtools but samtools doesnt seem to add this flag to the headder
-java -jar /home/uqpcrisp/software/picard.jar NoDuplicates \
+# ASSUME_SORTED=true because sorting performed with samtools but samtools doesnt seem to add this flag to the header
+$RUN_PICARD MarkDuplicates \
 I=${reads_folder}/${ID}_sorted.bam \
-O=${reads_folder}_filtered/${ID}_sorted_NoDup.bam \
-METRICS_FILE=${reads_folder}_filtered/${ID}_NoDupMetrics.txt \
-ASSUME_SORTED=true \
+O=${reads_folder}_filtered/${ID}_NoDup.bam \
+M=${reads_folder}_filtered/${ID}_NoDupMetrics.txt \
+ASSUME_SORT_ORDER=coordinate \
 CREATE_INDEX=False \
 REMOVE_DUPLICATES=true
 
@@ -74,8 +77,8 @@ bamtools filter \
 -isMapped true \
 -isPaired true \
 -isProperPair true \
--in ${reads_folder}_filtered/${ID}_sorted_NoDup.bam \
--out ${reads_folder}_filtered/${ID}_sorted_NoDup_pairs.bam
+-in ${reads_folder}_filtered/${ID}_NoDup.bam \
+-out ${reads_folder}_filtered/${ID}_sorted_NoDup_ProPairs.bam
 
 #index bam
 # index
@@ -87,19 +90,19 @@ elif [ "$paired_end" == "no" ]
 then
 
 # remove duplicate
-java -jar /home/uqpcrisp/software/picard.jar NoDuplicates \
+$RUN_PICARD MarkDuplicates \
 I=${reads_folder}/${ID}_sorted.bam \
-O={reads_folder}_filtered/${ID}_sorted_NoDup.bam \
-METRICS_FILE={reads_folder}_filtered/${ID}_NoDupMetrics.txt \
-ASSUME_SORTED=true \
+O=${reads_folder}_filtered/${ID}_sorted_NoDup.bam \
+M=${reads_folder}_filtered/${ID}_NoDupMetrics.txt \
+ASSUME_SORT_ORDER=coordinate \
 CREATE_INDEX=False \
 REMOVE_DUPLICATES=true
 
 # rename to keep script naming convention consistent
-mv bsmapped_filtered/${ID}_sorted_NoDup.bam bsmapped_filtered/${ID}_sorted_NoDup_ProPairs.bam
+mv ${reads_folder}_filtered/${ID}_sorted_NoDup.bam ${reads_folder}_filtered/${ID}_sorted_NoDup_ProPairs.bam
 
 # index
-samtools index bsmapped_filtered/${ID}_sorted_NoDup_ProPairs.bam
+samtools index ${reads_folder}_filtered/${ID}_sorted_NoDup_ProPairs.bam
 
 echo "done filtering"
 
