@@ -31,7 +31,6 @@ cd "$PBS_O_WORKDIR"
 echo working dir is now $PWD
 
 ###### Modules ################
-# modules
 module load macs2
 
 ###### Set up directories #####
