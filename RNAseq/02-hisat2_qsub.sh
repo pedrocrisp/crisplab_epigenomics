@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-hisat2_qsub.sh <account_department> <sample_list.txt> <walltime> <memory> <threads> <aligner> <genome_index>"
+bash 02-hisat2_qsub.sh <account_department> <sample_list.txt> <walltime> <memory> <threads> <aligner> <genome_index> <strandedness>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=02-hisat2
@@ -16,8 +16,9 @@ mem=$4
 threads=$5
 aligner=$6
 index=$7
+strandedness=$8
 
-if [ "$#" -lt "7" ]
+if [ "$#" -lt "8" ]
 then
 echo $usage
 exit -1
@@ -66,6 +67,6 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=${threads},mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},index=$index,aligner=$aligner,threads=$threads \
+-v LIST=${sample_list},index=$index,aligner=$aligner,threads=$threads,strandedness=$strandedness \
 -A $account_department \
 $script_to_qsub
