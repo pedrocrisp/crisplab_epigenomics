@@ -41,7 +41,7 @@ cd analysis
 mkdir -p macs2
 
 ##### Errors ##################
-if ([ $paired_end != "yes" ] && [ $paired_end != "no" ])
+if [ $paired_end != "yes"  || $paired_end != "no" ]
 then
 
 echo "Library type not specified correctly."
