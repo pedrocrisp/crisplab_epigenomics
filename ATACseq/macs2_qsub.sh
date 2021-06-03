@@ -83,6 +83,34 @@ echo $PE_explain
 exit 0
 fi
 
+errors=0
+
+if [[ ! $sample_list ]]
+then
+errors=$(($errors + 1))
+echo "ERROR: No sample list"
+fi
+
+if [[ ! $account ]]
+then
+errors=$(($errors + 10))
+echo "ERROR: No account string"
+fi
+
+if [[ ! $reads_folder ]]
+then
+errors=$(($errors + 100))
+echo "ERROR: No reads folder"
+fi
+
+if [[ $errors -gt 0 ]]
+then
+echo "Proper usage:"
+echo
+Help
+exit $errors
+fi
+
 echo "Running MACS2"
 cat $sample_list
 
