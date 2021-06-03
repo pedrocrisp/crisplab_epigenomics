@@ -2,6 +2,8 @@
 #set -xe
 set -xeuo pipefail
 
+step=macs2
+
 ############ Change log ###########
 # 26 May 2021 Misha Mangila
 # Original code. Added help option
