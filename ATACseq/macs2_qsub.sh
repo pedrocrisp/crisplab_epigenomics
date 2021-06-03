@@ -83,16 +83,32 @@ echo $PE_explain
 exit 0
 fi
 
-if [[ "$1" == "$1" && "$2" == "$2" ]]
+errors=0
+
+if [[ ! $sample_list ]]
 then
+errors=$(($errors + 1))
+echo "ERROR: No sample list"
+fi
 
-echo "Error: sample list not found or is not a text file."
-echo "Error: No account string found."
+if [[ ! $account ]]
+then
+errors=$(($errors + 10))
+echo "ERROR: No account string"
+fi
 
-printf "\n\nFor proper usage:\n"
-printf $usage
+if [[ ! $reads_folder ]]
+then
+errors=$(($errors + 100))
+echo "ERROR: No reads folder"
+fi
 
-exit -1
+if [[ $errors -gt 0 ]]
+then
+echo "Proper usage:"
+echo
+Help
+exit $errors
 fi
 
 echo "Running MACS2"
