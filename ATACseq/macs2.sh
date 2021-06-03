@@ -41,7 +41,7 @@ cd analysis
 mkdir -p macs2
 
 ##### Errors ##################
-if [[ $paired_end != "yes" && $paired_end != "no" ]]
+if ([ $paired_end != "yes" ] && [ $paired_end != "no" ])
 then
 
 echo "Library type not specified correctly."
@@ -52,13 +52,13 @@ exit 1111
 
 fi
 
-if [ "$filter" == "yes" ]
+if ([ "$filter" == "yes" ])
 then
 input="-t ${reads_folder}_filtered/${ID}_sorted_NoDup_ProPairs.bam"
 control_input="-c ${reads_folder}_filtered/${control}_sorted_NoDup_ProPairs.bam"
 fi
 
-if [ "$filter" == "no"]
+if ([ "$filter" == "no"])
 then
 input="-t ${reads_folder}/${ID}_sorted.bam"
 control_input="-c ${reads_folder}/${control}_sorted.bam"
@@ -71,22 +71,22 @@ $input \
 --outdir analysis/macs2"
 
 
-if [ "$paired_end" == "yes" ]
+if ([ "$paired_end" == "yes" ])
 then
 macs2_cmd="$macs2_cmd -f BAMPE"
 fi
 
-if [ "$paired_end" == "no" ]
+if ([ "$paired_end" == "no" ])
 then
 macs2_cmd="$macs2_cmd -f BAM"
 fi
 
-if [ "$broad" == "yes" ]
+if ([ "$broad" == "yes" ])
 then
 macs2_cmd="$macs2_cmd --broad"
 fi
 
-if [ -n "$control" ]
+if ([ -n "$control" ])
 then
 macs2_="$macs2_cmd $control_input"
 fi
