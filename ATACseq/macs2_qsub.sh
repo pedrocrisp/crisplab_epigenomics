@@ -20,7 +20,7 @@ echo "This script submits a batch job to PBS in order to run MACS2 for peak call
 echo
 echo "USAGE:"
 echo "bash macs_qsub.sh -i sample_list.txt -r reads_folder -A department -m memory
--c number_of_nodes -t walltime -s genome_size -p paired_end [-B(road)]"
+-c number_of_cores -t walltime -s genome_size -p paired_end [-B(road)]"
 echo
 echo "For genome_size, input the effective genome size, either in scientific or dec
 imal notation."
@@ -38,7 +38,7 @@ echo "Add the tag -B to activate broad peak analysis and the tag -f if the sampl
 
 #### Defaults ######
 mem=20
-nodes=1
+cores=1
 walltime=2:00:00
 genome_size=hs
 paired_end=no
@@ -52,7 +52,7 @@ while getopts ":i:r:o:A:m:c:t:s:p:Bfh" option; do
       o) output=${OPTARG};;
       A) account=${OPTARG};;
       m) mem=${OPTARG};;
-      c) nodes=${OPTARG};;
+      c) cores=${OPTARG};;
       t) walltime=${OPTARG};;
       s) genome_size=${OPTARG};;
       p) paired_end=${OPTARG};;
@@ -140,7 +140,7 @@ cat $script_to_qsub > ${log_folder}/script.log
 cat $0 > ${log_folder}/qsub_runner.log
 
 qsub -J $qsub_t \
--l walltime=${walltime},nodes=1:ppn=${nodes},mem=${mem}gb \
+-l walltime=${walltime},nodes=1:ppn=${cores},mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
 -A ${account} \
