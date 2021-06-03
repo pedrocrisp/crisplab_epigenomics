@@ -56,7 +56,7 @@ while getopts ":i:r:o:A:m:c:t:s:p:Bfh" option; do
       t) walltime=${OPTARG};;
       s) genome_size=${OPTARG};;
       p) paired_end=${OPTARG};;
-      c) control=${OPTARG};;
+      C) control=${OPTARG};;
       B) broad=yes;;
       f) filter=yes;;
       h) # display Help
