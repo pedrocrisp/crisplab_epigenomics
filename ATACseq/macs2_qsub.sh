@@ -134,7 +134,8 @@ timestamp=$(date +%Y%m%d-%H%M%S)
 log_folder=logs/${timestamp}_${step}
 mkdir $log_folder
 
-script_to_qsub=~/scripts/${step}.sh
+scriptdir="$(dirname $(readlink -f $0))"
+script_to_qsub=~${scriptdir}/${step}.sh
 cat $script_to_qsub > ${log_folder}/script.log
 cat $0 > ${log_folder}/qsub_runner.log
 
