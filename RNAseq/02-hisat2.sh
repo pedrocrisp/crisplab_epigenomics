@@ -31,7 +31,8 @@ echo working dir is now $PWD
 
 ########## Modules #################
 
-module load samtools/1.10
+module load hisat2/2.1
+module load samtools/1.9
 
 ########## Set up dirs #################
 
