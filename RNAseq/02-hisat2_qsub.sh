@@ -3,20 +3,21 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-hisat2_qsub.sh <sample_list.txt> <walltime> <memory> <account_department> <genome_index> <aligner> <threads>"
+bash 02-hisat2_qsub.sh <account_department> <sample_list.txt> <walltime> <memory> <threads> <aligner> <genome_index>"
 
 #define stepo in the pipeline - should be the same name as the script
-step=02-subread
+step=02-hisat2
 
 ######### Setup ################
-sample_list=$1
-walltime=$2
-mem=$3
-account_department=$4
-index=$5
+account_department=$1
+sample_list=$2
+walltime=$3
+mem=$4
+threads=$5
 aligner=$6
-threads=$7
-if [ "$#" -lt "6" ]
+index=$7
+
+if [ "$#" -lt "7" ]
 then
 echo $usage
 exit -1
