@@ -73,7 +73,7 @@ hisat2 \
 --rna-strandness $strandedness \
 -x $index \
 -p $threads \
--1 fq1 -2 fq2 \
+-1 $fq1 -2 $fq2 \
 -S "$outsam"
 
 else
