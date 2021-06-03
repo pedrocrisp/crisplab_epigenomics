@@ -83,18 +83,6 @@ echo $PE_explain
 exit 0
 fi
 
-if [[ "$1" == "$1" && "$2" == "$2" ]]
-then
-
-echo "Error: sample list not found or is not a text file."
-echo "Error: No account string found."
-
-printf "\n\nFor proper usage:\n"
-printf $usage
-
-exit -1
-fi
-
 echo "Running MACS2"
 cat $sample_list
 
