@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 ############ Change log ###########
-# 26 May 2021 Misha Mangila 
+# 26 May 2021 Misha Mangila
 # Original code. Added help option
 #
 #
@@ -14,10 +14,10 @@ set -xeuo pipefail
 Help()
 {
 
-echo "This script submits a batch job to PBS in order to run MACS2 for peak calling before or after deduplication." 
+echo "This script submits a batch job to PBS in order to run MACS2 for peak calling before or after deduplication."
 echo
 echo "USAGE:"
-echo "bash macs_qsub.sh -i sample_list.txt -r reads_folder -A department -m memory 
+echo "bash macs_qsub.sh -i sample_list.txt -r reads_folder -A department -m memory
 -c number_of_nodes -t walltime -s genome_size -p paired_end [-B(road)]"
 echo
 echo "For genome_size, input the effective genome size, either in scientific or dec
@@ -128,7 +128,8 @@ echo "argument to be passed to qsub -J is '$qsub_t'"
 
 mkdir -p logs
 
-timestamp=logs/${timestamp}_${step}
+timestamp=$(date +%Y%m%d-%H%M%S)
+log_folder=logs/${timestamp}_${step}
 mkdir $log_folder
 
 script_to_qsub=~/scripts/${step}.sh
