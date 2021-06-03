@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02b-filter-dups_qsub.sh <sample_list.txt> <reads_folder> <paired_end> <walltime> <mem> <account_department>"
+bash 02b-filter-dups_qsub.sh <sample_list.txt> <reads_folder> <paired_end> <walltime> <mem> <account_department> <picard_path>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=02b-filter-dups
@@ -15,15 +15,15 @@ paired_end=$3
 walltime=$4
 mem=$5
 account_department=$6
+picard_path=$7
 
-if [ "$#" -lt "6" ]
+if [ "$#" -lt "7" ]
 then
 echo $usage
 exit -1
 else
 echo "initiating filtering"
 cat $sample_list
-echo genome reference is $bt2_genome
 fi
 
 #number of samples
@@ -68,9 +68,9 @@ cat $0 > ${log_folder}/qsub_runner.log
 #-o and -e pass the file locations for std out/error
 #-v additional variables to pass to the qsub script including the PBS_array list and the dir structures
 qsub -J $qsub_t \
--l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
+-l walltime=${walltime},nodes=1:ppn=16,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},reads_folder=$reads_folder,paired_end=$paired_end \
+-v LIST=${sample_list},reads_folder=$reads_folder,paired_end=$paired_end,PICARD_PATH=$picard_path \
 -A $account_department \
 $script_to_qsub

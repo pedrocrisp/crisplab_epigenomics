@@ -1,8 +1,7 @@
 #!/bin/bash
-#PBS -N bowtie2
+#PBS -N macs2
 #PBS -r y
 #PBS -m abej
-#PBS -M p.crisp@uq.edu.au
 
 ########## QC #################
 set -xeuo pipefail
@@ -41,6 +40,7 @@ echo sample being mapped is $ID
 cd analysis
 mkdir -p macs2
 
+##### Errors ##################
 if [[ $paired_end != "yes" && $paired_end != "no" ]]
 then
 
@@ -48,34 +48,50 @@ echo "Library type not specified correctly."
 echo "Please indicate:"
 echo "yes for PE"
 echo "no for SE"
-exit 1
+exit 1111
 
 fi
 
-if [ "$paired_end" == "yes" ]
+if [ "$filter" == "yes" ]
 then
+input="-t ${reads_folder}_filtered/${ID}_sorted_NoDup_ProPairs.bam"
+control_input="-c ${reads_folder}_filtered/${control}_sorted_NoDup_ProPairs.bam"
+fi
 
-macs2 callpeak \
--t ${reads_folder}/${ID}_sorted_NoDup.bam \
--f BAMPE \
+if [ "$filter" == "no"]
+then
+input="-t ${reads_folder}/${ID}_sorted.bam"
+control_input="-c ${reads_folder}/${control}_sorted.bam"
+fi
+
+macs2_cmd="macs2 callpeak \
+$input \
 -g $genome_size \
 -n ${ID}_test \
---broad \
---outdir $output
+--outdir analysis/macs2"
 
+
+if [ "$paired_end" == "yes" ]
+then
+macs2_cmd="$macs2_cmd -f BAMPE"
 fi
 
 if [ "$paired_end" == "no" ]
 then
-macs2 callpeak \
--t ${reads_folder}/${ID}_sorted_NoDup.bam \
--f BAM \
--g $genome_size \
--n ${ID}_macs2 \
---broad \
---outdir $output
-
+macs2_cmd="$macs2_cmd -f BAM"
 fi
+
+if [ "$broad" == "yes" ]
+then
+macs2_cmd="$macs2_cmd --broad"
+fi
+
+if [ -n "$control" ]
+then
+macs2_="$macs2_cmd $control_input"
+fi
+
+$macs2_cmd
 
 echo "MACS2 finished running"
 exit 0
