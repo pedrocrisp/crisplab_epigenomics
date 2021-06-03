@@ -45,7 +45,7 @@ paired_end=no
 broad=no
 filter=no
 
-while getopts ":i:r:o:A:m:c:t:s:p:Bfh" option; do
+while getopts ":i:r:o:A:m:c:t:s:p:C:Bfh" option; do
    case $option in
       i) sample_list=${OPTARG};;
       r) reads_folder=${OPTARG};;
