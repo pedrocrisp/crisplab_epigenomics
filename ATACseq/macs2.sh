@@ -58,7 +58,7 @@ input="-t ${reads_folder}_filtered/${ID}_sorted_NoDup_ProPairs.bam"
 control_input="-c ${reads_folder}_filtered/${control}_sorted_NoDup_ProPairs.bam"
 fi
 
-if [ "$filter" == "no"]
+if [ "$filter" == "no" ]
 then
 input="-t ${reads_folder}/${ID}_sorted.bam"
 control_input="-c ${reads_folder}/${control}_sorted.bam"
