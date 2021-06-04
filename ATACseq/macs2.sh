@@ -41,15 +41,15 @@ cd analysis
 mkdir -p macs2
 
 ##### Errors ##################
-if [ $paired_end != "yes"  || $paired_end != "no" ]
+if ([ $paired_end == "yes" ] || [ $paired_end == "no" ])
 then
-
+echo "Is paried end = " $paired_end
+else
 echo "Library type not specified correctly."
 echo "Please indicate:"
 echo "yes for PE"
 echo "no for SE"
 exit 1111
-
 fi
 
 if [ "$filter" == "yes" ]
