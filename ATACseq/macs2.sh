@@ -68,7 +68,7 @@ macs2_cmd="macs2 callpeak \
 $input \
 -g $genome_size \
 -n ${ID}_test \
---outdir analysis/macs2"
+--outdir macs2"
 
 
 if [ "$paired_end" == "yes" ]
