@@ -88,7 +88,7 @@ fi
 
 if [ -n "$control" ]
 then
-macs2_="$macs2_cmd $control_input"
+macs2_cmd="$macs2_cmd $control_input"
 fi
 
 $macs2_cmd
