@@ -51,7 +51,7 @@ mkdir -p $out_dir
 # deeptools to make coverage matrix
 # summarise 2kb either side of feature
 # -p 8 threds
-# skip regions with only zeros
+# dont skip regions with only zeros; removed: --skipZeros
 # treat missing data as zero
 
 # CG
@@ -61,7 +61,6 @@ computeMatrix scale-regions \
 -b 2000 -a 2000 \
 -p 2 \
 --regionBodyLength 300 \
---skipZeros \
 --sortRegions descend \
 -o ${out_dir}/${ID}.mat.gz \
 --outFileNameMatrix ${out_dir}/${ID}.mat_values.tab \

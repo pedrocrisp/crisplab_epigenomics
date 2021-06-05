@@ -4,6 +4,10 @@ set -xeuo pipefail
 
 usage="USAGE:
 bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <walltime> <memory> <bigWig folder> <out folder> <feature bed file>
+
+This script is designed for determining the WGBS coverage over regions of interest
+Where there is one reference region of interest dataset but multiple WGBS bigwigs
+Each WGBS bigwig should be a single context.
 "
 
 #define stepo in the pipeline - should be the same name as the script
