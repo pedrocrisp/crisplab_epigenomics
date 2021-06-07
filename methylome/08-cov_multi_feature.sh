@@ -56,7 +56,7 @@ mkdir -p $out_dir
 
 ########### CG  ############
 computeMatrix scale-regions \
--R ${region_dir}/${ID}_${suffix} \
+-R ${region_dir}/${ID}${suffix} \
 -S $CG_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
@@ -83,7 +83,7 @@ plotHeatmap \
 
 ########### CHG  ############
 computeMatrix scale-regions \
--R ${region_dir}/${ID}_${suffix} \
+-R ${region_dir}/${ID}${suffix} \
 -S $CHG_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
@@ -110,7 +110,7 @@ plotHeatmap \
 
 ########### CHH  ############
 computeMatrix scale-regions \
--R ${region_dir}/${ID}_${suffix} \
+-R ${region_dir}/${ID}${suffix} \
 -S $CHH_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
