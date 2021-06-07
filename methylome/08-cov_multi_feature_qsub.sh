@@ -81,5 +81,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},bigwig_dir=${region_dir},out_dir=${out_dir},suffix=${suffix},CG_bigWig=${CG_bigWig},CHG_bigWig=${CHG_bigWig},CHH_bigWig=${CHH_bigWig} \
+-v LIST=${sample_list},region_dir=${region_dir},out_dir=${out_dir},suffix=${suffix},CG_bigWig=${CG_bigWig},CHG_bigWig=${CHG_bigWig},CHH_bigWig=${CHH_bigWig} \
 $script_to_qsub
