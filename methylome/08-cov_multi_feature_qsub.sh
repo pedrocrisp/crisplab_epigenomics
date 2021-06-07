@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <walltime> <memory> <bigWig folder> <suffix> <out folder> <CG_bigWig> <CHG_bigWig> <CHH_bigWig>
+bash 08-cov_multi_feature_qsub.sh <sample_list.txt> <walltime> <memory> <region_dir> <suffix> <out folder> <CG_bigWig> <CHG_bigWig> <CHH_bigWig>
 
 This script is designed for determining the WGBS coverage over regions of interest
 Where there is one reference WGBS bigwigs dataset but multiple region of interest files (eg genotypes or conditions or digests)
@@ -17,7 +17,7 @@ step=08-cov_multi_feature
 sample_list=$1
 walltime=$2
 mem=$3
-bigwig_dir=$4
+region_dir=$4
 suffix=$5
 out_dir=$6
 CG_bigWig=$7
@@ -81,5 +81,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},bigwig_dir=${bigwig_dir},out_dir=${out_dir},suffix=${suffix},CG_bigWig=${CG_bigWig},CHG_bigWig=${CHG_bigWig},CHH_bigWig=${CHH_bigWig} \
+-v LIST=${sample_list},bigwig_dir=${region_dir},out_dir=${out_dir},suffix=${suffix},CG_bigWig=${CG_bigWig},CHG_bigWig=${CHG_bigWig},CHH_bigWig=${CHH_bigWig} \
 $script_to_qsub
