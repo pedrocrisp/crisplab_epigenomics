@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #PBS -A UQ-SCI-SAFS
-#PBS -N deeptools
+#PBS -N WGBS_levels
 #PBS -r y
 #PBS -m abej
 #PBS -M p.crisp@uq.edu.au
@@ -54,30 +54,84 @@ mkdir -p $out_dir
 # dont skip regions with only zeros; removed: --skipZeros
 # treat missing data as zero
 
-# CG
+########### CG  ############
 computeMatrix scale-regions \
--R $feature_bed \
--S ${bigwig_dir}/${ID}.bigWig \
+-R ${bigwig_dir}/${ID}_${suffix} \
+-S $CG_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
 --regionBodyLength 300 \
 --sortRegions descend \
--o ${out_dir}/${ID}.mat.gz \
---outFileNameMatrix ${out_dir}/${ID}.mat_values.tab \
---outFileSortedRegions ${out_dir}/${ID}.region_order.bed
+-o ${out_dir}/${ID}_CG.mat.gz \
+--outFileNameMatrix ${out_dir}/${ID}_CG.mat_values.tab \
+--outFileSortedRegions ${out_dir}/${ID}_CG.region_order.bed
 
 #plot
 plotProfile \
--m ${out_dir}/${ID}.mat.gz \
--out ${out_dir}/${ID}.mat_metaplot.png \
+-m ${out_dir}/${ID}_CG.mat.gz \
+-out ${out_dir}/${ID}_CG.mat_metaplot.png \
 --numPlotsPerRow 1 \
 --yMin 0 \
 --yMax 100
 
 # heatmap
 plotHeatmap \
--m ${out_dir}/${ID}.mat.gz \
--out ${out_dir}/${ID}.mat_heatmap.png \
+-m ${out_dir}/${ID}_CG.mat.gz \
+-out ${out_dir}/${ID}_CG.mat_heatmap.png \
+--zMin 0 \
+--zMax 100
+
+########### CHG  ############
+computeMatrix scale-regions \
+-R ${bigwig_dir}/${ID}_${suffix} \
+-S $CHG_bigWig \
+-b 2000 -a 2000 \
+-p 2 \
+--regionBodyLength 300 \
+--sortRegions descend \
+-o ${out_dir}/${ID}_CHG.mat.gz \
+--outFileNameMatrix ${out_dir}/${ID}_CHG.mat_values.tab \
+--outFileSortedRegions ${out_dir}/${ID}_CHG.region_order.bed
+
+#plot
+plotProfile \
+-m ${out_dir}/${ID}_CHG.mat.gz \
+-out ${out_dir}/${ID}_CHG.mat_metaplot.png \
+--numPlotsPerRow 1 \
+--yMin 0 \
+--yMax 100
+
+# heatmap
+plotHeatmap \
+-m ${out_dir}/${ID}_CHG.mat.gz \
+-out ${out_dir}/${ID}_CHG.mat_heatmap.png \
+--zMin 0 \
+--zMax 100
+
+########### CHH  ############
+computeMatrix scale-regions \
+-R ${bigwig_dir}/${ID}_${suffix} \
+-S $CHH_bigWig \
+-b 2000 -a 2000 \
+-p 2 \
+--regionBodyLength 300 \
+--sortRegions descend \
+-o ${out_dir}/${ID}_CHH.mat.gz \
+--outFileNameMatrix ${out_dir}/${ID}_CHH.mat_values.tab \
+--outFileSortedRegions ${out_dir}/${ID}_CHH.region_order.bed
+
+#plot
+plotProfile \
+-m ${out_dir}/${ID}_CHH.mat.gz \
+-out ${out_dir}/${ID}_CHH.mat_metaplot.png \
+--numPlotsPerRow 1 \
+--yMin 0 \
+--yMax 100
+
+# heatmap
+plotHeatmap \
+-m ${out_dir}/${ID}_CHH.mat.gz \
+-out ${out_dir}/${ID}_CHH.mat_heatmap.png \
 --zMin 0 \
 --zMax 100
 
