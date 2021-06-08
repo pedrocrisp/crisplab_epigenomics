@@ -52,7 +52,7 @@ mkdir -p $out_dir
 # summarise 2kb either side of feature
 # -p 8 threds
 # dont skip regions with only zeros; removed: --skipZeros
-# treat missing data as zero
+# dont treat missing data as zero
 
 ########### CG  ############
 computeMatrix scale-regions \
@@ -60,6 +60,7 @@ computeMatrix scale-regions \
 -S $CG_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
+--binSize 100 \
 --regionBodyLength 300 \
 --sortRegions descend \
 -o ${out_dir}/${ID}_CG.mat.gz \
@@ -87,6 +88,7 @@ computeMatrix scale-regions \
 -S $CHG_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
+--binSize 100 \
 --regionBodyLength 300 \
 --sortRegions descend \
 -o ${out_dir}/${ID}_CHG.mat.gz \
@@ -114,6 +116,7 @@ computeMatrix scale-regions \
 -S $CHH_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
+--binSize 100 \
 --regionBodyLength 300 \
 --sortRegions descend \
 -o ${out_dir}/${ID}_CHH.mat.gz \
