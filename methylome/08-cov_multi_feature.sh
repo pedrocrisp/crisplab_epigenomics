@@ -60,6 +60,7 @@ computeMatrix scale-regions \
 -S $CG_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
+-bs 100 \
 --regionBodyLength 300 \
 --sortRegions descend \
 -o ${out_dir}/${ID}_CG.mat.gz \
@@ -87,6 +88,7 @@ computeMatrix scale-regions \
 -S $CHG_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
+-bs 100 \
 --regionBodyLength 300 \
 --sortRegions descend \
 -o ${out_dir}/${ID}_CHG.mat.gz \
@@ -114,6 +116,7 @@ computeMatrix scale-regions \
 -S $CHH_bigWig \
 -b 2000 -a 2000 \
 -p 2 \
+-bs 100 \
 --regionBodyLength 300 \
 --sortRegions descend \
 -o ${out_dir}/${ID}_CHH.mat.gz \
