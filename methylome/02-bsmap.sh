@@ -71,7 +71,7 @@ bsmap \
 -d ${genome_reference} \
 -o bsmapped/${ID}.sam \
 -v 5 \
--r 1 \
+-r 0 \
 -p 8 \
 -q 20 \
 -A $adapter_seq
@@ -84,7 +84,7 @@ bsmap \
 -d ${genome_reference} \
 -o bsmapped/${ID}.sam \
 -v 5 \
--r 1 \
+-r 0 \
 -p 8 \
 -q 20 \
 -A $adapter_seq
