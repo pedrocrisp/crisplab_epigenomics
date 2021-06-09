@@ -133,9 +133,11 @@ mkdir -p ConversionRate
         awk -F$"\\t" "$awk_make_bed" \
         "BSMAPratio/${ID}_methratio.txt" > "BSMAPratio/${ID}_BSMAP_out.txt"
 
+        if [ "$make_subcontext" == "yes" ]
+        then
         awk -F$"\\t" "$awk_make_subcontext_bed" \
         "BSMAPratio/${ID}_methratio.txt" > "BSMAPratio/${ID}_BSMAP_out_subcontext.txt"
-
+        fi
         ########################
         #For genome browser
 
@@ -151,12 +153,15 @@ mkdir -p ConversionRate
         }
         '
 
+        if [ "$make_subcontext" == "yes" ]
+        then
         # split bedGraph by sub-contex
         # only difference in the output file suffix (so that we make CG files for context and sub-contex: sainty check - they should be the same)
         awk_make_bedGraph_subcontext='BEGIN {OFS = FS} (NR>1){
           print $1, $2, $3, $4 > "BSMAPratio/"ID"_BSMAP_out_subcontext_"$5".bedGraph"
         }
         '
+        fi
         #pipe bedGraph to split by context (use dash to read from sdtin)
         # per context
         awk -F$"\\t" "$awk_make_bedGraph" \
@@ -176,6 +181,8 @@ mkdir -p ConversionRate
         bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_CHH.bedGraph" ${chrom_sizes_file} \
         "BSMAPratio/${ID}_BSMAP_out_CHH.bigWig"
 
+        if [ "$make_subcontext" == "yes" ]
+        then
         #Make bigWigs per CHG sub context
         bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_subcontext_CG.bedGraph" ${chrom_sizes_file} \
         "BSMAPratio/${ID}_BSMAP_out_subcontext_CG.bigWig"
@@ -208,9 +215,12 @@ mkdir -p ConversionRate
         "BSMAPratio/${ID}_BSMAP_out_subcontext_CTC.bigWig"
         bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_subcontext_CTT.bedGraph" ${chrom_sizes_file} \
         "BSMAPratio/${ID}_BSMAP_out_subcontext_CTT.bigWig"
+        fi
 
         #remove bedGraph it is large and not really required
         # keep bigWigs
+
+        # keeing temporarily in case useful for metaplots? Does it have zeros?
         rm -rv BSMAPratio/${ID}*.bedGraph
 
         ########################

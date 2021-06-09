@@ -3,13 +3,16 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 05-summarise_methylation_qsub.sh <sample_list.txt> <genome.fa> <chromosome.sizes.file> <walltime> <memory>
+bash 05-summarise_methylation_qsub.sh <sample_list.txt> <genome.fa> <chromosome.sizes.file> <walltime> <memory> <make_subcontext>
 for example:
 bash \
 /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/05-summarise_methylation-WGBS_qsub.sh \
 single_sample.txt \
 /home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.fa \
-/home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.chrom.sizes
+/home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.chrom.sizes \
+12:00:00 \
+60 \
+no
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -21,7 +24,8 @@ genome_reference=$2
 chrom_sizes_file=$3
 walltime=$4
 mem=$5
-if [ "$#" -lt "5" ]
+make_subcontext=$6
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
@@ -79,5 +83,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file \
+-v LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,make_subcontext=$make_subcontext \
 $script_to_qsub
