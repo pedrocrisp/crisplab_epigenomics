@@ -1,5 +1,4 @@
 #!/bin/bash
-#PBS -A UQ-SCI-SAFS
 #PBS -N bowtie2
 #PBS -r y
 #PBS -m abej
