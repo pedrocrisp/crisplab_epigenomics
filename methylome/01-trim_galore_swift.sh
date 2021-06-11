@@ -1,5 +1,4 @@
 #!/bin/bash -l
-#PBS -A UQ-SCI-SAFS
 #PBS -N trim_galore_swift
 #PBS -r y
 #PBS -m abej

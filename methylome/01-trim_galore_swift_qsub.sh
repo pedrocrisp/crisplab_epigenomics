@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 01-trim_galore_qsub.sh <sample_list.txt> <walltime> <memory>"
+bash 01-trim_galore_qsub.sh <sample_list.txt> <walltime> <memory> <account_department>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=01-trim_galore_swift
@@ -61,4 +61,5 @@ qsub -J $qsub_t \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
 -v LIST=${sample_list} \
+-A $account_department \
 $script_to_qsub
