@@ -12,6 +12,7 @@ step=01-trim_galore_swift
 sample_list=$1
 walltime=$2
 mem=$3
+account_department=$4
 if [ "$#" -lt "3" ]
 then
 echo $usage
