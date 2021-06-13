@@ -79,6 +79,8 @@ plotProfile \
 plotHeatmap \
 -m ${out_dir}/${ID}_CG.mat.gz \
 -out ${out_dir}/${ID}_CG.mat_heatmap.png \
+--interpolationMethod nearest \
+--dpi 1200 \
 --zMin 0 \
 --zMax 100
 
@@ -107,6 +109,8 @@ plotProfile \
 plotHeatmap \
 -m ${out_dir}/${ID}_CHG.mat.gz \
 -out ${out_dir}/${ID}_CHG.mat_heatmap.png \
+--interpolationMethod nearest \
+--dpi 1200 \
 --zMin 0 \
 --zMax 100
 
@@ -135,6 +139,8 @@ plotProfile \
 plotHeatmap \
 -m ${out_dir}/${ID}_CHH.mat.gz \
 -out ${out_dir}/${ID}_CHH.mat_heatmap.png \
+--interpolationMethod nearest \
+--dpi 1200 \
 --zMin 0 \
 --zMax 100
 
