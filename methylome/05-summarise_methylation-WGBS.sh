@@ -162,16 +162,20 @@ mkdir -p ConversionRate
         }
         '
         fi
+        
         #pipe bedGraph to split by context (use dash to read from sdtin)
         # per context
         awk -F$"\\t" "$awk_make_bedGraph" \
         "BSMAPratio/${ID}_BSMAP_out.txt" | \
         awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" -
 
+        if [ "$make_subcontext" == "yes" ]
+        then
         # per sub-context
         awk -F$"\\t" "$awk_make_bedGraph" \
         "BSMAPratio/${ID}_BSMAP_out_subcontext.txt" | \
         awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_subcontext" -
+        fi
 
         #Make bigWigs per context
         bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_CG.bedGraph" ${chrom_sizes_file} \
