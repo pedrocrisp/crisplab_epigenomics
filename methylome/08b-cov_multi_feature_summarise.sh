@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #PBS -A UQ-SCI-SAFS
-#PBS -N deeptools_sum
+#PBS -N sum_WGBS-olpas
 #PBS -r y
 #PBS -m abej
 #PBS -M p.crisp@uq.edu.au
@@ -48,7 +48,7 @@ mkdir -p $out_dir
 ########## Run #################
 
 # Run R module to creat 100bp tile bed file
-R -f ~/gitrepos/crisplab_epigenomics/methylome/08b-cov_feature_summarise.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome/08b-cov_multi_feature_summarise.R \
 --args $ID $out_dir
 
 echo finished summarising
