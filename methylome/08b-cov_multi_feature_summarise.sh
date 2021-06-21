@@ -1,7 +1,9 @@
-#!/bin/bash
-#PBS -N 03-featureCounts
+#!/bin/bash -l
+#PBS -A UQ-SCI-SAFS
+#PBS -N deeptools_sum
 #PBS -r y
 #PBS -m abej
+#PBS -M p.crisp@uq.edu.au
 
 ########## QC #################
 set -xeuo pipefail
@@ -30,43 +32,23 @@ cd "$PBS_O_WORKDIR"
 echo working dir is now $PWD
 
 ########## Modules #################
-
-
+module load R/3.5.0-gnu
 ########## Set up dirs #################
 
 #get job ID
-#use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAYID} eg 2 from {list}
+#use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAY_INDEX} eg 2 from {list}
 ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
-outdir=analysis/${alignFolder}_featureCounts
-mkdir -p ${outdir}
+echo sample being mapped is $ID
 
-# check if single or paired end by looking for R2 file
-if ([ ${format} == "SE" ])
-then
-echo single reads
-featureCounts \
--F SAF \
--s $strand \
--a $reference \
--T 6 \
--o "$outdir/${ID}.counts" \
-"${alignFolder}/${ID}.bam"
-elif ([ ${format} == "PE" ])
-then
-echo paired reads
-featureCounts \
--F SAF \
--p \
--C \
--s $strand \
--a $reference \
--T 6 \
--o "$outdir/${ID}.counts" \
-"${alignFolder}/${ID}.bam"
-else
-echo "ERROR: PE or SE not specified"
-exit 1
-fi
+#make adaligned folder bsmaped
+cd analysis
+mkdir -p $out_dir
 
-echo Done summarising
+########## Run #################
+
+# Run R module to creat 100bp tile bed file
+R -f ~/gitrepos/crisplab_epigenomics/methylome/08b-cov_feature_summarise.R \
+--args $ID $out_dir
+
+echo finished summarising
