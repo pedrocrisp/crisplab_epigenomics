@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt2_threads> <bt2_genome.fa> <walltime> <mem>"
+bash 02-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt2_threads> <bt2_genome.fa> <walltime> <mem> <account_department>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=02-bowtie2
@@ -15,8 +15,9 @@ bt2_threads=$3
 bt2_genome=$4
 walltime=$5
 mem=$6
+account_department=$7
 
-if [ "$#" -lt "6" ]
+if [ "$#" -lt "7" ]
 then
 echo $usage
 exit -1
