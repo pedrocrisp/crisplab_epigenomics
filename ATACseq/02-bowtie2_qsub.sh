@@ -15,6 +15,7 @@ bt2_threads=$3
 bt2_genome=$4
 walltime=$5
 mem=$6
+
 if [ "$#" -lt "6" ]
 then
 echo $usage
@@ -71,4 +72,5 @@ qsub -J $qsub_t \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
 -v LIST=${sample_list},reads_folder=$reads_folder,bt2_threads=$bt2_threads,bt2_genome=$bt2_genome \
+-A $account_department \
 $script_to_qsub
