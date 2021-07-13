@@ -44,7 +44,11 @@ echo sample being mapped is $ID
 
 outdir=analysis/${aligner}
 mkdir -p ${outdir}
-outsam="${outdir}/${ID}.sam"
+
+outdir_tmp=${TMPDIR}/${aligner}
+mkdir -p ${outdir_tmp}
+
+outsam="${TMPDIR}/${outdir}/${ID}.sam"
 outbam="${outdir}/${ID}.bam"
 fastqcfolder=analysis/trimmed
 
