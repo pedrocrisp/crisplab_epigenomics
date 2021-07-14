@@ -48,7 +48,7 @@ mkdir -p ${outdir}
 outdir_tmp=${TMPDIR}/${aligner}
 mkdir -p ${outdir_tmp}
 
-outsam="${TMPDIR}/${outdir}/${ID}.sam"
+outsam="${outdir_tmp}/${ID}.sam"
 outbam="${outdir}/${ID}.bam"
 fastqcfolder=analysis/trimmed
 
