@@ -41,7 +41,11 @@ ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
 outdir=analysis/${aligner}
 mkdir -p ${outdir}
-outsam="${outdir}/${ID}.sam"
+
+outdir_tmp=${TMPDIR}/${aligner}
+mkdir -p ${outdir_tmp}
+
+outsam="${outdir_tmp}/${ID}.sam"
 outbam="${outdir}/${ID}.bam"
 fastqcfolder=analysis/trimmed
 
