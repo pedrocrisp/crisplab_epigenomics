@@ -25,13 +25,14 @@ library(purrr)
 # disable scientific notation
 old.scipen <- getOption("scipen")
 options(scipen=999)
+
+dir.create(showWarnings = F, out_folder)
 ###########################
 
 # args debugging
 # sample = "Sb_mc_01"
 # data_folder = "tiles_filtered_4C_5x"
 # out_folder = "tiles_filtered_4C_5x_tileMeans"
-# dir.create(showWarnings = F, out_folder)
 
 ###### CG ######
 context = "CG"
