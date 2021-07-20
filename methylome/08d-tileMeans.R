@@ -15,8 +15,6 @@ data_folder <- args[2]
 data_folder
 out_folder <- args[3]
 out_folder
-out_folder <- args[4]
-out_folder
 
 ###########################
 #setup
