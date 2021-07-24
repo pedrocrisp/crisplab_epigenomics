@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-bsmap_qsub.sh <sample_list.txt> <genome.fa> <adapter_seq> <walltime> <memory>"
+bash 02-bsmap_qsub.sh <sample_list.txt> <genome.fa> <adapter_seq> <walltime> <memory> <threads>"
 
 #define step in the pipeline - should be the same name as the script
 step=02-bsmap
@@ -14,7 +14,8 @@ genome_reference=$2
 adapter_seq=$3
 walltime=$4
 mem=$5
-if [ "$#" -lt "5" ]
+cores=$6
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
@@ -72,5 +73,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=8,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},genome_reference=$genome_reference,adapter_seq=$adapter_seq \
+-v LIST=${sample_list},genome_reference=$genome_reference,adapter_seq=$adapter_seq,cores=$cores \
 $script_to_qsub

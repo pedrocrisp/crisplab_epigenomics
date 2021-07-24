@@ -72,7 +72,7 @@ bsmap \
 -o bsmapped/${ID}.sam \
 -v 5 \
 -r 0 \
--p 8 \
+-p $cores \
 -q 20 \
 -A $adapter_seq
 
@@ -85,7 +85,7 @@ bsmap \
 -o bsmapped/${ID}.sam \
 -v 5 \
 -r 0 \
--p 8 \
+-p $cores \
 -q 20 \
 -A $adapter_seq
 
