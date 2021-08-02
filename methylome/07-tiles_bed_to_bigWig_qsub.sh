@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 07-summarise_methylation_qsub.sh <sample_list.txt> <chrom.sizes file> <reference_tile_file> <walltime> <memory>
+bash 07-summarise_methylation_qsub.sh <sample_list.txt> <chrom.sizes file> <reference_tile_file> <walltime> <memory> <cores>
 for example:
 bash \
 /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/07-tiles_bed_to_bigWig_qsub.sh \
@@ -21,6 +21,7 @@ chrom_sizes=$2
 reference_tile_file=$3
 walltime=$4
 mem=$5
+cores=$6
 
 if [ "$#" -lt "3" ]
 then
@@ -76,7 +77,7 @@ cat $0 > ${log_folder}/qsub_runner.log
 #-o and -e pass the file locations for std out/error
 #-v additional variables to pass to the qsub script including the PBS_array list and the dir structures
 qsub -J $qsub_t \
--l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
+-l walltime=${walltime},nodes=1:ppn=${cores},mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
 -v LIST=${sample_list},chrom_sizes=${chrom_sizes},reference_tile_file=${reference_tile_file} \
