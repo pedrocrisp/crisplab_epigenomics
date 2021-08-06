@@ -28,7 +28,7 @@ MR_percent=$6
 UMR_percent=$7
 walltime=$8
 mem=$9
-cores=$10
+cores=${10}
 
 if [ "$#" -lt "10" ]
 then
