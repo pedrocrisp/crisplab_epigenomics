@@ -12,7 +12,7 @@ usage="USAGE:
 <site_filter_min>
 <MR_percent>
 <UMR_percent>
-<walltime> <memory>
+<walltime> <memory> <cores>
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -28,8 +28,9 @@ MR_percent=$6
 UMR_percent=$7
 walltime=$8
 mem=$9
+cores=$10
 
-if [ "$#" -lt "9" ]
+if [ "$#" -lt "10" ]
 then
 echo $usage
 exit -1
@@ -83,7 +84,7 @@ cat $0 > ${log_folder}/qsub_runner.log
 #-o and -e pass the file locations for std out/error
 #-v additional variables to pass to the qsub script including the PBS_array list and the dir structures
 qsub -J $qsub_t \
--l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
+-l walltime=${walltime},nodes=1:ppn=${cores},mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
 -v LIST=${sample_list},reference_100bp_tiles=$reference_100bp_tiles,chrom_sizes_path=$chrom_sizes_path,coverage_filter_min=$coverage_filter_min,site_filter_min=$site_filter_min,MR_percent=$MR_percent,UMR_percent=$UMR_percent \
