@@ -70,7 +70,7 @@ then
 rm -rv reads
 
 #removed trimmed fastq files
-rm -rv analysis/trimmed/*.fq
+rm -rv analysis/trimmed/*.fq.gz
 
 # remove initial mapping files
 # note these could be useful for looking at capture efficiency and distribution before filtering reads
