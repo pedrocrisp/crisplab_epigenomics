@@ -40,7 +40,7 @@ module load bedtools/2.25.0
 ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
 
 sample=$ID
-sample_dir=$alignFolder
+sample_dir=analysis/${alignFolder}
 
 outdir=analysis/bigWig_intermediate_${alignFolder}
 mkdir -p ${outdir}
@@ -56,22 +56,22 @@ then
 #http://seqanswers.com/forums/showthread.php?t=29399
 
 #R1 forward strand
-samtools view -f 99 -b $sample_dir/$sample.bam > $sample_dir/${sample}.R1F.bam
+samtools view -f 99 -b $sample_dir/$sample.bam > ${outdir}/${sample}.R1F.bam
 
 #R2 reverse strand
-samtools view -f 147 -b $sample_dir/$sample.bam > $sample_dir/${sample}.R2R.bam
+samtools view -f 147 -b $sample_dir/$sample.bam > ${outdir}/${sample}.R2R.bam
 
-samtools merge -f $sample_dir/${sample}.forward.bam $sample_dir/${sample}.R1F.bam $sample_dir/${sample}.R2R.bam
+samtools merge -f ${outdir}/${sample}.forward.bam ${outdir}/${sample}.R1F.bam ${outdir}/${sample}.R2R.bam
 
 #R1 reverse strand
-samtools view -f 83 -b $sample_dir/$sample.bam > $sample_dir/${sample}.R1R.bam
+samtools view -f 83 -b $sample_dir/$sample.bam > ${outdir}/${sample}.R1R.bam
 
 #R2 forward strand
-samtools view -f 163 -b $sample_dir/$sample.bam > $sample_dir/${sample}.R2F.bam
+samtools view -f 163 -b ${outdir}/$sample.bam > ${outdir}/${sample}.R2F.bam
 
-samtools merge -f $sample_dir/${sample}.reverse.bam $sample_dir/${sample}.R1R.bam $sample_dir/${sample}.R2F.bam
+samtools merge -f ${outdir}/${sample}.reverse.bam ${outdir}/${sample}.R1R.bam ${outdir}/${sample}.R2F.bam
 
-rm $sample_dir/${sample}*.R*.bam
+rm ${outdir}/${sample}*.R*.bam
 
 ####################
 
@@ -81,15 +81,15 @@ bedtools genomecov -bga -split -ibam $sample_dir/$sample.bam -g $chrc_sizes > $o
 
 #stranded bedgraphs - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -bga -split -scale -1 -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
+bedtools genomecov -bga -split -scale -1 -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
 #minus strand reads bedgraph
-bedtools genomecov -bga -split -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
+bedtools genomecov -bga -split -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
 
 #stranded bedgraphs with splicing and nt resolution - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -d -split -scale -1 -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
+bedtools genomecov -d -split -scale -1 -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
 #minus strand reads bedgraph
-bedtools genomecov -d -split -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
+bedtools genomecov -d -split -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
 
 #make tdf - never use it... comment out
 #echo "bedgraph to binary tiled data (.tdf) file"
@@ -114,22 +114,22 @@ then
 #http://seqanswers.com/forums/showthread.php?t=29399
 
 #R1 forward strand
-samtools view -f 99 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.R1F.bam
+samtools view -f 99 -b $sample_dir/$sample.bam   > ${outdir}/${sample}.R1F.bam
 
 #R2 reverse strand
-samtools view -f 147 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.R2R.bam
+samtools view -f 147 -b $sample_dir/$sample.bam   > ${outdir}/${sample}.R2R.bam
 
-samtools merge -f $sample_dir/${sample}.forward.bam $sample_dir/${sample}.R1F.bam $sample_dir/${sample}.R2R.bam
+samtools merge -f ${outdir}/${sample}.forward.bam ${outdir}/${sample}.R1F.bam ${outdir}/${sample}.R2R.bam
 
 #R1 reverse strand
-samtools view -f 83 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.R1R.bam
+samtools view -f 83 -b $sample_dir/$sample.bam   > ${outdir}/${sample}.R1R.bam
 
 #R2 forward strand
-samtools view -f 163 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.R2F.bam
+samtools view -f 163 -b $sample_dir/$sample.bam   > ${outdir}/${sample}.R2F.bam
 
-samtools merge -f $sample_dir/${sample}.reverse.bam $sample_dir/${sample}.R1R.bam $sample_dir/${sample}.R2F.bam
+samtools merge -f ${outdir}/${sample}.reverse.bam ${outdir}/${sample}.R1R.bam ${outdir}/${sample}.R2F.bam
 
-rm $sample_dir/${sample}*.R*.bam
+rm ${outdir}/${sample}*.R*.bam
 
 ####################
 
@@ -139,15 +139,15 @@ bedtools genomecov -bga -split -ibam $sample_dir/$sample.bam -g $chrc_sizes > $o
 
 #stranded bedgraphs - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -bga -split -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
+bedtools genomecov -bga -split -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
 #minus strand reads bedgraph
-bedtools genomecov -bga -split -scale -1 -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
+bedtools genomecov -bga -split -scale -1 -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
 
 #stranded bedgraphs with splicing and nt resolution - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -d -split -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
+bedtools genomecov -d -split -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
 #minus strand reads bedgraph
-bedtools genomecov -d -split -scale -1 -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
+bedtools genomecov -d -split -scale -1 -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
 
 #make tdf - never use it... comment out
 #echo "bedgraph to binary tiled data (.tdf) file"
@@ -169,10 +169,10 @@ then
 
 #R1 forward strand -f 0 does not work, all reads retained... "samtools view -f 0 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.forward.bam"
 #not 100% sure we want everything that is NOT unmapped or reserse mapped, not sure what else coudl be included... of well
-samtools view -F 4 -b $sample_dir/$sample.bam | samtools view -F 16 -b - > $sample_dir/${sample}.forward.bam
+samtools view -F 4 -b $sample_dir/$sample.bam | samtools view -F 16 -b - > ${outdir}/${sample}.forward.bam
 
 #R1 reverse strand
-samtools view -f 16 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.reverse.bam
+samtools view -f 16 -b $sample_dir/$sample.bam   > ${outdir}/${sample}.reverse.bam
 
 ####################
 
@@ -184,19 +184,19 @@ bedSort $outdir/${sample}.bedgraph $outdir/${sample}.bedgraph
 
 #stranded bedgraphs - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -bga -split -scale -1 -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
+bedtools genomecov -bga -split -scale -1 -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
 # sort
 bedSort $outdir/${sample}.minus.bg $outdir/${sample}.minus.bg
 #minus strand reads bedgraph
-bedtools genomecov -bga -split -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
+bedtools genomecov -bga -split -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
 # sort
 bedSort $outdir/${sample}.plus.bg $outdir/${sample}.plus.bg
 
 #stranded bedgraphs with splicing and nt resolution - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -d -split -scale -1 -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
+bedtools genomecov -d -split -scale -1 -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
 #minus strand reads bedgraph
-bedtools genomecov -d -split -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
+bedtools genomecov -d -split -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
 
 #commented out becasue of issue on MSI, dont use these files anyway
 #make tdf
@@ -223,10 +223,10 @@ then
 
 #R1 forward strand -f 0 does not work, all reads retained... "samtools view -f 0 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.forward.bam"
 #not 100% sure we want everything that is NOT unmapped or reserse mapped, not sure what else coudl be included... of well
-samtools view -F 4 -b $sample_dir/$sample.bam | samtools view -F 16 -b - > $sample_dir/${sample}.forward.bam
+samtools view -F 4 -b $sample_dir/$sample.bam | samtools view -F 16 -b - > ${outdir}/${sample}.forward.bam
 
 #R1 reverse strand
-samtools view -f 16 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.reverse.bam
+samtools view -f 16 -b $sample_dir/$sample.bam   > ${outdir}/${sample}.reverse.bam
 
 ####################
 
@@ -238,19 +238,19 @@ bedSort $outdir/${sample}.bedgraph $outdir/${sample}.bedgraph
 
 #stranded bedgraphs - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -bga -split -scale -1 -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
+bedtools genomecov -bga -split -scale -1 -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
 # sort
 bedSort $outdir/${sample}.minus.bg $outdir/${sample}.minus.bg
 #minus strand reads bedgraph
-bedtools genomecov -bga -split -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
+bedtools genomecov -bga -split -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
 # sort
 bedSort $outdir/${sample}.plus.bg $outdir/${sample}.plus.bg
 
 #stranded bedgraphs with splicing and nt resolution - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -d -split -scale -1 -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
+bedtools genomecov -d -split -scale -1 -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
 #minus strand reads bedgraph
-bedtools genomecov -d -split -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
+bedtools genomecov -d -split -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
 
 #commented out becasue of issue on MSI, dont use these files anyway
 #make tdf
@@ -267,17 +267,17 @@ bedGraphToBigWig $outdir/${sample}.minus.bg $chrc_sizes $bigWigs_outdir/$sample.
 ### 5' analysis
 ### Note consider adding this to other sections, alternatively leaving it here will probably mean it only gets run for PARE data (single end stranded)
 #stranded bedgraphs coverage of 5' position only
-bedtools genomecov -5 -d -scale -1 -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus5.bed
+bedtools genomecov -5 -d -scale -1 -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus5.bed
 #minus strand reads bedgraph
-bedtools genomecov -5 -d -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus5.bed
+bedtools genomecov -5 -d -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus5.bed
 
 #stranded bedgraphs - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -5 -bga -scale -1 -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus5.bg
+bedtools genomecov -5 -bga -scale -1 -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.minus5.bg
 # sort
 bedSort $outdir/${sample}.minus5.bg $outdir/${sample}.minus5.bg
 #minus strand reads bedgraph
-bedtools genomecov -5 -bga -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus5.bg
+bedtools genomecov -5 -bga -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.plus5.bg
 # sort
 bedSort $outdir/${sample}.plus5.bg $outdir/${sample}.plus5.bg
 
@@ -292,10 +292,10 @@ then
 
 #R1 forward strand -f 0 does not work, all reads retained... "samtools view -f 0 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.forward.bam"
 #not 100% sure we want everything that is NOT unmapped or reserse mapped, not sure what else coudl be included... of well
-samtools view -F 4 -b $sample_dir/$sample.bam | samtools view -F 16 -b - > $sample_dir/${sample}.forward.bam
+samtools view -F 4 -b $sample_dir/$sample.bam | samtools view -F 16 -b - > ${outdir}/${sample}.forward.bam
 
 #R1 reverse strand
-samtools view -f 16 -b $sample_dir/$sample.bam   > $sample_dir/${sample}.reverse.bam
+samtools view -f 16 -b $sample_dir/$sample.bam   > ${outdir}/${sample}.reverse.bam
 
 ####################
 
@@ -305,15 +305,15 @@ bedtools genomecov -bga -split -ibam $sample_dir/$sample.bam -g $chrc_sizes > $o
 
 #stranded bedgraphs - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -bga -split -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
+bedtools genomecov -bga -split -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.plus.bg
 #minus strand reads bedgraph
-bedtools genomecov -bga -split -scale -1 -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
+bedtools genomecov -bga -split -scale -1 -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.minus.bg
 
 #stranded bedgraphs with splicing and nt resolution - not using the '-strand +' flag because accounting for PE reads
 #plus strand reads bedgraph
-bedtools genomecov -d -split -ibam $sample_dir/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
+bedtools genomecov -d -split -ibam ${outdir}/${sample}.reverse.bam -g $chrc_sizes > $outdir/${sample}.plus.bed
 #minus strand reads bedgraph
-bedtools genomecov -d -split -scale -1 -ibam $sample_dir/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
+bedtools genomecov -d -split -scale -1 -ibam ${outdir}/${sample}.forward.bam -g $chrc_sizes > $outdir/${sample}.minus.bed
 
 #make tdf - never use it... comment out
 #echo "bedgraph to binary tiled data (.tdf) file"
