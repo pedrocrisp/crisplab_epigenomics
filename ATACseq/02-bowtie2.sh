@@ -97,8 +97,8 @@ echo "paired reads"
 
 # this is assume there is only one fq per sample - in R1 and R2 format for PE
 # also assumes the suffix in "fq"
-fq_1="${reads_folder}/${ID}_R1*.fq"
-fq_2="${reads_folder}/${ID}_R2*.fq"
+fq_1="${reads_folder}/${ID}_R1*.fq.gz"
+fq_2="${reads_folder}/${ID}_R2*.fq.gz"
 
 bowtie2 \
 -x $bt2_genome \
