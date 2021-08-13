@@ -67,7 +67,7 @@ samtools merge -f ${outdir}/${sample}.forward.bam ${outdir}/${sample}.R1F.bam ${
 samtools view -f 83 -b $sample_dir/$sample.bam > ${outdir}/${sample}.R1R.bam
 
 #R2 forward strand
-samtools view -f 163 -b ${outdir}/$sample.bam > ${outdir}/${sample}.R2F.bam
+samtools view -f 163 -b ${sample_dir}/$sample.bam > ${outdir}/${sample}.R2F.bam
 
 samtools merge -f ${outdir}/${sample}.reverse.bam ${outdir}/${sample}.R1R.bam ${outdir}/${sample}.R2F.bam
 
