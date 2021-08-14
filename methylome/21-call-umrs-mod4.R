@@ -228,6 +228,6 @@ write.table(ND_between_UMTs_summary, paste0(out_dir, "/", sample_to_crunch, "_ND
 write.table(ND_between_UMTs, paste0(out_dir_beds, "/", sample_to_crunch, "_NDs_between_UMTs_pct_filtered.bed"), sep = "\t", quote = F, row.names = F, col.names = F)
 
 ND_between_UMTs_4col <- ND_between_UMTs %>%
-select(chr, start, end, domain)
+select(chr, start, end, name)
 
 write.table(ND_between_UMTs_4col, paste0(out_dir_beds, "/", sample_to_crunch, "_NDs_between_UMTs_pct_filtered_4col.bed"), sep = "\t", quote = F, row.names = F, col.names = F)
