@@ -390,4 +390,4 @@ write.table(NDs_data, paste0(out_dir_beds,"/", sample_to_crunch, "_mC_domains",
                                    "_cov_",coverage_filter_min,
                                    "_sites_",site_filter_min,
                                    "_MR_",MR_percent,
-                                   "_UMR_",tiles_with_data,".bed"), sep = "\t", quote = F, row.names = F, col.names = F)
+                                   "_UMR_","tiles_with_data",".bed"), sep = "\t", quote = F, row.names = F, col.names = F)
