@@ -28,9 +28,9 @@ UMR_percent <- args[8]
 #site_filter_min = 2
 #MR_percent = 0.4
 #UMR_percent = 0.1
-#annotation_suffix = paste0("_mC_domains_II", 
-#                           "_cov_",coverage_filter_min, 
-#                           "_sites_",site_filter_min, 
+#annotation_suffix = paste0("_mC_domains_II",
+#                           "_cov_",coverage_filter_min,
+#                           "_sites_",site_filter_min,
 #                           "_MR_",MR_percent,
 #                           "_UMR_",UMR_percent)
 ########
@@ -50,7 +50,7 @@ text_size_theme_8 <- theme(axis.text=element_text(size=8),
                            legend.text=element_text(size=8))
 
 ###########################
-# 
+#
 ###########################
 
 folder_prefix = paste0(sample_to_crunch, annotation_suffix)
@@ -81,10 +81,10 @@ dir.create(out_dir_beds, showWarnings = F)
 ND_overlaps <- read_tsv(paste0(out_dir_beds, "/", sample_to_crunch, "_UMTs_merge_NDs.bed"), col_names =  c("chr","start", "end", "features", "sizes", "locations"),
                         cols(sizes = col_character()))
 
-ND_overlaps_sizes <- ND_overlaps %>% 
+ND_overlaps_sizes <- ND_overlaps %>%
   mutate(features = strsplit(as.character(features), ","),
          sizes = strsplit(as.character(sizes), ","),
-         locations = strsplit(as.character(locations), ",")) %>% 
+         locations = strsplit(as.character(locations), ",")) %>%
   unnest(features, sizes, locations)
 
 ND_overlaps_sizes
@@ -93,8 +93,8 @@ ND_overlaps_sizes
 
 size_distro <- ND_overlaps_sizes %>%
   filter(!features == "ND") %>%
-  mutate(size_cat = ifelse(as.double(sizes) < 300, "small", 
-                           ifelse(as.double(sizes) >=300 & as.double(sizes) <900, "med", "large"))) 
+  mutate(size_cat = ifelse(as.double(sizes) < 300, "small",
+                           ifelse(as.double(sizes) >=300 & as.double(sizes) <900, "med", "large")))
 #size summary
 size_distro %>% group_by(size_cat) %>% summarise(n = n()) %>% mutate(pct = n/sum(n)*100)
 
@@ -104,16 +104,16 @@ ND_overlaps_sizes %>% group_by(chr, start, end) %>% summarise(n = n()) %>% group
 
 ND_overlaps_sizes %>% group_by(chr, start, end) %>% summarise(n = n()) %>% group_by(n) %>% summarise(freq = n()) %>% filter(!n %in% c(1, 3)) %>% summarise(total = sum(freq))
 
-# features_metadata <- ND_overlaps_sizes %>% 
+# features_metadata <- ND_overlaps_sizes %>%
 #   mutate(cat = ifelse(features == "ND", "ND", "UMR")) %>%
 #   filter(cat == "UMR") %>%
 #   group_by(chr, start, end) %>%
 #   summarise(features = paste(features, collapse = "|"))
 
 # calculate percent ND
-ND_overlaps_sizes_pct <- ND_overlaps_sizes %>% 
+ND_overlaps_sizes_pct <- ND_overlaps_sizes %>%
   mutate(cat = ifelse(features == "ND", "ND", "UMR")) %>%
-  group_by(chr, start, end, cat) %>% 
+  group_by(chr, start, end, cat) %>%
   summarise(total_size = sum(as.double(sizes))) %>%
   ungroup() %>%
   spread(key = cat, value = total_size) %>%
@@ -133,15 +133,15 @@ ND_overlaps_sizes_pct_summary
 
 ################## ################## ##################
 ################## ################## ##################
-# run this chunk the forst time through to get black list
+# run this chunk the first time through to get black list
 
 # filter to tile >34% ND
 over_34_pct <- ND_overlaps_sizes_pct  %>%
-  mutate(cat = ifelse(pct_ND == 0 , 0, ifelse(pct_ND > 34, ">34", "<=34"))) %>% 
-  filter(cat == ">34") %>% 
+  mutate(cat = ifelse(pct_ND == 0 , 0, ifelse(pct_ND > 34, ">34", "<=34"))) %>%
+  filter(cat == ">34") %>%
   select(chr, start, end, cat) %>%
   right_join(ND_overlaps_sizes, by = c("chr", "start", "end")) %>%
-  filter(cat == ">34") 
+  filter(cat == ">34")
 over_34_pct
 
 # number of concatonated tiles
@@ -158,7 +158,7 @@ ggsave(plot = g, filename = paste0(out_dir, "/ND_inbetweens_size_density_over_34
 
 # extract list of ND tiles that contribute to merges that are >34% to get blacklist
 
-black_list <- over_34_pct %>% 
+black_list <- over_34_pct %>%
   filter(features == "ND") %>% # 2,120
   select(locations, cat) %>%
   separate(locations, into = c("chr", "start", "end"), sep = ":")
@@ -172,15 +172,15 @@ write.table(black_list,  paste0(out_dir_beds,"/", sample_to_crunch, "_NDs_betwee
 # # merge back in features metadata
 # ND_overlaps_sizes_pct_meta <- ND_overlaps_sizes_pct %>%
 #   left_join(features_metadata, by = c("chr", "start", "end"))
-# 
+#
 # ND_overlaps_sizes_pct %>% distinct(chr, start, end)
-# 
+#
 # # write output
 # write.table(ND_overlaps_sizes_pct_meta, "B73L_mC_domains_v1_annotation_v0_4_UMTs_merge_NDs_filtered.bed", sep = "\t", quote = F, row.names = F, col.names = F)
 
 # Remove black listed regions from the original ND merge
 # read in ref
-ND_overlaps <- read_tsv(paste0(out_dir_beds, "/NDs_Olap_UMTs.bed"), col_names =  c("chr","start", "end","B_chr", "b_start", "b_end", "b_type","b_size", "b_location", "distance"), 
+ND_overlaps <- read_tsv(paste0(out_dir_beds, "/NDs_Olap_UMTs.bed"), col_names =  c("chr","start", "end","B_chr", "b_start", "b_end", "b_type","b_size", "b_location", "distance"),
                         cols(b_size = col_character()))
 
 black_list <- read_tsv(paste0(out_dir_beds,"/", sample_to_crunch, "_NDs_between_UMTs_black_list.bed"), col_names =  c("chr","start", "end","cat"))
@@ -227,3 +227,7 @@ write.table(ND_between_UMTs_summary, paste0(out_dir, "/", sample_to_crunch, "_ND
 
 write.table(ND_between_UMTs, paste0(out_dir_beds, "/", sample_to_crunch, "_NDs_between_UMTs_pct_filtered.bed"), sep = "\t", quote = F, row.names = F, col.names = F)
 
+ND_between_UMTs_4col <- ND_between_UMTs %>%
+select(chr, start, end, domain)
+
+write.table(ND_between_UMTs_4col, paste0(out_dir_beds, "/", sample_to_crunch, "_NDs_between_UMTs_pct_filtered_4col.bed"), sep = "\t", quote = F, row.names = F, col.names = F)

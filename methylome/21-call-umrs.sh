@@ -44,6 +44,7 @@ sample_to_crunch=$ID
 echo sample being mapped is $ID
 
 annotation_suffix=_mC_domains_II_cov_${coverage_filter_min}_sites_${site_filter_min}_MR_${MR_percent}_UMR_${UMR_percent}
+annotation_suffix2=cov_${coverage_filter_min}_sites_${site_filter_min}_MR_${MR_percent}_UMR_${UMR_percent}
 
 ########## Run MODULE 1 DOMAINS #################
 
@@ -192,9 +193,37 @@ wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to
 #(329888-274411)/329888*100
 # this reduced the numner of merged UMTs by 55477 or 16.8% (compared to 15.3% for maize)
 
+### Merge filtered NDs and tiles with data to get all regions included in analysis
+
+# combine files and sort
+cat \
+${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data.bed \
+${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_between_UMTs_pct_filtered_4col.bed \
+| sort -k1,1 -k2,2n > ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed
 
 ### UMR final list and Size annotation
 R -f ~/gitrepos/springerlab_methylation/SeqCap/21-call-umrs-mod5.R \
 --args $reference_100bp_tiles $ID $annotation_suffix $chrom_sizes_path $coverage_filter_min $site_filter_min $MR_percent $UMR_percent
+
+############ put the key bed files in new output folder
+# this step puts the final UMR list and the tiles with data bed files in a new folders
+# the remaining files can probably just bed deleted ie delete the whole mC_UMT_annotation_beds folders
+
+mkdir ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final
+
+# UMRs
+mv \
+${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMRs_6col.bed \
+${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/${sample_to_crunch}_${annotation_suffix2}_UMRs_6col.bed
+
+# tiles with data
+mv \
+${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data.bed \
+${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/
+
+# tiles with data including the merged ND tiles
+mv \
+${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed \
+${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/
 
 echo finished summarising
