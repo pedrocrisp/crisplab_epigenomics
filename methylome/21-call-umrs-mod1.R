@@ -381,6 +381,7 @@ ND_only
 write.table(ND_only, paste0(out_dir_beds, "/", sample_to_crunch, "_NDs.bed"), sep = "\t", quote = F, row.names = F, col.names = F)
 
 ############# Tiles with data (exclude no data and no sites)
+
 NDs_data <- mC_domains_bed %>%
 filter(!domain %in% c("no_sites", "Missing_Data")) %>%
 select(chr, start, end, domain)
