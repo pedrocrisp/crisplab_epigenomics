@@ -209,7 +209,7 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod5.R \
 # this step puts the final UMR list and the tiles with data bed files in a new folders
 # the remaining files can probably just bed deleted ie delete the whole mC_UMT_annotation_beds folders
 
-mkdir ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final
+mkdir -p ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final
 
 # UMRs
 mv \
