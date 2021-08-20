@@ -78,6 +78,6 @@ cat $0 > ${log_folder}/qsub_runner.log
 qsub -J $qsub_t \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
+-l walltime=${walltime},nodes=1:ppn=4,mem=${mem}gb \
 -v LIST=${sample_list},DMR_contrasts_table_file=$DMR_contrasts_table_file,path_to_data_files=$path_to_data_files \
 $script_to_qsub
