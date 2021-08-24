@@ -89,6 +89,6 @@ cat $0 > ${log_folder}/qsub_runner.log
 qsub -J $qsub_t \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
+-l walltime=${walltime},nodes=1:ppn=4,mem=${mem}gb \
 -v LIST=${sample_list},data_folder=$data_folder,tile_list=$tile_list,filter_suffix=$filter_suffix,minCHHs=$minCHHs,minCHH_cov=$minCHH_cov,minCHGs=$minCHGs,minCHG_cov=$minCHG_cov,minCGs=$minCGs,minCG_cov=$minCG_cov \
 $script_to_qsub
