@@ -42,12 +42,15 @@ outdir=analysis/${alignFolder}_featureCounts
 mkdir -p ${outdir}
 
 # check if single or paired end by looking for R2 file
+# currently a read that overlaps multiple features at one location ie overlapping genes, is conuted for both genes (-O)
+# reads mapping to multiple locations are excluded
 if ([ ${format} == "SE" ])
 then
 echo single reads
 featureCounts \
 -F SAF \
 -s $strand \
+-O \
 -a $reference \
 -T 6 \
 -o "$outdir/${ID}.counts" \
@@ -60,6 +63,7 @@ featureCounts \
 -p \
 -C \
 -s $strand \
+-O \
 -a $reference \
 -T 6 \
 -o "$outdir/${ID}.counts" \
