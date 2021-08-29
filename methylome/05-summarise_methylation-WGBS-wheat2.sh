@@ -71,6 +71,8 @@ mkdir -p ConversionRate
         -c chr1A_part1,chr1A_part2,chr1B_part1,chr1B_part2,chr1D_part1,chr1D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
+echo ch1 summarised
+
         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
         -o BSMAPratio/${ID}_methratio_chr2.txt \
         -d ${genome_reference} \
@@ -78,6 +80,8 @@ mkdir -p ConversionRate
         -z \
         -c chr1A_part1,chr2A_part2,chr2B_part1,chr2B_part2,chr2D_part1,chr2D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+
+echo ch2 summarised
 
         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
         -o BSMAPratio/${ID}_methratio_chr3.txt \
@@ -87,6 +91,8 @@ mkdir -p ConversionRate
         -c chr3A_part1,chr3A_part2,chr3B_part1,chr3B_part2,chr3D_part1,chr3D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
+echo ch3 summarised
+
         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
         -o BSMAPratio/${ID}_methratio_chr4.txt \
         -d ${genome_reference} \
@@ -94,6 +100,8 @@ mkdir -p ConversionRate
         -z \
         -c chr4A_part1,chr4A_part2,chr4B_part1,chr4B_part2,chr4D_part1,chr4D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+
+echo ch4 summarised
 
         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
         -o BSMAPratio/${ID}_methratio_chr5.txt \
@@ -103,6 +111,8 @@ mkdir -p ConversionRate
         -c chr5A_part1,chr5A_part2,chr5B_part1,chr5B_part2,chr5D_part1,chr5D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
+echo ch5 summarised
+
         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
         -o BSMAPratio/${ID}_methratio_chr6.txt \
         -d ${genome_reference} \
@@ -111,6 +121,8 @@ mkdir -p ConversionRate
         -c chr6A_part1,chr6A_part2,chr6B_part1,chr6B_part2,chr6D_part1,chr6D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
+echo ch6 summarised
+
         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
         -o BSMAPratio/${ID}_methratio_chr7.txt \
         -d ${genome_reference} \
@@ -118,6 +130,8 @@ mkdir -p ConversionRate
         -z \
         -c chr7A_part1,chr7A_part2,chr7B_part1,chr7B_part2,chr7D_part1,chr7D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+
+echo ch7 summarised
 
         cat \
         BSMAPratio/${ID}_methratio_chr1.txt \
@@ -128,7 +142,7 @@ mkdir -p ConversionRate
         BSMAPratio/${ID}_methratio_chr6.txt \
         BSMAPratio/${ID}_methratio_chr7.txt \
         > BSMAPratio/${ID}_methratio.txt
-        
+
         #awk funciton for extracting methylation info from methratio.py output. Check with Qing what this is meant to do. Also try to figure out how to split this over multiple lines
         #awk '(NR>1){if(($3=="-" && $4~/^.CG../ ) || ($3=="+" &&  $4~/^..CG./)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CG""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else if(($3=="-" && $4~/^C[AGT]G../ ) || ($3=="+" &&  $4~/^..C[ACT]G/)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CHG""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else if(($3=="-" && $4~/^[AGT][AGT]G../ ) || ($3=="+" &&  $4~/^..C[ACT][ACT]/)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CHH""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else print $1"\t"$2-1"\t"$2"\t"$3"\t""CNN""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12}' BSMAPratio/${ID}.txt > BSMAPratio/${ID}_BSMAP_out.txt
 
