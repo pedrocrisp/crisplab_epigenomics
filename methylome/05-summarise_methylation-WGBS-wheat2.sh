@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #PBS -A UQ-SCI-SAFS
-#PBS -N summarise_methylation-WGBS
+#PBS -N sum_meth-WGBS-wheat2
 #PBS -r y
 #PBS -m abej
 #PBS -M p.crisp@uq.edu.au
