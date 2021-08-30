@@ -16,7 +16,7 @@ no
 "
 
 #define stepo in the pipeline - should be the same name as the script
-step=05-summarise_methylation-WGBS
+step=05-summarise_methylation-WGBS-wheat2
 
 ######### Setup ################
 sample_list=$1
