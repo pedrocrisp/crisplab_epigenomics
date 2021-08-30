@@ -77,7 +77,7 @@ then
         #requires sorted input - using samtools sort in bsmap step (co-ordinate sorted)
         # if co-ordinate sorted then pairs where the mate is unmapped or has secondary alignment are not marked as duplicate
         # ASSUME_SORTED=true because sorting performed with samtools but samtools doesnt seem to add this flag to the headder
-        java -jar /home/uqpcrisp/software/picard.jar MarkDuplicates \
+        java -jar ~/software/picard.jar MarkDuplicates \
         I=bsmapped/${ID}_sorted.bam \
         O=bsmapped_filtered/${ID}_sorted_MarkDup.bam \
         METRICS_FILE=bsmapped_filtered/${ID}_MarkDupMetrics.txt \
@@ -108,7 +108,7 @@ elif [ "$paired_end" == "no" ]
 then
 
 # remove duplicate
-java -jar /home/uqpcrisp/software/picard.jar MarkDuplicates \
+java -jar ~/software/picard.jar MarkDuplicates \
 I=bsmapped/${ID}_sorted.bam \
 O=bsmapped_filtered/${ID}_sorted_MarkDup.bam \
 METRICS_FILE=bsmapped_filtered/${ID}_MarkDupMetrics.txt \
