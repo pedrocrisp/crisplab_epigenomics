@@ -78,7 +78,7 @@ echo ch1 summarised
         -d ${genome_reference} \
         -u \
         -z \
-        -c chr1A_part1,chr2A_part2,chr2B_part1,chr2B_part2,chr2D_part1,chr2D_part2 \
+        -c chr2A_part1,chr2A_part2,chr2B_part1,chr2B_part2,chr2D_part1,chr2D_part2 \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
 echo ch2 summarised
@@ -128,7 +128,7 @@ echo ch6 summarised
         -d ${genome_reference} \
         -u \
         -z \
-        -c chr7A_part1,chr7A_part2,chr7B_part1,chr7B_part2,chr7D_part1,chr7D_part2 \
+        -c chr7A_part1,chr7A_part2,chr7B_part1,chr7B_part2,chr7D_part1,chr7D_part2,chrUn \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
 echo ch7 summarised
