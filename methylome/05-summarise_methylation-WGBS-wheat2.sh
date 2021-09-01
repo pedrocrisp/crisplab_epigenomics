@@ -63,25 +63,26 @@ mkdir -p ConversionRate
         # The required input is all in the folder bsmapped_filtered from the prior step
         ########################
         # extract methylation information using bsmap tool methratio.py
-        python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
-        -o BSMAPratio/${ID}_methratio_chr1.txt \
-        -d ${genome_reference} \
-        -u \
-        -z \
-        -c chr1A_part1,chr1A_part2,chr1B_part1,chr1B_part2,chr1D_part1,chr1D_part2 \
-        -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
-
-echo ch1 summarised
-
-        python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
-        -o BSMAPratio/${ID}_methratio_chr2.txt \
-        -d ${genome_reference} \
-        -u \
-        -z \
-        -c chr2A_part1,chr2A_part2,chr2B_part1,chr2B_part2,chr2D_part1,chr2D_part2 \
-        -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
-
-echo ch2 summarised
+        
+#         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
+#         -o BSMAPratio/${ID}_methratio_chr1.txt \
+#         -d ${genome_reference} \
+#         -u \
+#         -z \
+#         -c chr1A_part1,chr1A_part2,chr1B_part1,chr1B_part2,chr1D_part1,chr1D_part2 \
+#         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+#
+# echo ch1 summarised
+#
+#         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
+#         -o BSMAPratio/${ID}_methratio_chr2.txt \
+#         -d ${genome_reference} \
+#         -u \
+#         -z \
+#         -c chr2A_part1,chr2A_part2,chr2B_part1,chr2B_part2,chr2D_part1,chr2D_part2 \
+#         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+#
+# echo ch2 summarised
 
         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
         -o BSMAPratio/${ID}_methratio_chr3.txt \
@@ -133,15 +134,14 @@ echo ch6 summarised
 
 echo ch7 summarised
 
-        cat \
-        BSMAPratio/${ID}_methratio_chr1.txt \
-        BSMAPratio/${ID}_methratio_chr2.txt \
-        BSMAPratio/${ID}_methratio_chr3.txt \
-        BSMAPratio/${ID}_methratio_chr4.txt \
-        BSMAPratio/${ID}_methratio_chr5.txt \
-        BSMAPratio/${ID}_methratio_chr6.txt \
-        BSMAPratio/${ID}_methratio_chr7.txt \
-        > BSMAPratio/${ID}_methratio.txt
+        # grab header
+        head -n 1 BSMAPratio/${ID}_methratio_chr1.txt > BSMAPratio/${ID}_methratio.txt
+
+        # cat files without header
+        find BSMAPratio/ -type f -name "${ID}_methratio*" -print | while read filename; do
+            # echo ${filename}
+            tail -n +2 ${filename}
+        done >> BSMAPratio/${ID}_methratio.txt
 
         #awk funciton for extracting methylation info from methratio.py output. Check with Qing what this is meant to do. Also try to figure out how to split this over multiple lines
         #awk '(NR>1){if(($3=="-" && $4~/^.CG../ ) || ($3=="+" &&  $4~/^..CG./)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CG""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else if(($3=="-" && $4~/^C[AGT]G../ ) || ($3=="+" &&  $4~/^..C[ACT]G/)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CHG""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else if(($3=="-" && $4~/^[AGT][AGT]G../ ) || ($3=="+" &&  $4~/^..C[ACT][ACT]/)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CHH""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else print $1"\t"$2-1"\t"$2"\t"$3"\t""CNN""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12}' BSMAPratio/${ID}.txt > BSMAPratio/${ID}_BSMAP_out.txt
