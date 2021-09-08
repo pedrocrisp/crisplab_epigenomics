@@ -44,6 +44,8 @@ module load bedtools
 # module load samtools/0.1.18
 PATH=~/software/bsmap-2.74/samtools:$PATH
 
+LC_COLLATE=C
+
 ########## Set up dirs #################
 
 #get job ID
@@ -63,7 +65,7 @@ mkdir -p ConversionRate
         # The required input is all in the folder bsmapped_filtered from the prior step
         ########################
         # extract methylation information using bsmap tool methratio.py
-        
+
 #         python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
 #         -o BSMAPratio/${ID}_methratio_chr1.txt \
 #         -d ${genome_reference} \
@@ -250,12 +252,17 @@ echo ch7 summarised
         awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_subcontext" -
         fi
 
+        # sort
+        sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_CG.bedGraph > BSMAPratio/${ID}_BSMAP_out_CG.sorted.bedGraph
+        sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_CHG.bedGraph > BSMAPratio/${ID}_BSMAP_out_CHG.sorted.bedGraph
+        sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_CHH.bedGraph > BSMAPratio/${ID}_BSMAP_out_CHH.sorted.bedGraph
+
         #Make bigWigs per context
-        bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_CG.bedGraph" ${chrom_sizes_file} \
+        bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_CG.sorted.bedGraph" ${chrom_sizes_file} \
         "BSMAPratio/${ID}_BSMAP_out_CG.bigWig"
-        bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_CHG.bedGraph" ${chrom_sizes_file} \
+        bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_CHG.sorted.bedGraph" ${chrom_sizes_file} \
         "BSMAPratio/${ID}_BSMAP_out_CHG.bigWig"
-        bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_CHH.bedGraph" ${chrom_sizes_file} \
+        bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_CHH.sorted.bedGraph" ${chrom_sizes_file} \
         "BSMAPratio/${ID}_BSMAP_out_CHH.bigWig"
 
         if [ "$make_subcontext" == "yes" ]
@@ -334,20 +341,30 @@ echo ch7 summarised
                 awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context_plus" "BSMAPratio/"${ID}"_BSMAP_out_+.bedGraph"
                 awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context_minus" "BSMAPratio/"${ID}"_BSMAP_out_-.bedGraph"
 
+                # sort
+                sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_+_CG.bedGraph > BSMAPratio/${ID}_BSMAP_out_+_CG.sorted.bedGraph
+                sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_+_CHG.bedGraph > BSMAPratio/${ID}_BSMAP_out_+_CHG.sorted.bedGraph
+                sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_+_CHH.bedGraph > BSMAPratio/${ID}_BSMAP_out_+_CHH.sorted.bedGraph
+
+                sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_-_CG.bedGraph > BSMAPratio/${ID}_BSMAP_out_-_CG.sorted.bedGraph
+                sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_-_CHG.bedGraph > BSMAPratio/${ID}_BSMAP_out_-_CHG.sorted.bedGraph
+                sort -k1,1 -k2,2n BSMAPratio/${ID}_BSMAP_out_-_CHH.bedGraph > BSMAPratio/${ID}_BSMAP_out_-_CHH.sorted.bedGraph
+
+
                 ## Make bigWigs per context
                 # bigWigs for each individual induction with its own genome reference and plasmid
-                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_+_CG.bedGraph" ${chrom_sizes_file} \
+                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_+_CG.sorted.bedGraph" ${chrom_sizes_file} \
                 "BSMAPratio/${ID}_BSMAP_out_+_CG.bigWig"
-                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_+_CHG.bedGraph" ${chrom_sizes_file} \
+                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_+_CHG.sorted.bedGraph" ${chrom_sizes_file} \
                 "BSMAPratio/${ID}_BSMAP_out_+_CHG.bigWig"
-                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_+_CHH.bedGraph" ${chrom_sizes_file} \
+                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_+_CHH.sorted.bedGraph" ${chrom_sizes_file} \
                 "BSMAPratio/${ID}_BSMAP_out_+_CHH.bigWig"
 
-                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_-_CG.bedGraph" ${chrom_sizes_file} \
+                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_-_CG.sorted.bedGraph" ${chrom_sizes_file} \
                 "BSMAPratio/${ID}_BSMAP_out_-_CG.bigWig"
-                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_-_CHG.bedGraph" ${chrom_sizes_file} \
+                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_-_CHG.sorted.bedGraph" ${chrom_sizes_file} \
                 "BSMAPratio/${ID}_BSMAP_out_-_CHG.bigWig"
-                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_-_CHH.bedGraph" ${chrom_sizes_file} \
+                bedGraphToBigWig "BSMAPratio/${ID}_BSMAP_out_-_CHH.sorted.bedGraph" ${chrom_sizes_file} \
                 "BSMAPratio/${ID}_BSMAP_out_-_CHH.bigWig"
 
         #remove bedGraph it is large and not really required
