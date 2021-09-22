@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <chrom.sizes file> <reference_tile_file> <walltime> <memory>
+bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <chrom.sizes file> <reference_tile_file> <walltime> <memory> <account_department>
 for example:
 bash \
 /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/07-tiles_bed_to_bigWig_qsub.sh \
@@ -20,6 +20,7 @@ sample_list=$1
 walltime=$2
 mem=$3
 bam_dir=$4
+account_department=$5
 
 if [ "$#" -lt "4" ]
 then
@@ -79,4 +80,5 @@ qsub -J $qsub_t \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
 -v LIST=${sample_list},bam_dir=${bam_dir} \
+-A $account_department \
 $script_to_qsub
