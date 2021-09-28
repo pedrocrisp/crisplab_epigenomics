@@ -63,7 +63,7 @@ mkdir -p ConversionRate
         # The required input is all in the folder bsmapped_filtered from the prior step
         ########################
         # extract methylation information using bsmap tool methratio.py
-        python /home/uqpcrisp/software/bsmap-2.74/methratio.py \
+        python ~/software/bsmap-2.74/methratio.py \
         -o BSMAPratio/${ID}_methratio.txt \
         -d ${genome_reference} \
         -u \
@@ -162,7 +162,7 @@ mkdir -p ConversionRate
         }
         '
         fi
-        
+
         #pipe bedGraph to split by context (use dash to read from sdtin)
         # per context
         awk -F$"\\t" "$awk_make_bedGraph" \
