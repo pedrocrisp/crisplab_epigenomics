@@ -108,6 +108,12 @@ rm -rv analysis/tiles/*.bg
 rm -rv analysis/tiles/*.bigWig
 rm -rv analysis/tiles/*.bed
 
+###### UMR intermediate files
+# i dont use the intermediate bed files anymore so delete
+# mC_UMT_annotation has the summary files
+# mC_UMT_annotation_beds_final has the UMR and tiles with data bed files
+rm -rv analysis/*/mC_UMT_annotation_beds
+
 else
 
   echo "Skiping purge"
