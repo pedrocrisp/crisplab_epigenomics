@@ -49,7 +49,7 @@ fastqcfolder=analysis/fastqc
 mkdir -p $fastqcfolder
 
 # check if single or paired end or unzipped by looking for R2 file
-if [ -e "reads/${ID}_R2_001.fastq.gz" ]; then
+if [ -e "reads/${ID}_R2_001.fastq.gz" ] || [ -e "reads/${ID}_R2.fastq.gz" ]; then
 
 echo "paired reads"
 
@@ -61,14 +61,14 @@ echo "paired reads"
 # for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
 # Swift recommends symetrical trimming, so I trim from the R1 read too...
 
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}_R1_001.fastq.gz reads/${ID}_R2_001.fastq.gz
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}_R1*fastq.gz reads/${ID}_R2*fastq.gz
 
 #compress original reads again
 #gzip reads/${ID}_R1_001.fastq
 #gzip reads/${ID}_R2_001.fastq
 
 # check if single or paired end or unzipped by looking for R2 file
-elif [ -e "reads/${ID}_R2_001.fastq" ]; then
+elif [ -e "reads/${ID}_R2_001.fastq" ] || [ -e "reads/${ID}_R2.fastq" ]; then
 
 echo "paired reads uncompressed"
 
@@ -76,19 +76,19 @@ echo "paired reads uncompressed"
 # for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
 # Swift recommends symetrical trimming, so I trim from the R1 read too...
 
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}_R1_001.fastq reads/${ID}_R2_001.fastq
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}_R1*fastq reads/${ID}_R2*fastq
 
 #compress original reads again
 gzip reads/${ID}_R1_001.fastq
 gzip reads/${ID}_R2_001.fastq
 
-elif [ -e "reads/${ID}_R1_001.fastq.gz" ]; then
+elif [ -e "reads/${ID}_R1_001.fastq.gz" ] || [ -e "reads/${ID}_R1.fastq.gz" ]; then
   # single end compressed
   ########## Run #################
   # for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
   # Swift recommends symetrical trimming, so I trim from the R1 read too...
 
-  trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}_R1_001.fastq.gz
+  trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}_R1*fastq.gz
 
 else
 echo "assuming single end uncompresed"
@@ -100,7 +100,7 @@ echo "assuming single end uncompresed"
 # for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
 # Swift recommends symetrical trimming, so I trim from the R1 read too...
 
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}_R1_001.fastq
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder reads/${ID}_R1*fastq
 
 #compress original reads again
 gzip reads/${ID}_R1_001.fastq
