@@ -3,13 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <chrom.sizes file> <reference_tile_file> <walltime> <memory> <account_department>
-for example:
-bash \
-/home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/07-tiles_bed_to_bigWig_qsub.sh \
-single_sample.txt \
-/home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.chrom.sizes \
-/home/springer/pcrisp/ws/refseqs/maize/maize_v4_100pb_tiles_zBased_sites.txt
+bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <walltime> <memory> <bam_dir> <account_department>
 "
 
 #define stepo in the pipeline - should be the same name as the script
