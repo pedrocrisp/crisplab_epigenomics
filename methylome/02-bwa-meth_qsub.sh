@@ -72,5 +72,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=$cores,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},genome_reference=$genome_reference,adapter_seq=$adapter_seq,cores=$cores \
+-v LIST=${sample_list},genome_reference=$genome_reference,cores=$cores \
 $script_to_qsub
