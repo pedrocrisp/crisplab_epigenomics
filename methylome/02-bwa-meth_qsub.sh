@@ -3,24 +3,23 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-bsmap_qsub.sh <sample_list.txt> <genome.fa> <adapter_seq> <walltime> <memory> <threads>"
+bash 02-bwa-meth_qsub.sh <sample_list.txt> <genome.fa> <walltime> <memory> <threads>"
 
 #define step in the pipeline - should be the same name as the script
-step=02-bsmap
+step=02-bwa-meth
 
 ######### Setup ################
 sample_list=$1
 genome_reference=$2
-adapter_seq=$3
-walltime=$4
-mem=$5
-cores=$6
-if [ "$#" -lt "6" ]
+walltime=$3
+mem=$4
+cores=$5
+if [ "$#" -lt "5" ]
 then
 echo $usage
 exit -1
 else
-echo "Submitting samples listed in '$sample_list' for trimming"
+echo "Submitting samples listed in '$sample_list' for mapping"
 cat $sample_list
 echo genome reference is $genome_reference
 fi
