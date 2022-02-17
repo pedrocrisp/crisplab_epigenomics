@@ -57,4 +57,13 @@ bamCoverage \
 --extendReads \
 -p 2
 
+# also make megabase coverage plots to look at any genomie-wide trimmed_align_bowtie2_bigWigs_deeptools
+bamCoverage \
+--bam $bam_dir/${ID}_sorted.bam \
+-o ${bam_dir}_bigWigs_deeptools/${ID}.bedgraph \
+--binSize 1000000 \
+--normalizeUsing CPM \
+--outFileFormat bedgraph \
+-p 2
+
 echo finished summarising
