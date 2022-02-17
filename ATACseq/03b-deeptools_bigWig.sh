@@ -33,6 +33,7 @@ echo working dir is now $PWD
 
 ########## Modules #################
 conda activate py3.7
+module load Java/1.8.0_45
 
 ########## Set up dirs #################
 
@@ -45,6 +46,7 @@ echo sample being mapped is $ID
 #make adaligned folder bsmaped
 cd analysis
 mkdir -p ${bam_dir}_bigWigs_deeptools
+mkdir -p ${bam_dir}_insert_metrics
 
 ########## Run #################
 # make normalised bigWigs
@@ -65,5 +67,14 @@ bamCoverage \
 --normalizeUsing CPM \
 --outFileFormat bedgraph \
 -p 2
+
+############ get frag sizes ##############
+# get frag sizes to check level of tagmentation using picard
+
+java -jar /home/uqpcrisp/software/picard.jar CollectInsertSizeMetrics \
+I=$bam_dir/${ID}_sorted.bam \
+O=${bam_dir}_insert_metrics/${ID}_insert_size_metrics.txt \
+H=${bam_dir}_insert_metrics/${ID}_insert_size_histogram.pdf \
+M=0.5
 
 echo finished summarising
