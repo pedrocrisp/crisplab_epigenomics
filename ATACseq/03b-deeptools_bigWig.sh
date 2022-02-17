@@ -34,6 +34,8 @@ echo working dir is now $PWD
 ########## Modules #################
 conda activate py3.7
 module load Java/1.8.0_45
+# picard needs R
+module load R/3.5.0-gnu
 
 ########## Set up dirs #################
 
