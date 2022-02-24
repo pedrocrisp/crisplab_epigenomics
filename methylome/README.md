@@ -1,18 +1,21 @@
 # Methylome pipeline
 
-Pipeline for processing SeqCap data.
+This is a multi purpose methylome pipeline that is used for processing SeqCap data, WGBS data and also for identifying Unmethylated regions (UMRs).
+
+**Disclaimer:** these pipelines document the reproducible steps we take to generate the data on our server but may not be a plug and play on a different server. If you would like to reproduce the pipeline, you likely need to modify for your purposes or get in contact and we may be able to help.
 
 --------
 
 ## Installation Notes
-This pipeline requires a number of pieces of software, some are loaded as modules, some are expected to be in your path, depending on the step.
+This pipeline requires a number of pieces of software, some we load as modules, some are expected to be in your path, depending on the step.
 
-It is designed to run on UMN MSI computer clusters.
+It is designed to run on UQ compute clusters.
 
-Bsmap is a special case. It looks for bsmap in ~/software/bsmap-2.74 and puts this dir in your path. I also edited the script sam2bam.sh to use the system version of samtools; however, ultimately I dont use this file because I resorted to output in sam format because I fix the sam/bam due to a discordant pairs issues, then manually run samtools to sort and index bams.
+Bsmap is a special case. It looks for bsmap in ~/software/bsmap-2.74 and puts this dir in your path. For historical reasons, the version of samtools shipped with Bsmap is used for most steps.
+
 
 To do things:
- - soft code more steps
+ - soft code more steps (some things are hard coded - our bad)
  - described dependancies and required files structures
 
 ## Example pipeline execution - Server Steps
@@ -412,4 +415,228 @@ TILES_CHH_COV=$(grep '\[1\] "For sample*' $i | cut -d " " -f 7)
 echo -e "$SAMPLE\t$TILES_CHH_COV"
 done >> CHH_cov_summary.tsv
 
+```
+---
+
+# Section 2 - calling UMRs
+
+TThis section describes the steps and input/output files for UMR calling.
+
+**Disclaimer:** as above - this pipeline documents the reproducible steps we take to generate the data on our server including submission scripts etc but is unlikely to be a plug and play on a different server. If you would like to reproduce the pipeline, you likely need to modify for your purposes or get in contact and we may be able to help.
+
+**Steps:**
+1. Create a reference file with the coordinates of each 100 bp tile in the genome
+
+2. Summarise per cytosine methylation calls (eg the output of bsmap-2.74/methratio.py) into average methylation per CG, CHG and CHH per 100 bp tile of the genome.
+
+2. Categorise each tile into methylation domains (six domains or types, including “missing data” (“no data” and “no sites”), “High CHH/RdDM”, “Heterochromatin”, “CG only”, “Unmethylated” or “intermediate”, in preferential order as per Crisp et al. (2020) https://doi.org/10.1073/pnas.2010250117) and merge adjacent tiles with the same methylation type.
+
+## Step 1 - 100bp tile reference files
+
+### code step - create_genome_tile_mC_counts
+
+This step generates a file with the coordinates of 100bp tiles in the genome and the count of CG, CHG and CHH sites in each tile.
+
+Dependencies (what we use):
+- R v3.5.0
+- bedtools v2.25.0
+- seqkit v0.14.0
+- csvtk v0.21.0
+- the associated `create_genome_tile_mC_counts` R scripts and the packages specified in the R scripts
+- seqtk 1.3-r115-dirty
+
+Input
+- a genome fasta file with the suffix `'fa'` eg `Sbicolor_454_v3.0.1.fa`
+
+- a text file with the prefix of the genome to be indexed eg:
+```
+cat genome.txt
+> Sbicolor_454_v3.0.1
+>
+(* on some systems a trailing empty line is needed if submitting a single job as a batch job)
+```
+
+- a text file with the chromosome sizes, with the same prefix and the suffix chrom.sizes - this can be generated with seqtk comp; eg:
+```
+seqtk comp Sbicolor_454_v3.0.1.fa | cut -f 1-2 > Sbicolor_454_v3.0.1.chrom.sizes
+# <chromosome> <size>
+cat Sbicolor_454_v3.0.1.chrom.sizes
+> Chr01   80884392
+> Chr02   77742459
+> Chr03   74386277
+> Chr04   68658214
+> Chr05   71854669
+> Chr06   61277060
+> Chr07   65505356
+> Chr08   62686529
+> Chr09   59416394
+> Chr10   61233695
+```
+
+Then run the `create_genome_tile_mC_counts-qsub.sh` script in the directory that contains all of these files
+
+```
+#create_genome_tile_mC_counts
+bash \
+/home/uqpcrisp/gitrepos/crisplab_epigenomics/methylome/create_genome_tile_mC_counts-qsub.sh \
+genome.txt \
+12:00:00 \
+40
+```
+
+The key output is file named `${genome}_100bp_tiles_zBased_sites_counts.txt` this is the file you need for the next step and has the tiles and site counts.
+
+```
+# Sbicolor_454_v3.0.1_100bp_tiles_zBased_sites_counts.txt
+chr     start   end     start_zBased    cg_sites        chg_sites       chh_sites
+Chr01   1       100     0       2       2       42
+Chr01   101     200     100     2       2       29
+Chr01   201     300     200     2       2       12
+Chr01   301     400     300     1       0       28
+Chr01   401     500     400     5       0       26
+Chr01   501     600     500     0       0       34
+Chr01   601     700     600     6       6       19
+Chr01   701     800     700     2       5       27
+Chr01   801     900     800     2       9       32
+Chr01   901     1000    900     8       7       35
+Chr01   1001    1100    1000    6       2       26
+```
+
+
+## Step 2 Summarise methylation into 100 bp tiles
+
+### code step - 07-tiles_bed_to_bigWig
+
+Summarise methylation to 100 bp tiles across the genome. This is a 4-parter.
+
+Dependencies (what we use):
+- perl v5.16.3
+- R v3.5.0
+- 07-tiles_bed_to_bigWig.R
+- bedGraphToBigWig (UCSC)
+
+
+The input files are are generated by the previous step, or these could be generated by other means, if in the same format
+- the chromomsome sizes files used in the last step, in our example: `Sbicolor_454_v3.0.1.chrom.sizes`
+- the `${genome}_100bp_tiles_zBased_sites_counts.txt` file generated in the last step, in our example: `Sbicolor_454_v3.0.1_100bp_tiles_zBased_sites_counts.txt`
+- a file called `${genome}_BSMAP_out.txt`, this is the parsed output of `bsmap-2.74/methratio.py` in zero based format no header ie bed-like; example from wheat with a header (remove header):
+```
+chr          start  end  strand  context  ratio  eff_CT_count  C_count  CT_count  rev_G_count  rev_GA_count  CI_lower  CI_upper
+chr4B_part1  25     26   +       CHH      0.000  21.00         0        21        0            0             0.000     0.155
+chr4B_part1  31     32   +       CHH      0.087  23.00         2        23        0            0             0.024     0.268
+chr4B_part1  45     46   +       CHH      0.000  30.00         0        30        0            0             -0.000    0.114
+chr4B_part1  56     57   +       CG       0.097  31.00         3        31        0            0             0.033     0.249
+chr4B_part1  66     67   +       CHH      0.067  30.00         2        30        0            0             0.018     0.213
+chr4B_part1  78     79   +       CHH      0.031  32.00         1        32        0            0             0.006     0.157
+chr4B_part1  80     81   +       CHH      0.000  36.00         0        36        0            0             0.000     0.096
+chr4B_part1  84     85   +       CHG      0.029  35.00         1        35        0            0             0.005     0.145
+chr4B_part1  85     86   +       CG       0.108  37.00         4        37        0            0             0.043     0.247
+chr4B_part1  90     91   +       CHH      0.000  39.00         0        39        0            0             0.000     0.090
+```
+
+First this step runs the perl script `met_context_window.pl` to get C, CT, ratios a summarised per 100bp window per context. Per sample any window with data is reported for all contexts even if some windows do not have data for a particular context. Next the R script `07-tiles_bed_to_bigWig.R` is called to fix the ends of the chromosomes which have windows that extend beyond the chromosome ends, this is necessary if we want to make bigWigs etc. This script also pulls in the C_sites per window information from the file `${genome}_100bp_tiles_zBased_sites_counts.txt` to enable filter out tiles with less than the specified threshold of "Cs" per context, as desired.
+
+```
+ usage="USAGE:
+ bash 07-summarise_methylation_qsub.sh <sample_list.txt> <chrom.sizes file> <reference tile file> <walltime> <cores>
+ for example:
+ "
+```
+In our work flow this is run from the working directory of the project and expects to find a subdirectory layout like below, the output is written to the folder called `tiles`
+
+```
+example_project/
+├── analysis
+│   ├── BSMAPratio
+│   │   └── Chinese_Spring_BSMAP_out.txt
+│   └── tiles
+│       ├── Chinese_Spring_BSMAP_out.txt.100.CG.fixed.sorted.txt
+│       ├── Chinese_Spring_BSMAP_out.txt.100.CHG.fixed.sorted.txt
+│       └── Chinese_Spring_BSMAP_out.txt.100.CHH.fixed.sorted.txt
+├── logs
+└── samples.txt
+```
+
+Example command to call the script
+
+```
+#07-tiles_bed_to_bigWig
+bash \
+/home/uqpcrisp/gitrepos/crisplab_epigenomics/methylome/07-tiles_bed_to_bigWig_qsub.sh \
+samples.txt \
+/90days/uqpcrisp/tmp_refseqs/sorghum/Sbicolor_454_v3.0.1.chrom.sizes \
+/90days/uqpcrisp/tmp_refseqs/sorghum/Sbicolor_454_v3.0.1_100bp_tiles_zBased_sites_counts.txt \
+4:00:00 \
+30
+```
+
+
+Output is ...
+
+```
+# Chinese_Spring_BSMAP_out.txt.100.CG.fixed.sorted.txt
+chr          start      end        C     CT    ratio                sites_with_data  cg_sites
+chr1A_part1  101        200        38    40    0.95                 12               12
+chr1A_part1  201        300        88    108   0.814814814814815    16               16
+chr1A_part1  301        400        235   290   0.810344827586207    30               30
+chr1A_part1  401        500        127   136   0.933823529411765    12               12
+chr1A_part1  501        600        281   321   0.875389408099688    14               14
+chr1A_part1  601        700        101   146   0.691780821917808    10               10
+chr1A_part1  701        800        26    30    0.866666666666667    8                8
+chr1A_part1  801        900        15    19    0.789473684210526    13               14
+```
+
+```
+# Chinese_Spring_BSMAP_out.txt.100.CHG.fixed.sorted.txt
+chr          start      end        C     CT    ratio                sites_with_data  chg_sites
+chr1A_part1  101        200        15    25    0.6                  9                10
+chr1A_part1  201        300        44    77    0.571428571428571    11               11
+chr1A_part1  301        400        71    150   0.473333333333333    14               14
+chr1A_part1  401        500        116   185   0.627027027027027    13               13
+chr1A_part1  501        600        2     16    0.125                2                2
+chr1A_part1  601        700        101   206   0.490291262135922    14               14
+chr1A_part1  701        800        5     15    0.333333333333333    3                3
+chr1A_part1  801        900        4     12    0.333333333333333    8                12
+```
+
+```
+# Chinese_Spring_BSMAP_out.txt.100.CHH.fixed.sorted.txt
+chr          start      end        C     CT    ratio                sites_with_data  chh_sites
+chr1A_part1  1          100        0     2     0                    2                43
+chr1A_part1  101        200        2     50    0.04                 21               29
+chr1A_part1  201        300        20    217   0.0921658986175115   31               31
+chr1A_part1  301        400        42    237   0.177215189873418    25               25
+chr1A_part1  401        500        23    308   0.0746753246753247   22               22
+chr1A_part1  501        600        43    646   0.0665634674922601   30               30
+chr1A_part1  601        700        35    538   0.0650557620817844   29               29
+chr1A_part1  701        800        6     140   0.0428571428571429   36               36
+chr1A_part1  801        900        3     56    0.0535714285714286   26               31
+chr1A_part1  1001       1100       0     5     0                    5                22
+chr1A_part1  1101       1200       0     30    0                    28               30
+```
+
+
+# Step 3 UMR calling
+
+Dependencies (what we use):
+- R v3.5.0
+- bedtools v2.25.0
+- the associated `21-call-umrs` R scripts and the packages specified in the R scripts
+
+Input
+- the chromomsome sizes files used in the last step, in our example: `Sbicolor_454_v3.0.1.chrom.sizes`
+- the `${genome}_100bp_tiles_zBased_sites_counts.txt` file generated in the last step, in our example: `Sbicolor_454_v3.0.1_100bp_tiles_zBased_sites_counts.txt`
+
+```
+bash \
+/home/uqpcrisp/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-qsub.sh \
+../samples.txt \
+/90days/uqpcrisp/tmp_refseqs/sorghum/Sbicolor_454_v3.0.1_100bp_tiles_zBased_sites_counts.txt \
+/90days/uqpcrisp/tmp_refseqs/sorghum/Sbicolor_454_v3.0.1_sorted.chrom.sizes \
+5 \
+2 \
+0.4 \
+0.1 \
+00:30:00 \
+20
 ```
