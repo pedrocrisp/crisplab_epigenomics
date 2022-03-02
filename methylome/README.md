@@ -256,7 +256,7 @@ Mei_final \
 2. MarkDuplicates - to get duplication rates
 3. OnTargetMetrics - to get a heap of OnTargetMetrics but mainly, % On target, % Target 2X, mean target coverage, fold enrichment
 4. ConversionRate - parse the output to get conversion rate
-3. Methratio - get final valid mapping used to extract methylation data
+3. Methratio - get final valid mapping used to extract methylation data eg use to get total valid reads, C coverage, and use valid reads divided by total reads from the trim_galore logs to get mapping rate
 4. CHH_cov - tiles passing 2x CHH
 
 ## Trimming (Total reads)
@@ -630,7 +630,7 @@ chr1A_part1  1101       1200       0     30    0                    28          
 
 # Step 3 UMR calling
 
-**TBC...***
+**TBC...**
 
 Dependencies (what we use):
 - R v3.5.0
