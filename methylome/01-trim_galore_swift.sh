@@ -56,7 +56,7 @@ if [ -e "reads/${ID}*_R2.fastq.gz" ]; then
 echo "paired reads non-swift"
 
 ########## Run #################
-trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}*_R1.fastq.gz reads/${ID}*_R2.fastq.gz
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" --clip_R1 10 --clip_R2 10 -o $trimmedfolder --paired reads/${ID}*_R1.fastq.gz reads/${ID}*_R2.fastq.gz
 
 elif [ -e "reads/${ID}_R2_001.fastq.gz" ]; then
 
