@@ -49,7 +49,16 @@ fastqcfolder=analysis/fastqc
 mkdir -p $fastqcfolder
 
 # check if single or paired end or unzipped by looking for R2 file
-if [ -e "reads/${ID}_R2_001.fastq.gz" ]; then
+# lazy screen for swift reads: they need to be in the formt "${ID}_R2_001.fastq.gz"
+# if just ${ID}*_R2.fastq.gz then assume other eg EM-seq and dont trim 20bp from each end
+if [ -e "reads/${ID}*_R2.fastq.gz" ]; then
+
+echo "paired reads non-swift"
+
+########## Run #################
+trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" -o $trimmedfolder --paired reads/${ID}*_R1.fastq.gz reads/${ID}*_R2.fastq.gz
+
+elif [ -e "reads/${ID}_R2_001.fastq.gz" ]; then
 
 echo "paired reads"
 
