@@ -51,7 +51,7 @@ mkdir -p $fastqcfolder
 # check if single or paired end or unzipped by looking for R2 file
 # lazy screen for swift reads: they need to be in the formt "${ID}_R2_001.fastq.gz"
 # if just ${ID}*_R2.fastq.gz then assume other eg EM-seq and dont trim 20bp from each end
-if [ -e "reads/${ID}*_R2.fastq.gz" ]; then
+if [ -e "reads/${ID}*R2.fastq.gz" ]; then
 
 echo "paired reads non-swift"
 
