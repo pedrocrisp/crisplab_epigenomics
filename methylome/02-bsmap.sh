@@ -76,6 +76,22 @@ bsmap \
 -q 20 \
 -A $adapter_seq
 
+elif [ -e "trimmed/${ID}_R2_val_2.fq.gz" ]; then
+
+echo "paired reads"
+
+bsmap \
+-a trimmed/${ID}_R1_val_1.fq.gz \
+-b trimmed/${ID}_R2_val_2.fq.gz \
+-d ${genome_reference} \
+-o bsmapped/${ID}.sam \
+-v 5 \
+-r 0 \
+-p $cores \
+-q 20 \
+-A $adapter_seq
+
+
 else
 echo "assuming single end"
 
