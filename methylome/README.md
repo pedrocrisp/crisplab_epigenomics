@@ -276,11 +276,18 @@ done > total_reads_summary.tsv
 
 d logs/..._01-trim_galore_swift
 
+# updated with tr and squeeze to accommodate millions of reads samples
+echo -e "Sample\tTotal_sequences_analysed\tPERCENT_READS_WITH_ADAPTERS_R1\tPERCENT_READS_WITH_ADAPTERS_R2\tPERCENT_BP_TRIMMED_R1\tPERCENT_BP_TRIMMED_R2" > ../total_reads_summary.tsv
+
 for i in $(ls 01-trim_galore_swift_e*); do
 SAMPLE=$(grep '+ ID=' $i | cut -d "=" -f 2)
-TOTAL_READS=$(grep 'Total number of sequences analysed:' $i | cut -d " " -f 6)
-echo -e "$SAMPLE\t$TOTAL_READS"
-done > total_reads_summary.tsv
+TOTAL_READS=$(grep 'Total number of sequences analysed:' $i | tr -s ' ' | cut -d " " -f 6)
+PERCENT_READS_WITH_ADAPTERS=$(grep 'Reads with adapters:' $i | tr -s ' ' | cut -d " " -f 5 | paste -sd '\t')
+PERCENT_BP_TRIMMED=$(grep 'Quality-trimmed:' $i | tr -s ' ' | cut -d " " -f 4 | paste -sd '\t')
+echo -e "$SAMPLE\t$TOTAL_READS\t$PERCENT_READS_WITH_ADAPTERS\t$PERCENT_BP_TRIMMED"
+done >> ../total_reads_summary.tsv
+
+cat ../total_reads_summary.tsv | column -t
 
 ```
 
