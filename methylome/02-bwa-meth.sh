@@ -60,7 +60,7 @@ bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_001_val_1.fq.gz trimmed/${ID}_R2_001_val_2.fq.gz \
-| samtools view -b - \
+#| samtools view -b - \
 > bwa-meth/${ID}.bam
 
 else
@@ -70,7 +70,7 @@ bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_001_val_1.fq.gz trimmed/${ID}_R2_001_val_2.fq.gz \
-| samtools view -b - \
+#| samtools view -b - \
 > bwa-meth/${ID}.bam
 
 fi
