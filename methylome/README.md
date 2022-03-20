@@ -331,8 +331,26 @@ UNPAIRED_READS_EXAMINED=$(grep 'Unknown Library' ${i}_MarkDupMetrics.txt | cut -
 echo -e "$SAMPLE\t$STATS"
 done > MarkDuplicates_scraped.tsv
 # add headder
-echo -e 'sample\tLIBRARY\tUNPAIRED_READS_EXAMINED\tREAD_PAIRS_EXAMINED\tSECONDARY_OR_SUPPLEMENTARY_RDS\tUNMAPPED_READS\tUNPAIRED_READ_DUPLICATES\tREAD_PAIR_DUPLICATES"\tREAD_PAIR_OPTICAL_DUPLICATES\tPERCENT_DUPLICATION\tESTIMATED_LIBRARY_SIZE' \
+echo -e 'sample\tLIBRARY\tBlurg\tUNPAIRED_READS_EXAMINED\tREAD_PAIRS_EXAMINED\tSECONDARY_OR_SUPPLEMENTARY_RDS\tUNMAPPED_READS\tUNPAIRED_READ_DUPLICATES\tREAD_PAIR_DUPLICATES\tREAD_PAIR_OPTICAL_DUPLICATES\tPERCENT_DUPLICATION\tESTIMATED_LIBRARY_SIZE' \
 | cat - MarkDuplicates_scraped.tsv > temp && mv temp MarkDuplicates_scraped.tsv
+
+lst MarkDuplicates_scraped.tsv
+
+```
+## Overlapping Bases
+
+```
+
+echo -e "Sample\tPairs_overlapped\tAVERAGE_bp_Overlap" > ../overlapping_reads_summary.tsv
+
+for i in $(ls 04-filter-WGBS-regular_e*); do
+SAMPLE=$(grep '+ ID=' $i | cut -d "=" -f 2)
+Pairs_overlapped=$(grep 'Number of overlapping pairs' $i | tr -s ' ' | cut -d " " -f 5)
+AVERAGE_bp_Overlap=$(grep 'Reference Bases Overlapped' $i | tr -s ' ' | cut -d " " -f 6)
+echo -e "$SAMPLE\t$Pairs_overlapped\t$AVERAGE_bp_Overlap"
+done >> ../overlapping_reads_summary.tsv
+
+cat ../overlapping_reads_summary.tsv | column -t
 
 ```
 

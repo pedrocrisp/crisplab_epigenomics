@@ -74,6 +74,10 @@ mkdir -p tiles
         # To mkae the chrom_sizes file use seqtk compressseqtk comp Zea_mays.AGPv4.dna.toplevel.fa
         # seqtk comp Zea_mays.AGPv4.dna.toplevel.fa | cut -f 1-2 > Zea_mays.AGPv4.dna.toplevel.chrom.sizes
 
+        # note - on some genomes this bigwig fails because it is not natural sorted...
+        # but i generally do use these files so no worries...
+        # maybe somepoint add "sort -k1,1 -k2,2n" with LC_COLLATE=C,  or bedSort and try again
+
         bedGraphToBigWig "./tiles/${ID}_BSMAP_out.txt.100.CG.fixed.sorted.bg" ${chrom_sizes} \
         "./tiles/${ID}_BSMAP_out.txt.100.CG.bigWig"
         bedGraphToBigWig "./tiles/${ID}_BSMAP_out.txt.100.CHG.fixed.sorted.bg" ${chrom_sizes} \

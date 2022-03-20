@@ -226,4 +226,8 @@ mv \
 ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed \
 ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/
 
+# delete those remaining files
+# if you ever want to look at the intermediate files again comment out the next line
+rm -rv ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds
+
 echo finished summarising
