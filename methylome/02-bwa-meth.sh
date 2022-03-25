@@ -87,7 +87,7 @@ samtools sort --threads $cores bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}.bam
 #rm tmp unsorted file
 rm bwa-meth/${ID}_tmp.bam
 # get mapping stats
-samtools flagstat --threads $cores bwa-meth/${ID}.bam > ${ID}_flagstat.txt
+samtools flagstat -@ $cores bwa-meth/${ID}.bam > ${ID}_flagstat.txt
 # print mapping stats (to log file) too
 cat ${ID}_flagstat.txt
 
