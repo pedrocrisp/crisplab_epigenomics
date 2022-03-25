@@ -60,9 +60,17 @@ bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_001_val_1.fq.gz trimmed/${ID}_R2_001_val_2.fq.gz \
-> bwa-meth/${ID}.sam
+| samtools view -b - \
+> bwa-meth/${ID}_tmp.bam
 
-#| samtools view -b - \
+# sort
+samtools sort bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}.bam
+#rm tmp unsorted file
+rm bwa-meth/${ID}_tmp.bam
+# get mapping stats
+samtools flagstat bwa-meth/${ID}.bam > ${ID}_flagstat.txt
+# print mapping stats (to log file) too
+cat ${ID}_flagstat.txt
 
 else
 echo "assuming single end"
@@ -71,9 +79,17 @@ bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_001_trimmed.fq.gz \
-> bwa-meth/${ID}.sam
+| samtools view -b - \
+> bwa-meth/${ID}_tmp.bam
 
-#| samtools view -b - \
+# sort
+samtools sort bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}.bam
+#rm tmp unsorted file
+rm bwa-meth/${ID}_tmp.bam
+# get mapping stats
+samtools flagstat bwa-meth/${ID}.bam > ${ID}_flagstat.txt
+# print mapping stats (to log file) too
+cat ${ID}_flagstat.txt
 
 fi
 
