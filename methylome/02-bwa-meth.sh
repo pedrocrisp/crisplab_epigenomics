@@ -35,7 +35,7 @@ echo working dir is now $PWD
 # activate conda with python 3 and the bwa-meth install
 conda activate py3.7
 module load bwa
-module load samtools
+module load samtools/1.9
 
 ########## Set up dirs #################
 
@@ -68,9 +68,9 @@ samtools sort bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}.bam
 #rm tmp unsorted file
 rm bwa-meth/${ID}_tmp.bam
 # get mapping stats
-samtools flagstat bwa-meth/${ID}.bam > ${ID}_flagstat.txt
+samtools flagstat -@ $cores bwa-meth/${ID}.bam > bwa-meth/${ID}_flagstat.txt
 # print mapping stats (to log file) too
-cat ${ID}_flagstat.txt
+cat bwa-meth/${ID}_flagstat.txt
 
 else
 echo "assuming single end"
