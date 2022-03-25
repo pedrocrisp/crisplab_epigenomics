@@ -79,15 +79,15 @@ bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_001_trimmed.fq.gz \
-| samtools view -b - \
+| samtools view -b --threads $cores - \
 > bwa-meth/${ID}_tmp.bam
 
 # sort
-samtools sort bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}.bam
+samtools sort --threads $cores bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}.bam
 #rm tmp unsorted file
 rm bwa-meth/${ID}_tmp.bam
 # get mapping stats
-samtools flagstat bwa-meth/${ID}.bam > ${ID}_flagstat.txt
+samtools flagstat --threads $cores bwa-meth/${ID}.bam > ${ID}_flagstat.txt
 # print mapping stats (to log file) too
 cat ${ID}_flagstat.txt
 
