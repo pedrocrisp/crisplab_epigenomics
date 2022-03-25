@@ -311,6 +311,18 @@ done > bsmap_summary.tsv
 
 Total number of sequences analysed:
 
+## BWA-meth
+
+```
+for i in $(ls 02-bwa-meth_o*); do \
+SAMPLE=$(grep 'sample being mapped is' $i | tr -s ' ' | cut -d " " -f 5); \
+MAPPED_READS=$(grep 'mapped (' $i); echo -e "$SAMPLE\t$MAPPED_READS"; \
+done > bwa_summary.tsv
+
+lst bwa_summary.tsv
+
+```
+
 ## MarkDuplicates
 
 MarkDuplicates - to get duplication rates
