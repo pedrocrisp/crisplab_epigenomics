@@ -70,6 +70,16 @@ mkdir -p ConversionRate
         -z \
         -r bsmapped_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
+# output
+#chr     pos     strand  context ratio   eff_CT_count    C_count CT_count        rev_G_count     rev_GA_count    CI_lower        CI_upper
+#Chr01   74      -       AAGCC   0.000   7.00    0       7       0       0       0.000   0.354
+#Chr01   158     -       TAGCC   0.000   1.00    0       1       0       0       0.000   0.793
+#Chr01   174     -       CTGAG   0.000   2.00    0       2       0       0       0.000   0.658
+#Chr01   176     -       GAGTT   0.000   2.00    0       2       0       0       0.000   0.658
+#Chr01   186     -       AAGAT   0.000   4.00    0       4       0       0       0.000   0.490
+#Chr01   195     +       ATCTA   0.000   1.00    0       1       3       3       0.000   0.793
+#Chr01   201     +       TTCAG   0.000   1.00    0       1       3       3       0.000   0.793
+
         #awk funciton for extracting methylation info from methratio.py output. Check with Qing what this is meant to do. Also try to figure out how to split this over multiple lines
         #awk '(NR>1){if(($3=="-" && $4~/^.CG../ ) || ($3=="+" &&  $4~/^..CG./)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CG""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else if(($3=="-" && $4~/^C[AGT]G../ ) || ($3=="+" &&  $4~/^..C[ACT]G/)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CHG""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else if(($3=="-" && $4~/^[AGT][AGT]G../ ) || ($3=="+" &&  $4~/^..C[ACT][ACT]/)) print $1"\t"$2-1"\t"$2"\t"$3"\t""CHH""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12; else print $1"\t"$2-1"\t"$2"\t"$3"\t""CNN""\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$10"\t"$11"\t"$12}' BSMAPratio/${ID}.txt > BSMAPratio/${ID}_BSMAP_out.txt
 
@@ -133,6 +143,21 @@ mkdir -p ConversionRate
         awk -F$"\\t" "$awk_make_bed" \
         "BSMAPratio/${ID}_methratio.txt" > "BSMAPratio/${ID}_BSMAP_out.txt"
 
+        # Output (no header)
+        # adds end and makes it zero-based bed
+        # parses nt context to get CG, CHG or CHH
+        # keep the rest of the columns
+        #chr     start  end     strand  context ratio   eff_CT_count    C_count CT_count        rev_G_count     rev_GA_count    CI_lower        CI_upper
+
+        #Chr01   73      74      -       CHH     0.000   7.00    0       7       0       0       0.000   0.354
+        #Chr01   157     158     -       CHH     0.000   1.00    0       1       0       0       0.000   0.793
+        #Chr01   173     174     -       CHG     0.000   2.00    0       2       0       0       0.000   0.658
+        #Chr01   175     176     -       CHH     0.000   2.00    0       2       0       0       0.000   0.658
+        #Chr01   185     186     -       CHH     0.000   4.00    0       4       0       0       0.000   0.490
+        #Chr01   194     195     +       CHH     0.000   1.00    0       1       3       3       0.000   0.793
+        #Chr01   200     201     +       CHG     0.000   1.00    0       1       3       3       0.000   0.793
+
+
         if [ "$make_subcontext" == "yes" ]
         then
         awk -F$"\\t" "$awk_make_subcontext_bed" \
@@ -168,6 +193,8 @@ mkdir -p ConversionRate
         awk -F$"\\t" "$awk_make_bedGraph" \
         "BSMAPratio/${ID}_BSMAP_out.txt" | \
         awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" -
+
+
 
         if [ "$make_subcontext" == "yes" ]
         then
@@ -240,6 +267,17 @@ mkdir -p ConversionRate
                 # run function
                 awk -F$"\\t" "$awk_make_bedGraph" \
                 "BSMAPratio/${ID}_BSMAP_out.txt" > "BSMAPratio/${ID}_BSMAP_out.bg"
+
+                # Output (no header)
+                # ratio calculated using C_count/CT_count
+                #chr     start  end   ratio  context strand
+                Chr01   157     158     0       CHH     -
+                Chr01   173     174     0       CHG     -
+                Chr01   175     176     0       CHH     -
+                Chr01   185     186     0       CHH     -
+                Chr01   194     195     0       CHH     +
+                Chr01   200     201     0       CHG     +
+
 
                 ## split into + and - strand based on column 6
                 awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} (NR>1){
