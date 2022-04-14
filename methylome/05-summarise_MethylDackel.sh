@@ -92,7 +92,7 @@ bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 # get bias metrics
 MethylDackel mbias \
 ${genome_reference} \
-bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam \
 MethylDackel/${ID}_methratio_mbias
 
 # now make a bigwig
