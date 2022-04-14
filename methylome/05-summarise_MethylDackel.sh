@@ -65,7 +65,7 @@ MethylDackel extract \
 --maxVariantFrac=0.1 \
 --nOT 0,0,0,0 \
 --nOB 0,0,0,0 \
--o MethylDackel/${ID}_methratio \
+-o MethylDackel/${ID}_methratio_head \
 ${genome_reference} \
 bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
@@ -99,12 +99,12 @@ MethylDackel/${ID}_methratio_mbias
 #Make bigWigs per context
 
 # remove header
-tail -n+2 MethylDackel/${ID}_methratio_CpG.bedGraph > MethylDackel/${ID}_methratio_CpG.bedGraph
-tail -n+2 MethylDackel/${ID}_methratio_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
-tail -n+2 MethylDackel/${ID}_methratio_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
+tail -n+2 MethylDackel/${ID}_methratio_head_CpG.bedGraph > MethylDackel/${ID}_methratio_CG.bedGraph
+tail -n+2 MethylDackel/${ID}_methratio_head_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
+tail -n+2 MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
 
 # bw
-bedGraphToBigWig "MethylDackel/${ID}_methratio_CpG.bedGraph" ${chrom_sizes_file} \
+bedGraphToBigWig "MethylDackel/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} \
 "MethylDackel/${ID}_MethylDackel_CG.bigWig"
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CHG.bedGraph" ${chrom_sizes_file} \
 "MethylDackel/${ID}_MethylDackel_CHG.bigWig"
