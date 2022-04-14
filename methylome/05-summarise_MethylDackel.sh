@@ -103,6 +103,9 @@ tail -n+2 MethylDackel/${ID}_methratio_head_CpG.bedGraph > MethylDackel/${ID}_me
 tail -n+2 MethylDackel/${ID}_methratio_head_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
 tail -n+2 MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
 
+# rm head files
+rm -rv MethylDackel/${ID}_methratio_head*
+
 # bw
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} \
 "MethylDackel/${ID}_MethylDackel_CG.bigWig"
