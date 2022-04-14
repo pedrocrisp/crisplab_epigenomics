@@ -103,6 +103,19 @@ tail -n+2 MethylDackel/${ID}_methratio_head_CpG.bedGraph > MethylDackel/${ID}_me
 tail -n+2 MethylDackel/${ID}_methratio_head_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
 tail -n+2 MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
 
+# Add context - uncomment if you want to add column with context
+awk -F$"\\t" \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+ MethylDackel/${ID}_methratio_head_CpG.bedGraph > MethylDackel/${ID}_methratio_CG.bedGraph
+
+ awk -F$"\\t" \
+ 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+  MethylDackel/${ID}_methratio_head_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
+
+  awk -F$"\\t" \
+  'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+   MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
+
 # rm head files
 rm -rv MethylDackel/${ID}_methratio_head*
 
