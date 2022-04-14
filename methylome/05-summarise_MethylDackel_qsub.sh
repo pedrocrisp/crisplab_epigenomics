@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 05-summarise_MethylDackel_qsub.sh <sample_list.txt> <genome.fa> <chromosome.sizes.file> <walltime> <memory> <ChrC_name> <cores>
+bash 05-summarise_MethylDackel_qsub.sh <sample_list.txt> <genome.fa> <chromosome.sizes.file> <walltime> <memory> <cores>
 for example:
 bash \
 /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/05-summarise_methylation-WGBS_qsub.sh \
@@ -25,8 +25,8 @@ genome_reference=$2
 chrom_sizes_file=$3
 walltime=$4
 mem=$5
-ChrC_name=$6
-cores=$7
+#ChrC_name=$6
+cores=$6
 
 if [ "$#" -lt "6" ]
 then

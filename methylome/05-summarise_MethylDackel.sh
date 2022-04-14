@@ -93,7 +93,7 @@ bwa-meth_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 MethylDackel mbias \
 ${genome_reference} \
 bwa-meth_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
-MethylDackel/${ID}_methratio
+MethylDackel/${ID}_methratio_mbias
 
 # now make a bigwig
 #Make bigWigs per context
@@ -104,25 +104,42 @@ bedGraphToBigWig "MethylDackel/${ID}_methratio_CHG.bedGraph" ${chrom_sizes_file}
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file} \
 "MethylDackel/${ID}_MethylDackel_CHH.bigWig"
 
-# Now split by chromosome
-# split bedGraph by chromosome
-awk_make_bedGraph_context='BEGIN {OFS = FS} (NR>1){
-  print $1, $2, $3, $4, $5, $6 > "MethylDackel/"ID"_"$1"_MethylDackel.bedGraph"
-}
-'
+## Add context - uncomment if you want to add column with context
+#awk -F$"\\t" \
+#'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6, "CG"}' \
+# MethylDackel/${ID}_methratio_CpG.bedGraph > MethylDackel/${ID}_methratio_CpG_context.bedGraph
+#
+# awk -F$"\\t" \
+# 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6, "CHG"}' \
+#  MethylDackel/${ID}_methratio_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG_context.bedGraph
+#
+#  awk -F$"\\t" \
+#  'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6, "CHH"}' \
+#   MethylDackel/${ID}_methratio_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH_context.bedGraph
 
-awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" "MethylDackel/${ID}_methratio_CpG.bedGraph"
+#
+
+## Now split by chromosome - uncomment if you want to split into per Chr files
+## split bedGraph by chromosome
+#awk_make_bedGraph_context='BEGIN {OFS = FS} (NR>1){
+#  print $1, $2, $3, $4, $5, $6 > "MethylDackel/"ID"_"$1"_MethylDackel.bedGraph"
+#}
+#'
+#
+#awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" "MethylDackel/${ID}_methratio_CpG.bedGraph"
+#awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" "MethylDackel/${ID}_methratio_CHG.bedGraph"
+#awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" "MethylDackel/${ID}_methratio_CHH.bedGraph"
 
 ########################
 
 #ChrC_name=ChrC
 
-# conversion rate
-awk -F$"\\t" \
-'BEGIN {OFS = FS} {sum1 += $6; sum2 +=$5} END {print sum1, sum2 , 100-((sum2/sum1)*100)}' \
-MethylDackel/${ID}_${ChrC_name}_MethylDackel.bedGraph > ConversionRate/${ID}_conversion_rate.txt
-# CT  C Conversion_rate
-# 365     2       99.4521
+## conversion rate
+#awk -F$"\\t" \
+#'BEGIN {OFS = FS} {sum1 += $6; sum2 +=$5} END {print sum1, sum2 , 100-((sum2/sum1)*100)}' \
+#MethylDackel/${ID}_${ChrC_name}_MethylDackel.bedGraph > ConversionRate/${ID}_conversion_rate.txt
+## CT  C Conversion_rate
+## 365     2       99.4521
 
 
 echo finished summarising
