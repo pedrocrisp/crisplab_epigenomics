@@ -271,12 +271,12 @@ mkdir -p ConversionRate
                 # Output (no header)
                 # ratio calculated using C_count/CT_count
                 #chr     start  end   ratio  context strand
-                Chr01   157     158     0       CHH     -
-                Chr01   173     174     0       CHG     -
-                Chr01   175     176     0       CHH     -
-                Chr01   185     186     0       CHH     -
-                Chr01   194     195     0       CHH     +
-                Chr01   200     201     0       CHG     +
+                #Chr01   157     158     0       CHH     -
+                #Chr01   173     174     0       CHG     -
+                #Chr01   175     176     0       CHH     -
+                #Chr01   185     186     0       CHH     -
+                #Chr01   194     195     0       CHH     +
+                #Chr01   200     201     0       CHG     +
 
 
                 ## split into + and - strand based on column 6
