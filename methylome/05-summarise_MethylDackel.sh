@@ -49,7 +49,6 @@ echo sample being mapped is $ID
 #make adaligned folder bsmaped
 cd analysis
 mkdir -p MethylDackel
-mkdir -p TempOut
 mkdir -p ConversionRate
 
 ########## Run #################
