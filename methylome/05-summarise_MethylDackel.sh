@@ -67,7 +67,7 @@ MethylDackel extract \
 --nOB 0,0,0,0 \
 -o MethylDackel/${ID}_methratio \
 ${genome_reference} \
-bwa-meth_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
 # out put
 
@@ -92,7 +92,7 @@ bwa-meth_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 # get bias metrics
 MethylDackel mbias \
 ${genome_reference} \
-bwa-meth_filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 MethylDackel/${ID}_methratio_mbias
 
 # now make a bigwig
