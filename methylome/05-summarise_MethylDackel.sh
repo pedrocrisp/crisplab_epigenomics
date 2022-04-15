@@ -98,12 +98,12 @@ MethylDackel/${ID}_methratio_mbias
 # now make a bigwig
 #Make bigWigs per context
 
-# remove header
-tail -n+2 MethylDackel/${ID}_methratio_head_CpG.bedGraph > MethylDackel/${ID}_methratio_CG.bedGraph
-tail -n+2 MethylDackel/${ID}_methratio_head_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
-tail -n+2 MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
+## remove header
+#tail -n+2 MethylDackel/${ID}_methratio_head_CpG.bedGraph > MethylDackel/${ID}_methratio_CG.bedGraph
+#tail -n+2 MethylDackel/${ID}_methratio_head_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
+#tail -n+2 MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
 
-# Add context - uncomment if you want to add column with context
+# make 4 columns and no header for bedGraphToBigWig
 awk -F$"\\t" \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
 MethylDackel/${ID}_methratio_head_CpG.bedGraph > MethylDackel/${ID}_methratio_CG.bedGraph
@@ -116,7 +116,7 @@ awk -F$"\\t" \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
  MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
 
-# rm head files
+# rm files with header
 rm -rv MethylDackel/${ID}_methratio_head*
 
 # bw
@@ -142,16 +142,20 @@ bedGraphToBigWig "MethylDackel/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file}
 
 #
 
-## Now split by chromosome - uncomment if you want to split into per Chr files
-## split bedGraph by chromosome
-#awk_make_bedGraph_context='BEGIN {OFS = FS} (NR>1){
-#  print $1, $2, $3, $4, $5, $6 > "MethylDackel/"ID"_"$1"_MethylDackel.bedGraph"
-#}
-#'
-#
-#awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" "MethylDackel/${ID}_methratio_CpG.bedGraph"
-#awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" "MethylDackel/${ID}_methratio_CHG.bedGraph"
-#awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" "MethylDackel/${ID}_methratio_CHH.bedGraph"
+# Now split by chromosome - uncomment if you want to split into per Chr files
+# split bedGraph by chromosome
+
+awk -F$"\\t" -v ID=$ID \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6 > "MethylDackel/"ID"_"$1"_methratio_CG.bedGraph"}' \
+MethylDackel/${ID}_methratio_head_CpG.bedGraph
+
+awk -F$"\\t" -v ID=$ID \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6 > "MethylDackel/"ID"_"$1"_methratio_CHG.bedGraph"}' \
+MethylDackel/${ID}_methratio_head_CHG.bedGraph
+
+awk -F$"\\t" -v ID=$ID \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6 > "MethylDackel/"ID"_"$1"_methratio_CHH.bedGraph"}' \
+MethylDackel/${ID}_methratio_head_CHH.bedGraph
 
 ########################
 
