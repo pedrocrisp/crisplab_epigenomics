@@ -32,7 +32,6 @@ cd "$PBS_O_WORKDIR"
 echo working dir is now $PWD
 
 ########## Modules #################
-
 module load R/3.5.0-gnu
 ########## Set up dirs #################
 
