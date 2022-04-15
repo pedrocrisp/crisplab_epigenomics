@@ -44,7 +44,7 @@ fi
 
 # try to make a loop to submit a batch of batch job per chromosome...
 
-for CHROMOSOME in $(cat chromomsome_list); do
+for CHROMOSOME in $(cat $chromomsome_list); do
 
 reference_100bp_tiles=${reference_tile_file_folder}/${CHROMOSOME}_100bp_tiles_zBased_sites_counts.txt
 chrom_sizes_path=${chrom_sizes_folder}/${CHROMOSOME}.chrom.sizes
