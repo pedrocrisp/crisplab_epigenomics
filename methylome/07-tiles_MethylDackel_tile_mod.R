@@ -38,6 +38,8 @@ library(purrr)
 # disable scientific notation
 old.scipen <- getOption("scipen")
 options(scipen=999)
+
+outdir = tiles_chr
 ###########################
 
 #reference used to make amendments
@@ -53,11 +55,11 @@ reference_tiles <- read_tsv(reference_tile_file, col_names = TRUE,
                             ))
 
 
-### ### ### ### ### ### 
+### ### ### ### ### ###
 # Make tiles module CG
-### ### ### ### ### ###  
+### ### ### ### ### ###
 
-mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CG.bedGraph"), 
+mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CG.bedGraph"),
                      col_names = c("chr", "start", "end", "ratio", "C", "CT"))
 mc_tiles
 
@@ -81,9 +83,9 @@ broken_bedGraph <- mc_tiles %>%
   mutate(start_zBased = start - start %% 100,
          broken_end = start + 100) %>%
   group_by(chr, start_zBased, broken_end) %>%
-  summarise(sites_with_data = n(), 
-            C = sum(C), 
-            CT = sum(CT), 
+  summarise(sites_with_data = n(),
+            C = sum(C),
+            CT = sum(CT),
             ratio = mean(ratio)) %>% # summarise to the bins
   arrange(chr, start_zBased)
 
@@ -93,23 +95,23 @@ broken_bedGraph
 # # Groups:   chr, start_zBased [256,629]
 # chr   start_zBased broken_end sites_with_data     C    CT ratio
 # <chr>        <dbl>      <dbl>           <int> <dbl> <dbl> <dbl>
-# 1 Chr1             0        100               2     6     5 75   
-# 2 Chr1           100        200               5    29    29 48.8 
-# 3 Chr1           300        400               2     1    20  3.5 
-# 4 Chr1           500        600               4     3    37  7.5 
-# 5 Chr1           700        800               3    36    11 77.7 
-# 6 Chr1           800        900               5    55    26 66   
-# 7 Chr1           900       1000               3    16    23 43   
-# 8 Chr1          1000       1100               2     0     6  0   
-# 9 Chr1          1100       1200               2     0    27  0   
+# 1 Chr1             0        100               2     6     5 75
+# 2 Chr1           100        200               5    29    29 48.8
+# 3 Chr1           300        400               2     1    20  3.5
+# 4 Chr1           500        600               4     3    37  7.5
+# 5 Chr1           700        800               3    36    11 77.7
+# 6 Chr1           800        900               5    55    26 66
+# 7 Chr1           900       1000               3    16    23 43
+# 8 Chr1          1000       1100               2     0     6  0
+# 9 Chr1          1100       1200               2     0    27  0
 # 10 Chr1          1200       1300               4     1    58  1.25
 
 # write.table(mc_tiles_mean, paste0("tiles_tmp", "/", sample, "_methratio_CG.100.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 
-### ### ### ### ### ### ### 
+### ### ### ### ### ### ###
 # ADMEND TILE END MODULE CG
-### ### ### ### ### ### ### 
+### ### ### ### ### ### ###
 
 #########
 # fix bed CG
@@ -123,7 +125,7 @@ broken_bedGraph
 #                               X3 = col_integer(),
 #                               X4 = col_number()
 #                             ))
-# 
+#
 # colnames(broken_bedGraph) <- c("chr", "start_zBased", "broken_end", "sites_with_data", "C", "CT", "ratio")
 # #remove NAs - this is necessary because the output from the perl script is any tile with data in any context per sample
 # broken_bedGraph <- na.omit(broken_bedGraph)
@@ -143,18 +145,18 @@ merge(broken_bedGraph, reference_tiles, by = c("chr", "start_zBased"))
 #convert to one-based coordinate .txt file and sort
 fixed_bedGraph3 <-
 fixed_bedGraph %>% select(chr, start, end, C, CT, ratio, sites_with_data, cg_sites) %>% arrange(chr, start)
-write.table(fixed_bedGraph3, paste0("tiles", "/", sample, ".100.CG.fixed.sorted.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
+write.table(fixed_bedGraph3, paste0(outdir, "/", sample, ".100.CG.fixed.sorted.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 # clear memory
 rm(fixed_bedGraph3)
 rm(fixed_bedGraph)
 rm(broken_bedGraph)
 
-### ### ### ### ### ### 
+### ### ### ### ### ###
 # Make tiles module CHG
-### ### ### ### ### ###  
+### ### ### ### ### ###
 
-mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CHG.bedGraph"), 
+mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CHG.bedGraph"),
                      col_names = c("chr", "start", "end", "ratio", "C", "CT"))
 mc_tiles
 
@@ -178,9 +180,9 @@ broken_bedGraph <- mc_tiles %>%
   mutate(start_zBased = start - start %% 100,
          broken_end = start_zBased + 100) %>%
   group_by(chr, start_zBased, broken_end) %>%
-  summarise(sites_with_data = n(), 
-            C = sum(C), 
-            CT = sum(CT), 
+  summarise(sites_with_data = n(),
+            C = sum(C),
+            CT = sum(CT),
             ratio = mean(ratio)) %>% # summarise to the bins
   arrange(chr, start_zBased)
 
@@ -190,23 +192,23 @@ broken_bedGraph
 # # Groups:   chr, start_zBased [256,629]
 # chr   start_zBased broken_end sites_with_data     C    CT ratio
 # <chr>        <dbl>      <dbl>           <int> <dbl> <dbl> <dbl>
-# 1 Chr1             0        100               2     6     5 75   
-# 2 Chr1           100        200               5    29    29 48.8 
-# 3 Chr1           300        400               2     1    20  3.5 
-# 4 Chr1           500        600               4     3    37  7.5 
-# 5 Chr1           700        800               3    36    11 77.7 
-# 6 Chr1           800        900               5    55    26 66   
-# 7 Chr1           900       1000               3    16    23 43   
-# 8 Chr1          1000       1100               2     0     6  0   
-# 9 Chr1          1100       1200               2     0    27  0   
+# 1 Chr1             0        100               2     6     5 75
+# 2 Chr1           100        200               5    29    29 48.8
+# 3 Chr1           300        400               2     1    20  3.5
+# 4 Chr1           500        600               4     3    37  7.5
+# 5 Chr1           700        800               3    36    11 77.7
+# 6 Chr1           800        900               5    55    26 66
+# 7 Chr1           900       1000               3    16    23 43
+# 8 Chr1          1000       1100               2     0     6  0
+# 9 Chr1          1100       1200               2     0    27  0
 # 10 Chr1          1200       1300               4     1    58  1.25
 
 # write.table(mc_tiles_mean, paste0("tiles_tmp", "/", sample, "_methratio_CHG.100.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 
-### ### ### ### ### ### ### 
+### ### ### ### ### ### ###
 # ADMEND TILE END MODULE CHG
-### ### ### ### ### ### ### 
+### ### ### ### ### ### ###
 
 #########
 # fix bed CHG
@@ -220,7 +222,7 @@ broken_bedGraph
 #                               X3 = col_integer(),
 #                               X4 = col_number()
 #                             ))
-# 
+#
 # colnames(broken_bedGraph) <- c("chr", "start_zBased", "broken_end", "sites_with_data", "C", "CT", "ratio")
 # #remove NAs - this is necessary because the output from the perl script is any tile with data in any context per sample
 # broken_bedGraph <- na.omit(broken_bedGraph)
@@ -240,7 +242,7 @@ fixed_bedGraph <-
 #convert to one-based coordinate .txt file and sort
 fixed_bedGraph3 <-
   fixed_bedGraph %>% select(chr, start, end, C, CT, ratio, sites_with_data, chg_sites) %>% arrange(chr, start)
-write.table(fixed_bedGraph3, paste0("tiles", "/", sample, ".100.CHG.fixed.sorted.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
+write.table(fixed_bedGraph3, paste0(outdir, "/", sample, ".100.CHG.fixed.sorted.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 # clear memory
 rm(fixed_bedGraph3)
@@ -248,11 +250,11 @@ rm(fixed_bedGraph)
 rm(broken_bedGraph)
 
 
-### ### ### ### ### ### 
+### ### ### ### ### ###
 # Make tiles module CHH
-### ### ### ### ### ###  
+### ### ### ### ### ###
 
-mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CHH.bedGraph"), 
+mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CHH.bedGraph"),
                      col_names = c("chr", "start", "end", "ratio", "C", "CT"))
 mc_tiles
 
@@ -276,9 +278,9 @@ broken_bedGraph <- mc_tiles %>%
   mutate(start_zBased = start - start %% 100,
          broken_end = start_zBased + 100) %>%
   group_by(chr, start_zBased, broken_end) %>%
-  summarise(sites_with_data = n(), 
-            C = sum(C), 
-            CT = sum(CT), 
+  summarise(sites_with_data = n(),
+            C = sum(C),
+            CT = sum(CT),
             ratio = mean(ratio)) %>% # summarise to the bins
   arrange(chr, start_zBased)
 
@@ -288,23 +290,23 @@ broken_bedGraph
 # # Groups:   chr, start_zBased [256,629]
 # chr   start_zBased broken_end sites_with_data     C    CT ratio
 # <chr>        <dbl>      <dbl>           <int> <dbl> <dbl> <dbl>
-# 1 Chr1             0        100               2     6     5 75   
-# 2 Chr1           100        200               5    29    29 48.8 
-# 3 Chr1           300        400               2     1    20  3.5 
-# 4 Chr1           500        600               4     3    37  7.5 
-# 5 Chr1           700        800               3    36    11 77.7 
-# 6 Chr1           800        900               5    55    26 66   
-# 7 Chr1           900       1000               3    16    23 43   
-# 8 Chr1          1000       1100               2     0     6  0   
-# 9 Chr1          1100       1200               2     0    27  0   
+# 1 Chr1             0        100               2     6     5 75
+# 2 Chr1           100        200               5    29    29 48.8
+# 3 Chr1           300        400               2     1    20  3.5
+# 4 Chr1           500        600               4     3    37  7.5
+# 5 Chr1           700        800               3    36    11 77.7
+# 6 Chr1           800        900               5    55    26 66
+# 7 Chr1           900       1000               3    16    23 43
+# 8 Chr1          1000       1100               2     0     6  0
+# 9 Chr1          1100       1200               2     0    27  0
 # 10 Chr1          1200       1300               4     1    58  1.25
 
 # write.table(mc_tiles_mean, paste0("tiles_tmp", "/", sample, "_methratio_CHH.100.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 
-### ### ### ### ### ### ### 
+### ### ### ### ### ### ###
 # ADMEND TILE END MODULE CHH
-### ### ### ### ### ### ### 
+### ### ### ### ### ### ###
 
 #########
 # fix bed CHH
@@ -318,7 +320,7 @@ broken_bedGraph
 #                               X3 = col_integer(),
 #                               X4 = col_number()
 #                             ))
-# 
+#
 # colnames(broken_bedGraph) <- c("chr", "start_zBased", "broken_end", "sites_with_data", "C", "CT", "ratio")
 # #remove NAs - this is necessary because the output from the perl script is any tile with data in any context per sample
 # broken_bedGraph <- na.omit(broken_bedGraph)
@@ -338,11 +340,9 @@ fixed_bedGraph <-
 #convert to one-based coordinate .txt file and sort
 fixed_bedGraph3 <-
   fixed_bedGraph %>% select(chr, start, end, C, CT, ratio, sites_with_data, chh_sites) %>% arrange(chr, start)
-write.table(fixed_bedGraph3, paste0("tiles", "/", sample, ".100.CHH.fixed.sorted.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
+write.table(fixed_bedGraph3, paste0(outdir, "/", sample, ".100.CHH.fixed.sorted.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 # clear memory
 rm(fixed_bedGraph3)
 rm(fixed_bedGraph)
 rm(broken_bedGraph)
-
-
