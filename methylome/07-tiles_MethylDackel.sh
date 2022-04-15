@@ -53,7 +53,7 @@ mkdir -p tiles
 # 3. output one-based coordinate .txt file for analysis in R
 # folder with input files hardcoded "MethylDackel"
 
-for CHROMOSOME in (cat $chromosome_list); do
+for CHROMOSOME in $(cat $chromosome_list); do
 R -f ~/gitrepos/crisplab_epigenomics/methylome/07-tiles_MethylDackel_tile_mod.R \
 --args ${ID}_${CHROMOSOME} MethylDackel ${reference_tile_file_folder}/${CHROMOSOME}_100bp_tiles_zBased_sites_counts.txt
 done
