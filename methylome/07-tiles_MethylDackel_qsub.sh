@@ -17,7 +17,7 @@ walltime=$4
 mem=$5
 cores=$6
 
-if [ "$#" -lt "3" ]
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
