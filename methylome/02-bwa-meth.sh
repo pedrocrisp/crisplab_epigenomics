@@ -48,6 +48,7 @@ echo sample being mapped is $ID
 #make adaligned folder bsmaped
 cd analysis
 mkdir -p bwa-meth
+mkdir -p bwa-meth-flagstat
 
 ########## Run #################
 
@@ -68,7 +69,7 @@ samtools sort bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
 #rm tmp unsorted file
 rm bwa-meth/${ID}_tmp.bam
 # get mapping stats
-samtools flagstat -@ $cores bwa-meth/${ID}_sorted.bam > bwa-meth/${ID}_flagstat.txt
+samtools flagstat -@ $cores bwa-meth/${ID}_sorted.bam > bwa-meth-flagstat/${ID}_flagstat.txt
 # print mapping stats (to log file) too
 cat bwa-meth/${ID}_flagstat.txt
 
