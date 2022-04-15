@@ -19,11 +19,10 @@ data_folder
 reference_tile_file <- args[3]
 reference_tile_file
 
-##### dev
+# ##### dev
 # cd /scratch/project/crisp006/pete/arabidopsis-bwa-WGBS/analysis
 # module load R/3.5.0-gnu
 # mkdir -p tiles
-# mkdir -p tiles_tmp
 # R
 # sample <- "SRR5724529_Chr1"
 # # SRR5724529_Chr1_methratio_CG.bedGraph
@@ -81,7 +80,7 @@ mc_tiles
 
 broken_bedGraph <- mc_tiles %>%
   mutate(start_zBased = start - start %% 100,
-         broken_end = start + 100) %>%
+         broken_end = start_zBased + 100) %>%
   group_by(chr, start_zBased, broken_end) %>%
   summarise(sites_with_data = n(),
             C = sum(C),
@@ -145,6 +144,7 @@ merge(broken_bedGraph, reference_tiles, by = c("chr", "start_zBased"))
 #convert to one-based coordinate .txt file and sort
 fixed_bedGraph3 <-
 fixed_bedGraph %>% select(chr, start, end, C, CT, ratio, sites_with_data, cg_sites) %>% arrange(chr, start)
+head(fixed_bedGraph3)
 write.table(fixed_bedGraph3, paste0(outdir, "/", sample, "_BSMAP_out.txt.100.CG.fixed.sorted.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 # clear memory
