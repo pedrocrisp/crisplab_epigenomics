@@ -49,13 +49,13 @@ for CHROMOSOME in $(cat $chromomsome_list); do
 reference_100bp_tiles=${reference_tile_file_folder}/${CHROMOSOME}_100bp_tiles_zBased_sites_counts.txt
 chrom_sizes_path=${chrom_sizes_folder}/${CHROMOSOME}.chrom.sizes
 
-sample_list_2=$(for SAMPLE in $(cat $sample_list); do
-echo ${SAMPLE}_${CHROMOSOME}
-done)
+#sample_list_2=$(for SAMPLE in $(cat $sample_list); do
+#echo ${SAMPLE}_${CHROMOSOME}
+#done)
 
-#sample_list_2=$(awk -F$"_" -v CHROMOSOME=$CHROMOSOME \
-#'BEGIN {OFS = FS} (NR=1){print $1, CHROMOSOME}' \
-#$sample_list)
+awk -F$"_" -v CHROMOSOME=$CHROMOSOME \
+'BEGIN {OFS = FS} (NR=1){print $1, CHROMOSOME}' \
+$sample_list > samples_${CHROMOSOME}.txt
 
 #number of samples
 number_of_samples=`wc -l $sample_list | awk '{print $1}'`
@@ -90,7 +90,7 @@ analysis_dir=analysis
 mkdir -p $analysis_dir
 
 #make trimmgalore logs folder, timestamped
-log_folder=logs/${timestamp}_${step}
+log_folder=logs/${timestamp}_${step}_${CHROMOSOME}
 mkdir $log_folder
 
 #script path and cat a record of what was run
@@ -105,6 +105,6 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=${cores},mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list_2},reference_100bp_tiles=$reference_100bp_tiles,chrom_sizes_path=$chrom_sizes_path,coverage_filter_min=$coverage_filter_min,site_filter_min=$site_filter_min,MR_percent=$MR_percent,UMR_percent=$UMR_percent \
+-v LIST=samples_${CHROMOSOME}.txt,reference_100bp_tiles=$reference_100bp_tiles,chrom_sizes_path=$chrom_sizes_path,coverage_filter_min=$coverage_filter_min,site_filter_min=$site_filter_min,MR_percent=$MR_percent,UMR_percent=$UMR_percent \
 $script_to_qsub
 done
