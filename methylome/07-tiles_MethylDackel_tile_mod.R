@@ -39,7 +39,7 @@ library(purrr)
 old.scipen <- getOption("scipen")
 options(scipen=999)
 
-outdir = tiles_chr
+outdir = "tiles"
 ###########################
 
 #reference used to make amendments
