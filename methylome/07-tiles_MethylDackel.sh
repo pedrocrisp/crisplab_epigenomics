@@ -56,7 +56,7 @@ mkdir -p tiles
 
 for CHROMOSOME in (cat $chromosome_list); do
 R -f ~/gitrepos/crisplab_epigenomics/methylome/07-tiles_MethylDackel_tile_mod.R \
---args ${ID}_${CHROMOSOME} MethylDackel ${reference_tile_file_folder} $CHROMOSOME
+--args ${ID}_${CHROMOSOME} MethylDackel ${reference_tile_file_folder}/${CHROMOSOME}_100bp_tiles_zBased_sites_counts.txt
 done
 
 #make bedGraph by sorting and removing cols 4 and 5 with awk
