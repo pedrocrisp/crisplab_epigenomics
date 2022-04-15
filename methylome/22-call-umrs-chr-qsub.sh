@@ -58,7 +58,7 @@ done)
 #$sample_list)
 
 #number of samples
-number_of_samples=`wc -l $sample_list_2 | awk '{print $1}'`
+number_of_samples=`wc -l $sample_list | awk '{print $1}'`
 if [[ "$number_of_samples" -eq 1 ]]
 then
 qsub_t=1
