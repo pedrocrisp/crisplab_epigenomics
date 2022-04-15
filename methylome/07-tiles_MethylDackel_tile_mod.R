@@ -25,10 +25,10 @@ reference_tile_file
 # mkdir -p tiles
 # mkdir -p tiles_tmp
 # R
-sample <- "SRR5724529_Chr1"
-# SRR5724529_Chr1_methratio_CG.bedGraph
-data_folder <- "MethylDackel"
-reference_tile_file <- "/home/uqpcrisp/refseqs/arabidopsis/chromosomes/sites/Chr1_100bp_tiles_zBased_sites_counts.txt"
+# sample <- "SRR5724529_Chr1"
+# # SRR5724529_Chr1_methratio_CG.bedGraph
+# data_folder <- "MethylDackel"
+# reference_tile_file <- "/home/uqpcrisp/refseqs/arabidopsis/chromosomes/sites/Chr1_100bp_tiles_zBased_sites_counts.txt"
 
 ###########################
 #setup
