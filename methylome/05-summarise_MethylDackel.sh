@@ -49,7 +49,9 @@ echo sample being mapped is $ID
 #make adaligned folder bsmaped
 cd analysis
 mkdir -p MethylDackel
+mkdir -p MethylDackel_bigwigs
 mkdir -p ConversionRate
+mkdir -p MethylDackel_mbias
 
 ########## Run #################
 # MethylDackel
@@ -93,7 +95,7 @@ bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 MethylDackel mbias \
 ${genome_reference} \
 bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam \
-MethylDackel/${ID}_methratio_mbias
+MethylDackel_mbias/${ID}_methratio_mbias
 
 # now make a bigwig
 #Make bigWigs per context
@@ -118,11 +120,11 @@ awk -F$"\\t" \
 
 # bw
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} \
-"MethylDackel/${ID}_MethylDackel_CG.bigWig"
+"MethylDackel_bigwigs/${ID}_MethylDackel_CG.bigWig"
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CHG.bedGraph" ${chrom_sizes_file} \
-"MethylDackel/${ID}_MethylDackel_CHG.bigWig"
+"MethylDackel_bigwigs/${ID}_MethylDackel_CHG.bigWig"
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file} \
-"MethylDackel/${ID}_MethylDackel_CHH.bigWig"
+"MethylDackel_bigwigs/${ID}_MethylDackel_CHH.bigWig"
 
 # Now split by chromosome - uncomment if you want to split into per Chr files
 # split bedGraph by chromosome
