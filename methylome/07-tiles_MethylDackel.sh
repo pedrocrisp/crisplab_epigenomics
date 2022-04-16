@@ -43,7 +43,7 @@ echo sample being mapped is $ID
 
 #make adaligned folder bsmaped
 cd analysis
-mkdir -p tiles_chr
+mkdir -p tiles
 
 ########## Run #################
 
