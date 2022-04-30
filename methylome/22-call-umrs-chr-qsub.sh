@@ -53,8 +53,8 @@ chrom_sizes_path=${chrom_sizes_folder}/${CHROMOSOME}.chrom.sizes
 #echo ${SAMPLE}_${CHROMOSOME}
 #done)
 
-awk -F$"_" -v CHROMOSOME=$CHROMOSOME \
-'BEGIN {OFS = FS} (NR=1){print $1, CHROMOSOME}' \
+awk -F$"\\t" -v CHROMOSOME=$CHROMOSOME \
+'BEGIN {OFS = FS} (NR=1){print $1"_"CHROMOSOME}' \
 $sample_list > samples_${CHROMOSOME}.txt
 
 #number of samples
