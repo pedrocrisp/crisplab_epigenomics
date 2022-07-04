@@ -132,7 +132,7 @@ Note: "sites" is sites with data, if C has no data it will not appear in the out
 
 ### Step 5.2 Context means
 
-This step calculates means per context and sub-context. If a lcoi of interest file is provided it will additionally output a summary for these loci only. If there are no loci of interest then specify ``"none"``.
+This step calculates means per context and sub-context. If a loci of interest file is provided it will additionally output a summary for these loci only. If there are no loci of interest then specify ``"none"``.
 
 ```
 bash \

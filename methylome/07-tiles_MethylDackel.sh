@@ -47,7 +47,7 @@ mkdir -p tiles
 
 ########## Run #################
 
-#Run R moudle to:
+# Run R module to:
 # 1. sumamrise into 100bp tiles
 # 2. fix chr ends in BED file
 # 3. output one-based coordinate .txt file for analysis in R

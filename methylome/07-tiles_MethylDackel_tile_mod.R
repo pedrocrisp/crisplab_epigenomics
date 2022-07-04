@@ -59,11 +59,11 @@ reference_tiles <- read_tsv(reference_tile_file, col_names = TRUE,
 ### ### ### ### ### ###
 
 mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CG.bedGraph"),
-                     col_names = c("chr", "start", "end", "ratio", "C", "CT"))
+                     col_names = c("chr", "start", "end", "percent", "C", "CT"))
 mc_tiles
 
 # # A tibble: 1,415,283 × 6
-# chr   start   end ratio     C    CT
+# chr   start   end percent     C    CT
 # <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
 # 1 Chr1     31    32   100     1     0
 # 2 Chr1     33    34    50     5     5
@@ -76,11 +76,12 @@ mc_tiles
 # 9 Chr1    390   391     7     1    13
 # 10 Chr1    561   562     0     0     9
 
-#"sites_with_data", "C", "CT", "ratio"
+#"sites_with_data", "C", "CT", "percent"
 
 broken_bedGraph <- mc_tiles %>%
   mutate(start_zBased = start - start %% 100,
-         broken_end = start_zBased + 100) %>%
+         broken_end = start_zBased + 100,
+         ratio = percent/100) %>%
   group_by(chr, start_zBased, broken_end) %>%
   summarise(sites_with_data = n(),
             C = sum(C),
@@ -157,7 +158,7 @@ rm(broken_bedGraph)
 ### ### ### ### ### ###
 
 mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CHG.bedGraph"),
-                     col_names = c("chr", "start", "end", "ratio", "C", "CT"))
+                     col_names = c("chr", "start", "end", "percent", "C", "CT"))
 mc_tiles
 
 # # A tibble: 1,415,283 × 6
@@ -178,7 +179,8 @@ mc_tiles
 
 broken_bedGraph <- mc_tiles %>%
   mutate(start_zBased = start - start %% 100,
-         broken_end = start_zBased + 100) %>%
+         broken_end = start_zBased + 100,
+         ratio = percent/100) %>%
   group_by(chr, start_zBased, broken_end) %>%
   summarise(sites_with_data = n(),
             C = sum(C),
@@ -255,7 +257,7 @@ rm(broken_bedGraph)
 ### ### ### ### ### ###
 
 mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CHH.bedGraph"),
-                     col_names = c("chr", "start", "end", "ratio", "C", "CT"))
+                     col_names = c("chr", "start", "end", "percent", "C", "CT"))
 mc_tiles
 
 # # A tibble: 1,415,283 × 6
@@ -276,7 +278,8 @@ mc_tiles
 
 broken_bedGraph <- mc_tiles %>%
   mutate(start_zBased = start - start %% 100,
-         broken_end = start_zBased + 100) %>%
+         broken_end = start_zBased + 100,
+         ratio = percent/100) %>%
   group_by(chr, start_zBased, broken_end) %>%
   summarise(sites_with_data = n(),
             C = sum(C),
