@@ -15,8 +15,9 @@ walltime=$2
 mem=$3
 bam_dir=$4
 account_department=$5
+path_to_picard=$6
 
-if [ "$#" -lt "4" ]
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
@@ -73,6 +74,6 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},bam_dir=${bam_dir} \
+-v LIST=${sample_list},bam_dir=${bam_dir},path_to_picard={$path_to_picard} \
 -A $account_department \
 $script_to_qsub

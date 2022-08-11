@@ -72,8 +72,9 @@ bamCoverage \
 
 ############ get frag sizes ##############
 # get frag sizes to check level of tagmentation using picard
+# path to call picard jar - eg  - "/home/uqpcrisp/software/picard.jar"
 
-java -jar /home/uqpcrisp/software/picard.jar CollectInsertSizeMetrics \
+java -jar $path_to_picard CollectInsertSizeMetrics \
 I=$bam_dir/${ID}_sorted.bam \
 O=${bam_dir}_insert_metrics/${ID}_insert_size_metrics.txt \
 H=${bam_dir}_insert_metrics/${ID}_insert_size_histogram.pdf \
