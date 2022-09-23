@@ -73,6 +73,28 @@ samtools flagstat -@ $cores bwa-meth/${ID}_sorted.bam > bwa-meth-flagstat/${ID}_
 # print mapping stats (to log file) too
 cat bwa-meth-flagstat/${ID}_flagstat.txt
 
+# check if single or paired end by looking for R2 file
+elif [ -e "trimmed/${ID}_R2_val_2.fq.gz" ]; then
+
+echo "paired reads"
+
+bwameth.py \
+--threads $cores \
+--reference ${genome_reference} \
+trimmed/${ID}_R1_val_1.fq.gz trimmed/${ID}_R2_val_2.fq.gz \
+| samtools view -b - \
+> bwa-meth/${ID}_tmp.bam
+
+# sort
+samtools sort bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
+#rm tmp unsorted file
+rm bwa-meth/${ID}_tmp.bam
+# get mapping stats
+samtools flagstat -@ $cores bwa-meth/${ID}_sorted.bam > bwa-meth-flagstat/${ID}_flagstat.txt
+# print mapping stats (to log file) too
+cat bwa-meth-flagstat/${ID}_flagstat.txt
+
+
 else
 echo "assuming single end"
 

@@ -667,7 +667,50 @@ chr1A_part1  1101       1200       0     30    0                    28          
 
 # Step 3 UMR calling
 
-**TBC...**
+The following 6 files are usually produced in UMR identification.
+
+The following 3 files were processed requiring a minimum coverage of at least 3x per cytosine per strand.
+
+Chinese_Spring_cov_3_sites_2_MR_0.4_UMR_0.1_UMRs_6col.bed
+
+Chinese_Spring_mC_domains_cov_3_sites_2_MR_0.4_UMR_0.1_tiles_with_data.bed
+
+Chinese_Spring_mC_domains_cov_3_sites_2_MR_0.4_UMR_0.1_tiles_with_data_inc_NDs_merged.bed
+
+
+
+The following 3 files were processed requiring a minimum coverage of at least 5x per cytosine per strand.
+
+Chinese_Spring_cov_5_sites_2_MR_0.4_UMR_0.1_UMRs_6col.bed
+
+Chinese_Spring_mC_domains_cov_5_sites_2_MR_0.4_UMR_0.1_tiles_with_data.bed
+
+Chinese_Spring_mC_domains_cov_5_sites_2_MR_0.4_UMR_0.1_tiles_with_data_inc_NDs_merged.bed
+
+File Descriptions:
+
+"*UMRs_6col.bed"
+- this is the coordinates of the UMRs
+- columns are: <chr> <start> <stop> <methylation_type> <UMR_ID> <size_category>
+- methylation_type is always "UMR"
+- size_category small (< 300), medium (< 900) or large (>=900)
+- However, regions less than 300 bp are excluded from the final UMR classification.
+
+
+"*_tiles_with_data.bed"
+- this is the co-ordinates of all tiles with data at the specific threshold (3x or 5x in this example) and with the minimum number of cytosines (2 in this case)
+- columns are: <chr> <start> <stop> <methylation_type>
+- the definition of methylation type is described in the below heuristic:
+
+The methylation categories include “missing data” (including “no data” and “no sites”), “RdDM,” “heterochromatin,” “CG-only,” “unmethylated,” or “intermediate”. In this analysis we are primarily interested in using this classification to identify the UMRs; however, users might also be interested in other types of methylation, which could be extracted from this same analysis strategy. We also suggest removing organelles from the data before proceeding with this step; however, in this example data the organelle genomes have already been removed.
+
+This analysis is performed using a custom R script that we have provided Call-umrs.R. Regions are classified according in the following hierarchy: tiles are classified as missing data if tiles have less than two cytosines in the relevant context or if there is less than the specified coverage threshold of reads (eg 3-5× coverage); RdDM if CHH methylation is greater than 15%; heterochromatin if CG and CHG methylation is 40% or greater; CG-only if CG methylation is greater than 40%; unmethylated if CG, CHG, and CHH are less than 10%; and intermediate if methylation is 10% or greater but less than 40%. Note that the levels of CHH methylation are hard coded in this script; while the level of CG and CHG are specified when calling the script. We have found these levels to be appropriate for a range of species; however, they could be adjusted if your genome has a different or unusual distribution, for example if CHH methylation is known to be higher.
+
+
+"_tiles_with_data_inc_NDs_merged.bed"
+- this is the co-ordinates of all tiles used in the UMR classification including some tiles originally classified as "no data"
+Following UMR tile classification, adjacent unmethylated tiles (UMTs) were merged. To capture and combine any unmethylated regions that were fragmented by a short interval of missing data (low coverage or no sites), any merged UMT regions that were separated by missing data were also merged so long as the resulting merged region consisted of no more than 33% missing data.
+
 
 Dependencies (what we use):
 - R v3.5.0
