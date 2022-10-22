@@ -19,7 +19,9 @@ DMR_contrasts_table_file
 path_to_data_files <- args[3]
 path_to_data_files
 blacklist <- args[4]
+blacklist
 filter_FC <- args[5]
+filter_FC
 
 ######## de bug
 # # args
