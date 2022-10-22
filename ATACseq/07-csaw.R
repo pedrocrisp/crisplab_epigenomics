@@ -86,8 +86,12 @@ label_size = 25.4/72 * 8
 geom.text.size = 8 / (14/5)
 
 ####### set up
-outFolder <- paste0(path_to_data_files, "_CSAW")
+projectFolder <- paste0(path_to_data_files, "_CSAW")
+dir.create(projectFolder)
+
+outFolder <- paste0(projectFolder, "/", contrast)
 dir.create(outFolder)
+
 
 DMR_contrasts_table <- read_tsv(DMR_contrasts_table_file)
 
