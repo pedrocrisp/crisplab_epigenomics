@@ -25,7 +25,10 @@ filter_FC <- args[4]
 # args
 
 # test directors
-cd /Users/pcrisp/UMRseq-06/analysis/UMRseq_Aim2/UMRseq_Aim2_run1_mach_II/maize_mach_II/analysis
+qsub -I -l walltime=24:00:00,nodes=1:ppn=4,mem=40gb -A UQ-SCI-SAFS
+cd /scratch/project/crisp006/pete/UMRseq_Aim2_run1_mach_II/maize_mach_II/analysis
+module load R/3.5.0-gnu
+
 # load R
 R 
 # blacklist
@@ -137,7 +140,7 @@ frag.len <- which.max(x) - 1
 frag.len
 # [1] 9 
 
-pdf(file = paste0(out.folder, "/frag_length.pdf"))
+pdf(file = paste0(outFolder, "/frag_length.pdf"))
 plot(1:length(x)-1, x, xlab="Delay (bp)", ylab="CCF", type="l") 
 abline(v=frag.len, col="red")
 text(x=frag.len, y=min(x), paste(frag.len, "bp"), pos=4, col="red")
@@ -171,7 +174,7 @@ summary(keep)
 # consider raising the filter later
 
 # make plot to visualise the filtering
-pdf(file = paste0(out.folder, "/window_filter.pdf"))
+pdf(file = paste0(outFolder, "/window_filter.pdf"))
 hist(filter.stat$back.abundances, main="", breaks=50, xlab="Background abundance (log2-CPM)")
 threshold <- filter.stat$abundances[1] - filter.stat$filter[1] + log2(min.fc) 
 abline(v=threshold, col="red")
@@ -193,7 +196,7 @@ logfc <- adjc[,1] - adjc[,4]
 head(logfc)
 
 # Abundance-dependent trend in the log-fold change between two H3K9ac libraries (mature B over pro-B),  across all windows retained after filtering.
-pdf(file = paste0(out.folder, "/Abundance-dependent-trend-bias.pdf"))
+pdf(file = paste0(outFolder, "/Abundance-dependent-trend-bias.pdf"))
 smoothScatter(win.ab, logfc, ylim=c(-6, 6), xlim=c(0, 5),
 xlab="Average abundance", ylab="Log-fold change")
 dev.off()
@@ -206,7 +209,7 @@ head(offsets)
 norm.adjc <- adjc - offsets/log(2)
 norm.fc <- norm.adjc[,1]-norm.adjc[,4]
 
-pdf(file = paste0(out.folder, "/non-linear-normalization-trended-bias.pdf"))
+pdf(file = paste0(outFolder, "/non-linear-normalization-trended-bias.pdf"))
 smoothScatter(win.ab, norm.fc, ylim=c(-6, 6), xlim=c(0, 5), xlab="Average abundance", ylab="Log-fold change")
 dev.off()
 
@@ -235,7 +238,7 @@ summary(y$trended.dispersion)
 
 #For most data sets, one would expect to see a trend that decreases to a plateau with increasing average abundance. This reflects the greater reliability of large counts, where the effects of stochasticity and technical artifacts (e.g., mapping errors, PCR duplicates) are averaged out. In Figure 5, the range of abundances after filtering is such that the plateau has already been reached. This is still a satisfactory result, as it indicates that the retained windows have low variability and more power to detect DB.
 
-png(file = paste0(out.folder, "/Abundance-dependent-trend-in-the-BCV-for-each-window.png"))
+png(file = paste0(outFolder, "/Abundance-dependent-trend-in-the-BCV-for-each-window.png"))
 plotBCV(y)
 dev.off()
 
@@ -249,13 +252,13 @@ summary(fit$df.prior)
 
 # why are these numbers all 13.33??????
 
-png(file = paste0(out.folder, "/Effect-of-EB-shrinkage-on-the-raw-QL-dispersion-estimate-for-each-window.png"))
+png(file = paste0(outFolder, "/Effect-of-EB-shrinkage-on-the-raw-QL-dispersion-estimate-for-each-window.png"))
 plotQLDisp(fit)
 dev.off()
 
 # Examining the data with MDS plots. Multi-dimensional scaling (MDS) plots can be used to examine the similarities between libraries. The distance between a pair of libraries on this plot represents the overall log-fold change between those libraries. Ideally, replicates should cluster together while samples from different conditions should be separate. In Figure 7, strong separation in the first dimension is observed between libraries from different cell types. This indicates that significant differences are likely to be present between cell types in this data set.
 
-pdf(file = paste0(out.folder, "/mds.pdf"))
+pdf(file = paste0(outFolder, "/mds.pdf"))
 plotMDS(norm.adjc, labels=celltype, col=c("red", "blue")[as.integer(celltype)])
 dev.off()
 
@@ -265,8 +268,13 @@ dev.off()
 
 # Testing for DB with QL F-tests. Each window is tested for significant differences between cell types using the QL F-test (Lund et al., 2012). This is superior to the likelihood ratio test that is typically used for GLMs, as the QL F-test accounts for the uncertainity in dispersion estimation. One p-value is produced for each window, representing the evidence against the null hypothesis (i.e., that no DB is present in the window). For this analysis, the comparison is parametrized such that the reported log-fold change for each window represents that of the coverage in pro-B cells over their mature B counterparts.
 
-contrast <- makeContrasts(Mo17-B73, levels=design)
-res <- glmQLFTest(fit, contrast=contrast)
+# to parse the sample name to makeContrasts
+# euqivalent to: contrast <- makeContrasts(sample1-sample2, levels=design)
+mycontrast = paste0(sample1, "_"< samples2) 
+cmd <- paste("tmp <- makeContrasts(", mycontrast, ", levels = design)", sep = '"')
+contrastEval <- eval(parse(text = cmd))
+
+res <- glmQLFTest(fit, contrast=contrastEval)
 head(res$table)
 
 #       logFC     logCPM          F    PValue
@@ -351,18 +359,18 @@ best.logFC=tabbest$logFC)
 
 # # uncomment to save the RDS file
 #########
-# saveRDS(file=paste0(out.folder, "/", contrast, "_differential_UMRs.rds"), out.ranges)
+# saveRDS(file=paste0(outFolder, "/", contrast, "_differential_UMRs.rds"), out.ranges)
 #########
 
 # For input into other programs like genome browsers, results can be saved in a more conventional format. Here, coordinates of DB regions are saved in BED format via rtracklayer, using a log-transformed FDR as the score.
 # simplified <- out.ranges[is.sig]
 # simplified$score <- -10*log10(simplified$FDR) 
-# export(con=paste0(out.folder, "/", contrast, "_differential_UMRs_CSAW.bed"), object=simplified)
+# export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW.bed"), object=simplified)
 
 # Saving the RangedSummarizedExperiment objects is also recommended. This avoids the need to re-run the time- consuming read counting steps if parts of the analysis need to be repeated. Similarly, the DGEList object is saved so that the edgeR statistics can be easily recovered.
 # # uncomment to save the 
 #########
-# save(file=paste0(out.folder, "/", contrast, "_objects.Rda"), win.data, bins, y)
+# save(file=paste0(outFolder, "/", contrast, "_objects.Rda"), win.data, bins, y)
 #########
 
 ### code to make a better bed file
@@ -375,25 +383,29 @@ out.ranges.sig
 # filter for significance
 out.ranges.sig <- out.ranges.sig[out.ranges.sig$FDR < 0.05]
 
+# note some regions are "mixed"
+no_call <- out.ranges.sig[!(out.ranges.sig$direction %in% c("up", "down"))]
+no_call
+
 # add direction
 out.ranges.sig$name_tmp <- out.ranges.sig$direction
-out.ranges.sig$name <- ifelse(out.ranges.sig$direction =="up", sample1, ifelse(out.ranges.sig$direction == "down", sample2, NA))
+out.ranges.sig$name <- ifelse(out.ranges.sig$direction =="up", sample1, ifelse(out.ranges.sig$direction == "down", sample2, mixed))
 
 # add the fold change
 out.ranges.sig$score <- out.ranges.sig$best.logFC
 
 # export better bedfile
-export(con=paste0(out.folder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata.bed"), object=out.ranges.sig)
+export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata.bed"), object=out.ranges.sig)
 
 # just get UMRs (up in) in sample1 eg root specific UMRs
 out.ranges.sig_sample1 <- out.ranges.sig[out.ranges.sig$name == sample1]
 # export better bedfile
-export(con=paste0(out.folder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_", sample1, ".bed"), object=out.ranges.sig_sample1)
+export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_", sample1, ".bed"), object=out.ranges.sig_sample1)
 
 # just get UMRs (up in) in sample1 eg root specific UMRs
 out.ranges.sig_sample1 <- out.ranges.sig[out.ranges.sig$name == sample2]
 # export better bedfile
-export(con=paste0(out.folder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_", sample2, ".bed"), object=out.ranges.sig_sample2)
+export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_", sample2, ".bed"), object=out.ranges.sig_sample2)
 
 
 ############
@@ -437,7 +449,7 @@ ggplot(., aes((size))) +
   theme_minimal() +
   text_size_theme_8
 g
-ggsave(plot = g, filename = paste0(out.folder, "/", contrast, "_differential_UMRs_CSAW_sig_sizes_hostogram.pdf"), h = 4, w = 6)
+ggsave(plot = g, filename = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_sizes_hostogram.pdf"), h = 4, w = 6)
 
 ###############
 print(paste0("Phew, got to the end comparing ", sample1, " vs ", sample2))
