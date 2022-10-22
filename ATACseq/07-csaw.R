@@ -171,7 +171,7 @@ win.data
 bins <- windowCounts(bam.files, bin=TRUE, width=2000, param=param) 
 # identify windows to filter
 filter.stat <- filterWindows(win.data, bins, type="global")
-min.fc <- filter_FC
+min.fc <- as.double(filter_FC)
 keep <- filter.stat$filter > log2(min.fc)
 summary(keep)
 #    Mode   FALSE    TRUE 
