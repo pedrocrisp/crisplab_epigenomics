@@ -22,25 +22,25 @@ blacklist <- args[4]
 filter_FC <- args[4]
 
 ######## de bug
-# args
-
-# test directors
-qsub -I -l walltime=24:00:00,nodes=1:ppn=4,mem=40gb -A UQ-SCI-SAFS
-cd /scratch/project/crisp006/pete/UMRseq_Aim2_run1_mach_II/maize_mach_II/analysis
-module load R/3.5.0-gnu
-
-# load R
-R 
-# blacklist
-blacklist = "B_M_bams/B73_leaf3_V3_gDNA_test_peaks.narrowPeak"
-# data
-path_to_data_files="B_M_bams"
-
-# R -f ~/gitrepos/crisplab_epigenomics/methylome/11a-make_DMR_test_table.R --args samples_csaw.txt
-DMR_contrasts_table_file="DMR_tests_combos_all_table.tsv"
-contrast = "B73_leaf3_V3.vs.Mo17_leaf3_V3"
-
-filter_FC = 3
+# # args
+# 
+# # test directors
+# qsub -I -l walltime=24:00:00,nodes=1:ppn=4,mem=40gb -A UQ-SCI-SAFS
+# cd /scratch/project/crisp006/pete/UMRseq_Aim2_run1_mach_II/maize_mach_II/analysis
+# module load R/3.5.0-gnu
+# 
+# # load R
+# R 
+# # blacklist
+# blacklist = "B_M_bams/B73_leaf3_V3_gDNA_test_peaks.narrowPeak"
+# # data
+# path_to_data_files="B_M_bams"
+# 
+# # R -f ~/gitrepos/crisplab_epigenomics/methylome/11a-make_DMR_test_table.R --args samples_csaw.txt
+# DMR_contrasts_table_file="DMR_tests_combos_all_table.tsv"
+# contrast = "B73_leaf3_V3.vs.Mo17_leaf3_V3"
+# 
+# filter_FC = 3
 ###########################
 ########
 ###########################
