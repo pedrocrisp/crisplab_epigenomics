@@ -48,6 +48,6 @@ cd analysis
 
 # Run R module to creat 100bp tile bed file
 R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw.R \
---args $ID $DMR_contrasts_table_file $path_to_data_files $blacklist
+--args $ID $DMR_contrasts_table_file $path_to_data_files $blacklist $filter_FC
 
 echo finished summarising
