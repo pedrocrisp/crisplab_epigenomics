@@ -140,17 +140,18 @@ data.frame(BAM=bam.files, CellType=celltype)
 # this is the setting for paired end sequencing
 param <- readParam(minq=10, discard=blacklist, pe="both", max.frag=500)
 
-## examine frag length
-x <- correlateReads(bam.files, param=reform(param, dedup=TRUE)) 
-frag.len <- which.max(x) - 1
-frag.len
-# [1] 9 
-
-pdf(file = paste0(outFolder, "/frag_length.pdf"))
-plot(1:length(x)-1, x, xlab="Delay (bp)", ylab="CCF", type="l") 
-abline(v=frag.len, col="red")
-text(x=frag.len, y=min(x), paste(frag.len, "bp"), pos=4, col="red")
-dev.off()
+# ## examine frag length
+# ## This take 5 mins or so - so i have commented it out for now to save time in debugging - UNCOMMENT TO RUN once rest of code is good
+# x <- correlateReads(bam.files, param=reform(param, dedup=TRUE)) 
+# frag.len <- which.max(x) - 1
+# frag.len
+# # [1] 9 
+# 
+# pdf(file = paste0(outFolder, "/frag_length.pdf"))
+# plot(1:length(x)-1, x, xlab="Delay (bp)", ylab="CCF", type="l") 
+# abline(v=frag.len, col="red")
+# text(x=frag.len, y=min(x), paste(frag.len, "bp"), pos=4, col="red")
+# dev.off()
 
 ################
 ## Counts per window and filter
@@ -276,7 +277,7 @@ dev.off()
 
 # to parse the sample name to makeContrasts
 # euqivalent to: contrast <- makeContrasts(sample1-sample2, levels=design)
-mycontrast = paste0(sample1, "_"< sample2) 
+mycontrast = paste0(sample1, "_", sample2) 
 cmd <- paste("tmp <- makeContrasts(", mycontrast, ", levels = design)", sep = '"')
 contrastEval <- eval(parse(text = cmd))
 
