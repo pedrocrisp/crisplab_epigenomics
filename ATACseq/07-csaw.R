@@ -456,7 +456,7 @@ ggplot(., aes((size))) +
   theme_minimal() +
   text_size_theme_8
 g
-ggsave(plot = g, filename = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_sizes_hostogram.pdf"), h = 4, w = 6)
+ggsave(plot = g, filename = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_sizes_histogram.pdf"), h = 4, w = 6)
 
 ###############
 print(paste0("Phew, got to the end comparing ", sample1, " vs ", sample2))
