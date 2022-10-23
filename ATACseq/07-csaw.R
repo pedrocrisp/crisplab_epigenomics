@@ -396,7 +396,7 @@ no_call
 
 # add direction
 out.ranges.sig$name_tmp <- out.ranges.sig$direction
-out.ranges.sig$name <- ifelse(out.ranges.sig$direction =="up", sample1, ifelse(out.ranges.sig$direction == "down", sample2, mixed))
+out.ranges.sig$name <- ifelse(out.ranges.sig$direction =="up", sample1, ifelse(out.ranges.sig$direction == "down", sample2, "mixed"))
 
 # add the fold change
 out.ranges.sig$score <- out.ranges.sig$best.logFC
@@ -410,7 +410,7 @@ out.ranges.sig_sample1 <- out.ranges.sig[out.ranges.sig$name == sample1]
 export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_", sample1, ".bed"), object=out.ranges.sig_sample1)
 
 # just get UMRs (up in) in sample1 eg root specific UMRs
-out.ranges.sig_sample1 <- out.ranges.sig[out.ranges.sig$name == sample2]
+out.ranges.sig_sample2 <- out.ranges.sig[out.ranges.sig$name == sample2]
 # export better bedfile
 export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_", sample2, ".bed"), object=out.ranges.sig_sample2)
 
