@@ -277,7 +277,7 @@ dev.off()
 
 # to parse the sample name to makeContrasts
 # euqivalent to: contrast <- makeContrasts(sample1-sample2, levels=design)
-mycontrast = paste0(sample1, "_", sample2) 
+mycontrast = paste0(sample1, "-", sample2) 
 cmd <- paste("tmp <- makeContrasts(", mycontrast, ", levels = design)", sep = '"')
 contrastEval <- eval(parse(text = cmd))
 
