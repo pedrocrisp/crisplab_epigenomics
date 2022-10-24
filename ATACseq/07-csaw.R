@@ -360,6 +360,7 @@ summary(is.sig.pos)
 
 # Results can be saved to file prior to further manipulation. One approach is to store all statistics in the metadata of a GRanges object. This is useful as it keeps the statistics and coordinates together for each cluster, avoiding problems with synchronization in downstream steps. The midpoint and log-fold change of the best window are also stored.
 out.ranges <- merged$region
+
 elementMetadata(out.ranges) <- data.frame(tabcom,
    best.pos=mid(ranges(rowRanges(filtered.data[tabbest$best]))),
 best.logFC=tabbest$logFC) 
