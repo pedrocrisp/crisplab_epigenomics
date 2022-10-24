@@ -95,7 +95,7 @@ geom.text.size = 8 / (14/5)
 projectFolder <- paste0(path_to_data_files, "_CSAW")
 dir.create(projectFolder)
 
-outFolder <- paste0(projectFolder, "/", contrast, "_", bin_size, "_", window_spacing, "_", filter_FC)
+outFolder <- paste0(projectFolder, "/", contrast, "_FC", filter_FC, "_bin", bin_size, "_space", window_spacing)
 dir.create(outFolder)
 
 
