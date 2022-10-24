@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 07-csaw_qsub.sh <contrasts_list.txt> <walltime> <memory> <DMR_contrasts_table_file> <path_to_data_files> <blacklist> <filter_FC>
+bash 07-csaw_qsub.sh <contrasts_list.txt> <walltime> <memory> <DMR_contrasts_table_file> <path_to_data_files> <blacklist> <filter_FC> <bin_size> <window_spacing>
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -17,8 +17,10 @@ DMR_contrasts_table_file=$4
 path_to_data_files=$5
 blacklist=$6
 filter_FC=$7
+bin_size=$8
+window_spacing=$9
 
-if [ "$#" -lt "7" ]
+if [ "$#" -lt "9" ]
 then
 echo $usage
 exit -1
@@ -75,5 +77,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=1,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},DMR_contrasts_table_file=$DMR_contrasts_table_file,path_to_data_files=$path_to_data_files,blacklist=$blacklist,filter_FC=$filter_FC \
+-v LIST=${sample_list},DMR_contrasts_table_file=$DMR_contrasts_table_file,path_to_data_files=$path_to_data_files,blacklist=$blacklist,filter_FC=$filter_FC,bin_size=$bin_size,window_spacing=$window_spacing \
 $script_to_qsub

@@ -22,6 +22,10 @@ blacklist <- args[4]
 blacklist
 filter_FC <- args[5]
 filter_FC
+bin_size <- args[6]
+bin_size
+window_spacing <- args[7]
+window_spacing
 
 ######## de bug
 # # args
@@ -91,7 +95,7 @@ geom.text.size = 8 / (14/5)
 projectFolder <- paste0(path_to_data_files, "_CSAW")
 dir.create(projectFolder)
 
-outFolder <- paste0(projectFolder, "/", contrast)
+outFolder <- paste0(projectFolder, "/", contrast, "_", bin_size, "_", window_spacing, "_", filter_FC)
 dir.create(outFolder)
 
 
@@ -162,7 +166,7 @@ param <- readParam(minq=10, discard=blacklist, pe="both", max.frag=500)
 # not sure what to use for average frag length because this isnt ChIP - using 50 for now, probably need to tune this variable or just use 0
 # default window spacing is 50bp
 ## this step takes a while
-win.data <- windowCounts(bam.files, param=param, width=100, ext=50)
+win.data <- windowCounts(bam.files, param=param, width=as.double(bin_size), ext=50, spacing=as.double(window_spacing))
 win.data
 
 # Filter windows - these are the setting in the example, this filters windows that have less than 3x the average window coverage - seems reasonable
