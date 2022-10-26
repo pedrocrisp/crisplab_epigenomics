@@ -6,7 +6,7 @@
 # Batch script to run CSAW on sample pairs
 # User guide: http://bioconductor.org/books/3.15/csawBook/ 
 
-# NOTE: currently for paired-end sequencing
+# NOTE: currently hard coded for paired-end sequencing
 
 #Sample selection #####
 args <- commandArgs(trailingOnly=TRUE)
@@ -36,7 +36,7 @@ window_spacing
 # module load R/3.5.0-gnu
 # 
 # # load R
-# R 
+# R
 # # blacklist
 # blacklist = "B_M_bams/B73_leaf3_V3_gDNA_test_peaks.narrowPeak"
 # # data
@@ -47,6 +47,8 @@ window_spacing
 # contrast = "B73_leaf3_V3.vs.Mo17_leaf3_V3"
 # 
 # filter_FC = 3
+# bin_size = 100
+# window_spacing = 50
 ###########################
 ########
 ###########################
@@ -162,7 +164,7 @@ param <- readParam(minq=10, discard=blacklist, pe="both", max.frag=500)
 ################
 
 # Counting reads into windows
-# 100pb windows (just because that what we usually do) (default is 150 for nucleosome length)
+# 100bp windows (just because that what we usually do) (default is 150 for nucleosome length)
 # not sure what to use for average frag length because this isnt ChIP - using 50 for now, probably need to tune this variable or just use 0
 # default window spacing is 50bp
 ## this step takes a while
@@ -330,7 +332,7 @@ summary(is.sig)
 #    Mode   FALSE    TRUE 
 # logical  330236   65446 
 
-# Determining the direction of DB is more complicated, as clusters could potentially contain windows that are changing in opposite directions. One approach is to define the direction based on the number of windows changing in each direc- tion, as described above. Another approach is to use the log-fold change of the most significant window as a proxy for the log-fold change of the cluster. This is generally satisfactory, though it will not capture multiple changes in opposite directions. It also tends to overstate the change in each cluster.
+# Determining the direction of DB is more complicated, as clusters could potentially contain windows that are changing in opposite directions. One approach is to define the direction based on the number of windows changing in each direction, as described above. Another approach is to use the log-fold change of the most significant window as a proxy for the log-fold change of the cluster. This is generally satisfactory, though it will not capture multiple changes in opposite directions. It also tends to overstate the change in each cluster.
 tabbest <- getBestTest(merged$id, res$table)
 head(tabbest)
 # DataFrame with 6 rows and 6 columns
@@ -358,6 +360,7 @@ summary(is.sig.pos)
 #    Mode   FALSE    TRUE 
 # logical   41524   23922 
 
+
 ################
 ## saving results
 ################
@@ -366,8 +369,8 @@ summary(is.sig.pos)
 out.ranges <- merged$region
 
 elementMetadata(out.ranges) <- data.frame(tabcom,
-   best.pos=mid(ranges(rowRanges(filtered.data[tabbest$best]))),
-best.logFC=tabbest$logFC) 
+   best.pos=mid(ranges(rowRanges(filtered.data[tabbest$best]))), 
+   best.logFC=tabbest$logFC) 
 
 # # uncomment to save the RDS file
 #########
@@ -403,11 +406,20 @@ no_call
 out.ranges.sig$name_tmp <- out.ranges.sig$direction
 out.ranges.sig$name <- ifelse(out.ranges.sig$direction =="up", sample1, ifelse(out.ranges.sig$direction == "down", sample2, "mixed"))
 
+# size cats
+out.ranges.sig$size <- width(out.ranges.sig)
+out.ranges.sig$size_cat <- ifelse(out.ranges.sig$size < 300, "small", ifelse(out.ranges.sig$size >=300 & out.ranges.sig$size <900, "med", "large"))
+
 # add the fold change
 out.ranges.sig$score <- out.ranges.sig$best.logFC
 
 # export better bedfile
 export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata.bed"), object=out.ranges.sig)
+
+# with more metadata
+out.ranges.sig.df <- data.frame(out.ranges.sig)
+head(out.ranges.sig.df)
+write.table( x = out.ranges.sig.df, file = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_extend.tsv"), sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE )
 
 # just get UMRs (up in) in sample1 eg root specific UMRs
 out.ranges.sig_sample1 <- out.ranges.sig[out.ranges.sig$name == sample1]
@@ -419,6 +431,11 @@ out.ranges.sig_sample2 <- out.ranges.sig[out.ranges.sig$name == sample2]
 # export better bedfile
 export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_", sample2, ".bed"), object=out.ranges.sig_sample2)
 
+out.ranges.sig.small <- out.ranges.sig[out.ranges.sig$size < 300]
+export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_less_300bp.bed"), object=out.ranges.sig.small)
+
+out.ranges.sig.large <- out.ranges.sig[out.ranges.sig$size >= 300]
+export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadata_greater_300bp.bed"), object=out.ranges.sig.large)
 
 ############
 
@@ -430,14 +447,13 @@ export(con=paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_metadat
 # make into a tibble for tidyverse
 out.ranges.sig.tbl <- as_tibble(out.ranges.sig)
 
-out.ranges.sig.tbl <- out.ranges.sig.tbl %>%
-  mutate(size = end - (start-1)) %>%
-  mutate(size_cat = ifelse(size < 300, "small", ifelse(size >=300 & size <900, "med", "large")))
-
 out.ranges.sig.tbl
 
 # make summary
-out.ranges.sig.tbl %>% mutate(size_cat = factor(size_cat)) %>% group_by(size_cat) %>% summarise(n = n()) %>% mutate()
+size_summary <- out.ranges.sig.tbl %>% mutate(size_cat = factor(size_cat)) %>% group_by(size_cat) %>% summarise(n = n())
+size_summary
+
+write_csv(x = size_summary, file = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_size_summary.csv"), col_names = T)
 
 # all regions
 # # A tibble: 3 × 2
@@ -462,6 +478,101 @@ ggplot(., aes((size))) +
   text_size_theme_8
 g
 ggsave(plot = g, filename = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_sig_sizes_histogram.pdf"), h = 4, w = 6)
+
+### logFC stats
+
+FC_summary <- out.ranges.sig.tbl %>%
+  mutate(FC_cat = ifelse(best.logFC < 2, "<2", ifelse(best.logFC >=2 & best.logFC <4, "<4", ">=4"))) %>%
+  group_by(FC_cat) %>% summarise(n = n())
+
+FC_summary
+
+write_csv(x = FC_summary, file = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_FC_summary.csv"), col_names = T)
+
+############
+# get counts for heatmap and also for quant vs on/off filter
+############
+################
+# Pull counts for significant windows
+# 2 possible approaches - https://support.bioconductor.org/p/98672/ 
+## 1. extract the counts for the most significant window within the region using getBestTest and the $best
+## 2. re-count using regionCounts (this isnt exactly the same but should be  very close)
+## Going for option 2
+
+# out.ranges.sig
+# win.data <- windowCounts(bam.files, param=param, width=as.double(bin_size), ext=50, spacing=as.double(window_spacing))
+# win.data
+
+out.ranges.sig.counts <- regionCounts(bam.files, regions=out.ranges.sig, ext=50, param=param)
+coords=paste(as.vector(seqnames(out.ranges.sig.counts)),as.vector(start(out.ranges.sig.counts)-1),as.vector(end(out.ranges.sig.counts)),sep="_")
+
+head(colData(out.ranges.sig.counts))
+head(rowData(out.ranges.sig.counts))
+head(assays(out.ranges.sig.counts)$counts)
+
+samples=bam.files
+
+rownames(out.ranges.sig.counts)=coords
+colnames(out.ranges.sig.counts)=samples
+
+out.ranges.sig.counts
+
+# cpm(assay(out.ranges.sig.counts), lib.size=exp(getOffset(y)))
+
+counts.tbl <- as_tibble(assays(out.ranges.sig.counts)$counts) %>%
+  mutate(coords = coords) %>%
+  pivot_longer(cols = -coords, names_to = "BAM", values_to = "raw_counts")
+
+counts.tbl
+
+## potential alternative means to calculate library scaling factors:
+#  https://www.biostars.org/p/413626/#414440
+# starting with the raw counts per window
+## edgeR:: calcNormFactors
+NormFactor <- calcNormFactors(object = assay(win.data), method = "TMM")
+
+## if you prefer to use the DESeq2 strategy use method="RLE" instead
+
+## raw library size:
+LibSize <- colSums(assay(win.data))
+
+## calculate size factors:
+SizeFactors <- NormFactor * LibSize / 1000000
+
+## Reciprocal, please read section below:   
+SizeFactors.Reciprocal <- 1/SizeFactors
+
+sample_norm_key <- tibble(BAM = samples, SizeFactors.Reciprocal = SizeFactors.Reciprocal, CellType=celltype)
+
+sample_norm_key
+
+# join and normalise and spread
+counts.tbl.norm <- counts.tbl %>% left_join(sample_norm_key, by = "BAM") %>%
+  mutate(norm_counts = raw_counts * SizeFactors.Reciprocal) %>%
+  group_by(CellType, coords) %>%
+  summarise(norm_counts_average = mean(norm_counts)) %>%
+  ungroup() %>% pivot_wider(names_from = CellType, values_from = norm_counts_average)
+
+counts.tbl.norm
+
+write_csv(x = counts.tbl.norm, file = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_norm_counts_average.csv"), col_names = T)
+
+# counts.tbl.norm <- read_csv("~/UMRseq-06/analysis/UMRseq_Aim2/UMRseq_Aim2_run1_mach_II/maize_mach_II/analysis/B_M_bams_CSAW/B73_leaf3_V3.vs.Mo17_leaf3_V3_FCF3_bin100_space50/B73_leaf3_V3.vs.Mo17_leaf3_V3_differential_UMRs_CSAW_norm_counts_average.csv")
+# sample1 = "B73_leaf3_V3"
+# sample2 = "Mo17_leaf3_V3"
+# contrast <- "B73vMo17"
+# outFolder <- (paste0("csaw/", contrast))
+
+g <- ggplot(counts.tbl.norm, aes(x=log2(B73_leaf3_V3), y=log2(Mo17_leaf3_V3))) + 
+  geom_point(size=0.2) +
+  theme_minimal() +
+  text_size_theme_8
+g
+ggsave(plot = g, filename = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_norm_counts_scatter.pdf"), h = 8, w = 8)
+ggsave(plot = g, filename = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_norm_counts_scatter2.pdf"), h = 2, w = 2)
+
+# counts.df.norm <- df2$SizeFactors.Reciprocal[match(names(counts.df), df2$sample)][col(counts.df)] * counts.df
+# head(counts.df.norm)
 
 ###############
 print(paste0("Phew, got to the end comparing ", sample1, " vs ", sample2))
