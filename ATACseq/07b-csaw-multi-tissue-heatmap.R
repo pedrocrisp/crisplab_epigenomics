@@ -222,7 +222,7 @@ counts.tbl.norm_average <- counts.tbl %>% left_join(sample_norm_key, by = "BAM")
   group_by(CellType, coords) %>%
   summarise(norm_counts_average = mean(norm_counts, na.rm = TRUE)) %>%
   ungroup() %>% 
-  select(-size_factor) %>%
+  # select(-size_factor) %>%
   pivot_wider(names_from = CellType, values_from = norm_counts_average)
 
 counts.tbl.norm_average
