@@ -121,6 +121,7 @@ blacklist <- gr_obj
 
 # import region file
 region_file =  import(region_file) 
+region_file
 
 # sample key
 sample_key <- read_csv(sample_key_file)
