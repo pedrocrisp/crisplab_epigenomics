@@ -174,6 +174,7 @@ SizeFactors <- NormFactor * LibSize / 10000000
 
 ## Reciprocal, please read section below:   
 SizeFactors.Reciprocal <- 1/SizeFactors
+SizeFactors.Reciprocal
 
 ################
 ################
