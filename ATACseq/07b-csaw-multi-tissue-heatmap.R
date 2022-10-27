@@ -12,9 +12,10 @@
 args <- commandArgs(trailingOnly=TRUE)
 print(args)
 # trailingOnly=TRUE means that only your arguments are returned
-contrast <- args[1]
-contrast
-region_file <- args[2]
+region_file <- args[1]
+region_file
+sample_key_file <- args[2]
+sample_key_file
 path_to_data_files <- args[3]
 path_to_data_files
 blacklist <- args[4]
@@ -25,8 +26,6 @@ bin_size <- args[6]
 bin_size
 window_spacing <- args[7]
 window_spacing
-sample_key_file <- args[8]
-sample_key_file
 
 ######## de bug
 # # args
@@ -62,6 +61,7 @@ library(rtracklayer)
 library(GenomicRanges)
 library(edgeR)
 library(statmod)
+library(tools)
 
 library("pheatmap")
 library("RColorBrewer")
@@ -108,7 +108,8 @@ dir.create(projectFolder)
 outFolder <- paste0(projectFolder, "/heatmaps")
 dir.create(outFolder)
 
-# CSAW analysis
+# contrast
+contrast <- tools::file_path_sans_ext(basename(region_file))
 
 ################
 ## import files
@@ -118,7 +119,7 @@ dir.create(outFolder)
 gr_obj =  import(blacklist)
 blacklist <- gr_obj
 
-# import regiosn file
+# import region file
 region_file =  import(region_file) 
 
 # sample key
