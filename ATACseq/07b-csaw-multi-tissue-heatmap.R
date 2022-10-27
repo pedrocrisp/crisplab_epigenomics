@@ -25,6 +25,8 @@ bin_size <- args[6]
 bin_size
 window_spacing <- args[7]
 window_spacing
+sample_key_file <- args[8]
+sample_key_file
 
 ######## de bug
 # # args
@@ -50,6 +52,7 @@ window_spacing
 # window_spacing = 50
 # 
 # region_file = "/scratch/project/crisp006/pete/UMRseq_Aim2_run1_mach_II/maize_mach_II/analysis/B_M_bams_2_CSAW/B73_leaf3_V3.vs.Mo17_leaf3_V3_FCF3_bin100_space50/B73_leaf3_V3.vs.Mo17_leaf3_V3_differential_UMRs_CSAW_sig_metadata.bed"
+# sample_key_file="sample_key.csv"
 ###########################
 ########
 ###########################
@@ -118,19 +121,23 @@ blacklist <- gr_obj
 # import regiosn file
 region_file =  import(region_file) 
 
+# sample key
+sample_key <- read_csv(sample_key_file)
 # set up samples
 # find file ending with ".bam"
-bam.files <- dir("tissues_bams", pattern = "*.bam$", full.names = T, ) 
+# bam.files <- dir("tissues_bams", pattern = "*.bam$", full.names = T, ) 
+bam.files <- sample_key %>% pull(bam.files)
 # get file names
 bam.files
 
 # or
 
-bam.files <- bam.files[c(1:4, 7:8, 13:14)]
-bam.files
+# bam.files <- bam.files[c(1:4, 7:8, 13:14)]
+# bam.files
 
 # celltype <- c("leaf3v3", "leaf3v3", "col", "col", "emb", "emb", "endo", "endo", "plumule", "plumule", "root", "root", "scutellum", "scutellum")
-celltype <- c("leaf3v3", "leaf3v3", "col", "col", "endo", "endo", "scutellum", "scutellum")
+# celltype <- c("leaf3v3", "leaf3v3", "col", "col", "endo", "endo", "scutellum", "scutellum")
+celltype <- sample_key %>% pull(celltype)
 celltype
 
 data.frame(BAM=bam.files, CellType=celltype)
@@ -368,16 +375,6 @@ save_pheatmap_pdf_size(p, paste0(outFolder, "/", contrast, "_pheatmap", "_max_",
 save_pheatmap_png_size_cm(p, paste0(outFolder, "/", contrast, "_pheatmap", "_max_", max_rows_to_include, "_averageNormCounts", ".png"), height = h, width = w)
 
 
-
-
-
-
-
-
-
-
-
-
 ###############
-print(paste0("Phew, got to the end comparing ", sample1, " vs ", sample2))
+print(paste0("Phew, got to the end making those big heatmaps for ", contrast))
 ###############
