@@ -3,11 +3,11 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 07-csaw_qsub.sh <contrasts_list.txt> <walltime> <memory> <DMR_contrasts_table_file> <path_to_data_files> <blacklist> <filter_FC> <bin_size> <window_spacing>
+bash 07b-csaw-multi-tissue-heatmap_qsub.sh <regions_list.txt> <walltime> <memory> <sample_key_file> <path_to_data_files> <blacklist> <filter_FC> <bin_size> <window_spacing>
 "
 
 #define stepo in the pipeline - should be the same name as the script
-step=07-csaw
+step=07b-csaw-multi-tissue-heatmap
 
 ######### Setup ################
 sample_list=$1
