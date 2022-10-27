@@ -175,8 +175,6 @@ SizeFactors.Reciprocal <- 1/SizeFactors
 # determine counts over regions
 out.ranges.sig.counts <- regionCounts(bam.files, regions=region_file, ext=50, param=param)
 
-out.ranges.sig.counts$size <- getWidths(out.ranges.sig.counts)
-
 # give the counts dataframe row/col names
 coords=paste(as.vector(seqnames(out.ranges.sig.counts)),as.vector(start(out.ranges.sig.counts)-1),as.vector(end(out.ranges.sig.counts)),sep="_")
 size= as.vector(as.vector(end(out.ranges.sig.counts))-as.vector(start(out.ranges.sig.counts)-1))
