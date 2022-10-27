@@ -47,7 +47,7 @@ cd analysis
 ########## Run #################
 
 # Run R module to creat 100bp tile bed file
-R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw.R \
+R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07b-csaw-multi-tissue-heatmap.R \
 --args $ID $sample_key_file $path_to_data_files $blacklist $filter_FC $bin_size $window_spacing
 
 echo finished summarising
