@@ -75,8 +75,9 @@ DE_UMR_bed_folder=${ID}_FCF${filter_FC}_bin${bin_size}_space${window_spacing}
 DE_UMR_bed_file=${ID}_differential_UMRs_CSAW_sig_metadata.bed
 
 outFolder=${projectFolder}/${DE_UMR_bed_folder}/annotation
-# gene annotation
+mkdir $outFolder
 
+# gene annotation
 bedtools closest \
 -a ${projectFolder}/${DE_UMR_bed_folder}/${DE_UMR_bed_file} \
 -b ${genome_annotation} \
