@@ -79,11 +79,11 @@ outFolder=${projectFolder}/${DE_UMR_bed_folder}/annotation
 
 bedtools closest \
 -a ${projectFolder}/${DE_UMR_bed_folder}/${DE_UMR_bed_file} \
--b $genome_annotation \
+-b ${genome_annotation} \
 -mdb all \
 -t all \
 -D b \
--g $chromosome_sizes \
+-g ${chromosome_sizes} \
 > ${outFolder}/${ID}_Olap_gene_space_V.bed
 
 # genome_annotation: ~/umn/refseqs/maize/genome_annotations/Zea_mays_AGPv4_36_fixed_introns_gene_ncRNA_synteny_miRbase_space_V_stranded_bed6.bed
@@ -92,11 +92,11 @@ bedtools closest \
 # TE annotation
 bedtools closest \
 -a {projectFolder}/${DE_UMR_bed_folder}/${DE_UMR_bed_file}  \
--b ~/umn/refseqs/maize/genome_annotations/TE_v2/B73.structuralTEv2.2018.12.20.filteredTE.disjoined_sup_sorted_bed6.bed \
+-b ${TE_annotation} \
 -mdb all \
 -t all \
 -D b \
--g $TE_annotation \
+-g ${chromosome_sizes} \
 > ${outFolder}/${ID}_Olap_TE_order.bed
 
 # TE_annotation: ~/umn/refseqs/maize/genome_annotations/Zea_mays.AGPv4.dna.toplevel_sorted.chrom.sizes
