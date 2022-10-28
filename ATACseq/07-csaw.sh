@@ -102,7 +102,7 @@ bedtools closest \
 # TE_annotation: ~/umn/refseqs/maize/genome_annotations/Zea_mays.AGPv4.dna.toplevel_sorted.chrom.sizes
 
 # summarise and plot annotation
-R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw-annotate-gene-proximity.R \
+R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw-gene-overlaps.R \
 --args $ID $DMR_contrasts_table_file $path_to_data_files $blacklist $filter_FC $bin_size $window_spacing
 
 echo finished summarising
