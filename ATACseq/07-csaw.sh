@@ -72,7 +72,7 @@ cd analysis
 # bedtools overlap with the gene annotation
 projectFolder=${path_to_data_files}_CSAW
 DE_UMR_bed_folder=${ID}_FCF${filter_FC}_bin${bin_size}_space${window_spacing}
-DE_UMR_bed_file=${ID}_FCF${filter_FC}_bin${bin_size}_space${window_spacing}_differential_UMRs_CSAW_sig_metadata.bed
+DE_UMR_bed_file=${ID}_differential_UMRs_CSAW_sig_metadata.bed
 
 outFolder=${projectFolder}/${DE_UMR_bed_folder}/annotation
 # gene annotation
