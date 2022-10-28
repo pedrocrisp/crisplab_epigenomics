@@ -21,9 +21,9 @@ blacklist=$6
 filter_FC=$7
 bin_size=$8
 window_spacing=$9
-genome_annotation=$10
-chromosome_sizes=$11
-TE_annotation=$12
+genome_annotation=${10}
+chromosome_sizes=${11}
+TE_annotation=${12}
 
 if [ "$#" -lt "12" ]
 then
