@@ -592,7 +592,6 @@ write.table(mC_domains2_anno_summary, paste0(outFolder,"/", sample_to_crunch, "_
                                     "_freq.tsv"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 # TEs
-mC_domains2_anno_out %>% distinct(TE_order)
 
 mC_domains2_anno_summary_TE <-  features_meta %>% 
   mutate(domain = "DE_UMRs") %>%
