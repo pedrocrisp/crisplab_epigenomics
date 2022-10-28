@@ -557,13 +557,16 @@ counts.tbl.norm
 
 write_csv(x = counts.tbl.norm, file = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_norm_counts_average.csv"), col_names = T)
 
-# counts.tbl.norm <- read_csv("~/UMRseq-06/analysis/UMRseq_Aim2/UMRseq_Aim2_run1_mach_II/maize_mach_II/analysis/B_M_bams_CSAW/B73_leaf3_V3.vs.Mo17_leaf3_V3_FCF3_bin100_space50/B73_leaf3_V3.vs.Mo17_leaf3_V3_differential_UMRs_CSAW_norm_counts_average.csv")
-# sample1 = "B73_leaf3_V3"
-# sample2 = "Mo17_leaf3_V3"
-# contrast <- "B73vMo17"
-# outFolder <- (paste0("csaw/", contrast))
+counts.tbl.norm <- read_csv("~/UMRseq-06/analysis/UMRseq_Aim2/UMRseq_Aim2_run1_mach_II/maize_mach_II/analysis/B_M_bams_CSAW/B73_leaf3_V3.vs.Mo17_leaf3_V3_FCF3_bin100_space50/B73_leaf3_V3.vs.Mo17_leaf3_V3_differential_UMRs_CSAW_norm_counts_average.csv")
+sample1 = "B73_leaf3_V3"
+sample2 = "Mo17_leaf3_V3"
+contrast <- "B73vMo17"
+outFolder <- (paste0("csaw/", contrast))
 
-g <- ggplot(counts.tbl.norm, aes(x=log2(B73_leaf3_V3), y=log2(Mo17_leaf3_V3))) + 
+s1 <- sym(sample1)
+s2 <- sym(sample2)
+
+g <- ggplot(counts.tbl.norm, aes(x=log2(!!s1), y=log2(!!s2))) + 
   geom_point(size=0.2) +
   theme_minimal() +
   text_size_theme_8
