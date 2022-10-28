@@ -50,4 +50,56 @@ cd analysis
 R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw.R \
 --args $ID $DMR_contrasts_table_file $path_to_data_files $blacklist $filter_FC $bin_size $window_spacing
 
+# Annotation module
+# annotate the DE-UMR list with proximity to genes and TEs
+
+########## Annotation #################
+
+# Strategy
+# 1. Overlap with gene loci and get distance from loci. Genes version is using v5 of the gene space referene: includes protein coding (syntenic/non-syntenic), miRNA, tRNA and lncRNA
+
+# bedtools closest
+# -a FILE
+# -b FILE1 FILE2
+# -d report distance (direction irrelevant when comparing 2 DMR lists
+# -t all
+# -d distance reported as final column
+# -D b  Report distance with respect to B. When B is on the - strand, “upstream” means A has a higher (start,stop). Want to know if DMR is 5'/3' of genes etc
+# -mdb all report the closest feature from the b files NOT the closest feature in each file
+# NOTE: -t Controlling how ties for “closest” are broken (default all reported - the list will grow)
+
+# bedtools overlap with the gene annotation
+projectFolder=${path_to_data_files}_CSAW
+DE_UMR_bed_folder=${ID}_FCF_${filter_FC}_bin${bin_size}_space${window_spacing}
+DE_UMR_bed_file=${ID}_FCF_${filter_FC}_bin${bin_size}_space${window_spacing}_differential_UMRs_CSAW_sig_metadata.bed
+
+# gene annotation
+
+bedtools closest \
+-a ${projectFolder}/${DE_UMR_bed_folder}/${DE_UMR_bed_file} \
+-b $genome_annotation \
+-mdb all \
+-t all \
+-D b \
+-g $chromosome_sizes \
+> ${ID}_Olap_gene_space_V.bed
+
+# genome_annotation: ~/umn/refseqs/maize/genome_annotations/Zea_mays_AGPv4_36_fixed_introns_gene_ncRNA_synteny_miRbase_space_V_stranded_bed6.bed
+# chromosome_sizes: ~/umn/refseqs/maize/genome_annotations/Zea_mays.AGPv4.dna.toplevel_sorted.chrom.sizes
+
+# TE annotation
+bedtools closest \
+-a {projectFolder}/${DE_UMR_bed_folder}/${DE_UMR_bed_file}  \
+-b ~/umn/refseqs/maize/genome_annotations/TE_v2/B73.structuralTEv2.2018.12.20.filteredTE.disjoined_sup_sorted_bed6.bed \
+-mdb all \
+-t all \
+-D b \
+-g $TE_annotation \
+> ${ID}_Olap_TE_order.bed
+
+# TE_annotation: ~/umn/refseqs/maize/genome_annotations/Zea_mays.AGPv4.dna.toplevel_sorted.chrom.sizes
+
+R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw-annotate-gene-proximity.R \
+--args $ID $DMR_contrasts_table_file $path_to_data_files $blacklist $filter_FC $bin_size $window_spacing
+
 echo finished summarising
