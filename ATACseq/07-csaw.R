@@ -567,7 +567,7 @@ g <- ggplot(counts.tbl.norm, aes(x=log2(B73_leaf3_V3), y=log2(Mo17_leaf3_V3))) +
   geom_point(size=0.2) +
   theme_minimal() +
   text_size_theme_8
-g
+# g
 ggsave(plot = g, filename = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_norm_counts_scatter.pdf"), h = 8, w = 8)
 ggsave(plot = g, filename = paste0(outFolder, "/", contrast, "_differential_UMRs_CSAW_norm_counts_scatter2.pdf"), h = 2, w = 2)
 
