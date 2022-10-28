@@ -33,7 +33,7 @@ echo working dir is now $PWD
 
 ########## Modules #################
 module load R/3.5.0-gnu
-module load beadtool
+module load bedtools
 ########## Set up dirs #################
 
 #get job ID
