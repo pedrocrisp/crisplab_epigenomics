@@ -91,7 +91,7 @@ bedtools closest \
 
 # TE annotation
 bedtools closest \
--a {projectFolder}/${DE_UMR_bed_folder}/${DE_UMR_bed_file}  \
+-a ${projectFolder}/${DE_UMR_bed_folder}/${DE_UMR_bed_file}  \
 -b ${TE_annotation} \
 -mdb all \
 -t all \
