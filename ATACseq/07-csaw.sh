@@ -46,9 +46,9 @@ cd analysis
 
 ########## Run #################
 
-# Run R module to creat 100bp tile bed file
-R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw.R \
---args $ID $DMR_contrasts_table_file $path_to_data_files $blacklist $filter_FC $bin_size $window_spacing
+## Run R module to creat 100bp tile bed file
+#R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw.R \
+#--args $ID $DMR_contrasts_table_file $path_to_data_files $blacklist $filter_FC $bin_size $window_spacing
 
 # Annotation module
 # annotate the DE-UMR list with proximity to genes and TEs
@@ -82,7 +82,7 @@ bedtools closest \
 -t all \
 -D b \
 -g $chromosome_sizes \
-> ${ID}_Olap_gene_space_V.bed
+> ${outFolder}/${ID}_Olap_gene_space_V.bed
 
 # genome_annotation: ~/umn/refseqs/maize/genome_annotations/Zea_mays_AGPv4_36_fixed_introns_gene_ncRNA_synteny_miRbase_space_V_stranded_bed6.bed
 # chromosome_sizes: ~/umn/refseqs/maize/genome_annotations/Zea_mays.AGPv4.dna.toplevel_sorted.chrom.sizes
@@ -95,10 +95,11 @@ bedtools closest \
 -t all \
 -D b \
 -g $TE_annotation \
-> ${ID}_Olap_TE_order.bed
+> ${outFolder}/${ID}_Olap_TE_order.bed
 
 # TE_annotation: ~/umn/refseqs/maize/genome_annotations/Zea_mays.AGPv4.dna.toplevel_sorted.chrom.sizes
 
+# summarise and plot annotation
 R -f ~/gitrepos/crisplab_epigenomics/ATACseq/07-csaw-annotate-gene-proximity.R \
 --args $ID $DMR_contrasts_table_file $path_to_data_files $blacklist $filter_FC $bin_size $window_spacing
 
