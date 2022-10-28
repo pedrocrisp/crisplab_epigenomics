@@ -743,7 +743,7 @@ g1 <- ggplot(mC_domains2_anno_summary_TE_order, aes(x = domain, y = percent, fil
   text_size_theme_8
 # print(g1)
 
-g1
+# g1
 
 ggsave(filename = paste0(outFolder, "/", sample_to_crunch, "_feature_freq_domain_stack_bar_distal_combo_TE_scales_fixed.pdf"), plot = g1, h = 3, w = 2.0)
 
