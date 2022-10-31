@@ -56,7 +56,7 @@ overlaps
 # I think most of the multi-overlaps will be at distance zero - this pipeline is mainly aimed at resolving that. Its possible some will be due to a peak being exactly the same length between an upstream and downstream gene, but I might just pick one for these because I think they will be rare
 # get distinct tile + feature rows
 overlaps_distinct_collapsed <- overlaps %>%
-  mutate(methylation = ifelse(distance == 0, "uACR", "mACR")) %>%
+  mutate(methylation = ifelse(distance == 0, "unmethylated_Feature", "methylated_Feature")) %>%
   select(chr, start, end, summit, location, cat, methylation) %>%
   distinct()
 # 32,620
