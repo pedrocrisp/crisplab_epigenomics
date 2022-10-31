@@ -243,6 +243,7 @@ overlaps_distinct_collapsed_filtered_summary <- overlaps_distinct_collapsed_filt
   group_by(classification) %>%
   summarise(n = n())
 
+# NOT SURE IF THE MB IS CORRECT - SHOULD THIS BE X100 FOR X UMR SIZES
 overlaps_distinct_collapsed_filtered_summary <- overlaps_distinct_collapsed_filtered_summary %>% 
   mutate(percentage = n/sum(n)*100,
          Mb = n * 100 / 1000000)
