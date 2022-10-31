@@ -57,7 +57,7 @@ summary_output_folder=$4
 
 umr_sample_prefix="$(basename $umr_bed_file .bed)"
 
-feature_sample_prefix="$(basename $acr_bed_file .bed)"
+feature_sample_prefix="$(basename $feature_bed_file .bed)"
 
 # optput file names
 umr_outputFile=${umr_sample_prefix}_olap_${feature_sample_prefix}
