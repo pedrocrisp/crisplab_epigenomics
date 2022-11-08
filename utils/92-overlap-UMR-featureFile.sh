@@ -101,6 +101,7 @@ bedtools closest \
 R -f ~/gitrepos/crisplab_epigenomics/utils/92-overlap-UMR-featureFile-R1.R \
 --args $feature_outputFile $summary_output_folder
 
+rm tmp_${feature_outputFile}.bed
 ########## overlaps UMR annotation #################
 
 # UMRs that overlap ACRs
@@ -116,6 +117,8 @@ bedtools closest \
 ########## R module to parse UMR annotation output #################
 R -f ~/gitrepos/crisplab_epigenomics/utils/92-overlap-UMR-featureFile-R2.R \
 --args $umr_outputFile $summary_output_folder
+
+rm tmp_${umr_outputFile}.bed
 
 # to run
 # bash ~/gitrepos/springerlab_methylation/utils/91-overlap-UMR-ACR.sh \

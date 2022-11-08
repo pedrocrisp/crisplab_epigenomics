@@ -16,6 +16,9 @@ print(args)
 inputFile <- args[1]
 summary_output_folder <- args[2]
 
+summary_output_folder_beds <- paste0(summary_output_folder, "_beds")
+dir.create(summary_output_folder_beds)
+
 ######## de bug
 # args
 # inputFile <- "Sorghum_7days_leaf_ACRs_meth.bed"
@@ -66,7 +69,7 @@ overlaps_distinct_collapsed %>% group_by(chr, start) %>% summarise(n = n()) %>% 
 overlaps_distinct_collapsed
 # 21,267
 
-write.table(overlaps_distinct_collapsed, paste0(inputFile, ".bed"), sep = "\t", quote = F, row.names = F, col.names = F)
+write.table(overlaps_distinct_collapsed, paste0(summary_output_folder_beds, "/", inputFile, ".bed"), sep = "\t", quote = F, row.names = F, col.names = F)
 
 overlaps_distinct_collapsed_filtered_summary <- overlaps_distinct_collapsed %>%
   group_by(methylation) %>%
