@@ -37,6 +37,11 @@ readlink=$(which greadlink)
 scriptdir="$(dirname $($readlink -f $0))"
 else
 scriptdir="$(dirname $(readlink -f $0))"
+
+########## Modules #################
+module load R/3.5.0-gnu
+module load bedtools
+
 fi
 #
 
@@ -79,11 +84,6 @@ echo $feature_outputFile
 #echo $acr_outputFile
 
 mkdir -p logs
-
-########## Modules #################
-
-module load R/3.5.0-gnu
-module load bedtools
 
 ########## overlaps ACR annotation #################
 
