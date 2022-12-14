@@ -2,7 +2,7 @@
 
 This is a multi purpose methylome pipeline that is used for processing SeqCap data, WGBS data and also for identifying Unmethylated regions (UMRs).
 
-**Disclaimer:** these pipelines document the reproducible steps we take to generate the data on our server but may not be a plug and play on a different server. If you would like to reproduce the pipeline, you likely need to modify for your purposes or get in contact and we may be able to help.
+**Disclaimer:** these pipelines document the reproducible steps we take to generate the data on our server but may not be a plug and play on a different server. If you would like to reproduce the pipeline, you likely need to modify for your purposes or get in contact and we may be able to help. 
 
 --------
 
