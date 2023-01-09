@@ -86,7 +86,7 @@ trimmed/${ID}_R1_val_1.fq.gz trimmed/${ID}_R2_val_2.fq.gz \
 > bwa-meth/${ID}_tmp.bam
 
 # sort
-samtools sort bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
+samtools sort -m 3G bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
 #rm tmp unsorted file
 rm bwa-meth/${ID}_tmp.bam
 # get mapping stats
@@ -106,7 +106,7 @@ trimmed/${ID}_R1_001_trimmed.fq.gz \
 > bwa-meth/${ID}_tmp.bam
 
 # sort
-samtools sort --threads $cores bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
+samtools sort --threads $cores -m 3G bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
 #rm tmp unsorted file
 rm bwa-meth/${ID}_tmp.bam
 # get mapping stats
