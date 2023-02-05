@@ -1,6 +1,6 @@
 # Methylome pipeline
 
-This is a multi purpose plant methylome pipeline that is used for processing SeqCap-v2 data, WGBS data, EM-seq data and also for identifying Unmethylated Regions (UMRs).
+This is a multi purpose plant methylome pipeline that is used for processing SeqCap-V2 data, WGBS data, EM-seq data and also for identifying Unmethylated Regions (UMRs).
 
 **Disclaimer:** these pipelines document the reproducible steps we take to generate the data on our server but may not be a plug and play on a different server. If you would like to reproduce the pipeline, you likely need to modify for your purposes or get in contact and we may be able to help.
 
