@@ -59,7 +59,7 @@ reference_tiles <- read_tsv(reference_tile_file, col_names = TRUE,
 ### ### ### ### ### ###
 
 mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CG.bedGraph"),
-                     col_names = c("chr", "start", "end", "percent", "C", "CT"))
+                     col_names = c("chr", "start", "end", "percent", "C", "T"))
 mc_tiles
 
 # # A tibble: 1,415,283 × 6
@@ -85,7 +85,7 @@ broken_bedGraph <- mc_tiles %>%
   group_by(chr, start_zBased, broken_end) %>%
   summarise(sites_with_data = n(),
             C = sum(C),
-            CT = sum(CT),
+            CT = sum(T) + sum(C),
             ratio = mean(ratio)) %>% # summarise to the bins
   arrange(chr, start_zBased)
 
@@ -158,7 +158,7 @@ rm(broken_bedGraph)
 ### ### ### ### ### ###
 
 mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CHG.bedGraph"),
-                     col_names = c("chr", "start", "end", "percent", "C", "CT"))
+                     col_names = c("chr", "start", "end", "percent", "C", "T"))
 mc_tiles
 
 # # A tibble: 1,415,283 × 6
@@ -184,7 +184,7 @@ broken_bedGraph <- mc_tiles %>%
   group_by(chr, start_zBased, broken_end) %>%
   summarise(sites_with_data = n(),
             C = sum(C),
-            CT = sum(CT),
+            CT = sum(T) + sum(C),
             ratio = mean(ratio)) %>% # summarise to the bins
   arrange(chr, start_zBased)
 
@@ -257,7 +257,7 @@ rm(broken_bedGraph)
 ### ### ### ### ### ###
 
 mc_tiles <- read_tsv(paste0(data_folder, "/", sample, "_methratio_CHH.bedGraph"),
-                     col_names = c("chr", "start", "end", "percent", "C", "CT"))
+                     col_names = c("chr", "start", "end", "percent", "C", "T"))
 mc_tiles
 
 # # A tibble: 1,415,283 × 6
@@ -283,7 +283,7 @@ broken_bedGraph <- mc_tiles %>%
   group_by(chr, start_zBased, broken_end) %>%
   summarise(sites_with_data = n(),
             C = sum(C),
-            CT = sum(CT),
+            CT = sum(T) + sum(C),
             ratio = mean(ratio)) %>% # summarise to the bins
   arrange(chr, start_zBased)
 
