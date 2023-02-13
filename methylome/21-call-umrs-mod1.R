@@ -106,9 +106,10 @@ CG <- read_tsv(paste0("tiles/", sample_to_crunch, "_BSMAP_out.txt.100.CG.fixed.s
   start = col_integer(),
   end = col_integer(),
   CT = col_integer(),
-  C = col_integer(),
+#  C = col_integer(),
   ratio = col_double(),
-  cg_sites = col_integer())) %>% mutate(cov = (CT+C)/cg_sites)
+#  cg_sites = col_integer())) %>% mutate(cov = (CT+C)/cg_sites)
+  cg_sites = col_integer())) %>% mutate(cov = CT/cg_sites)
 
 CG
 
@@ -127,9 +128,10 @@ CHG <- read_tsv(paste0("tiles/", sample_to_crunch, "_BSMAP_out.txt.100.CHG.fixed
   start = col_integer(),
   end = col_integer(),
   CT = col_integer(),
-  C = col_integer(),
+#  C = col_integer(),
   ratio = col_double(),
-  chg_sites = col_integer())) %>% mutate(cov = (CT+C)/chg_sites)
+#  chg_sites = col_integer())) %>% mutate(cov = (CT+C)/chg_sites)
+  chg_sites = col_integer())) %>% mutate(cov = CT/chg_sites)
 
 g <- ggplot(CHG, aes(x = cov)) +
   geom_density() +
@@ -146,9 +148,10 @@ CHH <- read_tsv(paste0("tiles/", sample_to_crunch, "_BSMAP_out.txt.100.CHH.fixed
   start = col_integer(),
   end = col_integer(),
   CT = col_integer(),
-  C = col_integer(),
+#  C = col_integer(),
   ratio = col_double(),
-  chh_sites = col_integer())) %>% mutate(cov = (CT+C)/chh_sites)
+#  chh_sites = col_integer())) %>% mutate(cov = (CT+C)/chh_sites)
+  chh_sites = col_integer())) %>% mutate(cov = CT/chh_sites)
 
 g <- ggplot(CHH, aes(x = cov)) +
   geom_density() +
