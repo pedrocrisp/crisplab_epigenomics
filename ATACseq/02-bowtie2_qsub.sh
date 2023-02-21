@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt2_threads> <bt2_genome.fa> <walltime> <mem> <account_department>"
+bash 02-bowtie1_qsub.sh <sample_list.txt> <reads_folder> <bt2_threads> <bt2_genome.fa> <q10filter> <walltime> <mem> <account_department>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=02-bowtie2
@@ -13,9 +13,10 @@ sample_list=$1
 reads_folder=$2
 bt2_threads=$3
 bt2_genome=$4
-walltime=$5
-mem=$6
-account_department=$7
+q10filter=$5
+walltime=$6
+mem=$7
+account_department=$8
 
 if [ "$#" -lt "7" ]
 then
@@ -72,6 +73,6 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=${bt2_threads},mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},reads_folder=$reads_folder,bt2_threads=$bt2_threads,bt2_genome=$bt2_genome \
+-v LIST=${sample_list},reads_folder=$reads_folder,bt2_threads=$bt2_threads,bt2_genome=$bt2_genome,q10filter=$q10filter \
 -A $account_department \
 $script_to_qsub
