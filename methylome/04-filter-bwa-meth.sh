@@ -84,6 +84,7 @@ then
         METRICS_FILE=bwa-meth-filtered/${ID}_MarkDupMetrics.txt \
         ASSUME_SORTED=true \
         CREATE_INDEX=False \
+        VALIDATION_STRINGENCY=LENIENT \
         REMOVE_DUPLICATES=true
 
         # keep properly paired reads using bamtools package
