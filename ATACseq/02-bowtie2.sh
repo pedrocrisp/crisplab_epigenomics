@@ -135,7 +135,7 @@ samtools view -c ${outsam}
 # (even if it aligns to only 2 sites equally well as discussed above).
 # use mapq 10 recommended for most purposes
 # if you want multialigning reads you will have lower this
-samtools view -q q10filter -b -@ $bt2_threads $outsam | samtools sort -m 8G -@ $bt2_threads -o $outbam
+samtools view -q $q10filter -b -@ $bt2_threads $outsam | samtools sort -m 8G -@ $bt2_threads -o $outbam
 
 #Make an index of the sorted bam file
 samtools index ${outbam}
