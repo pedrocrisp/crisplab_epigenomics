@@ -116,6 +116,7 @@ O=bwa-meth-filtered/${ID}_sorted_MarkDup.bam \
 METRICS_FILE=bwa-meth-filtered/${ID}_MarkDupMetrics.txt \
 ASSUME_SORTED=true \
 CREATE_INDEX=False \
+VALIDATION_STRINGENCY=LENIENT \
 REMOVE_DUPLICATES=true
 
 # rename to keep script naming convention consistent
