@@ -67,4 +67,4 @@ sbatch --array $sbatch_t \
 -e ${log_folder}/${step}_e^array_index^ \
 --export LIST=${sample_list} \
 --account $account_department \
-$script_to_qsub
+$script_to_sbatch
