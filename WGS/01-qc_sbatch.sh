@@ -63,8 +63,8 @@ sbatch --array $sbatch_t \
 -N 1 \
 -n 1 \
 --mem ${mem}gb \
--o ${log_folder}/${step}_o^array_index^ \
--e ${log_folder}/${step}_e^array_index^ \
+-o ${log_folder}/${step}_o_%A_%a.out \
+-e ${log_folder}/${step}_e_%A_%a.error \
 --export LIST=${sample_list} \
 --account $account_department \
 $script_to_sbatch
