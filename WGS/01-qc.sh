@@ -9,11 +9,9 @@
 set -xeuo pipefail
 
 echo ------------------------------------------------------
-echo -n 'Job is running on node '; cat $SLURM_JOB_NODELIST
-echo ------------------------------------------------------
-echo PBS: working directory is $SLURM_SUBMIT_DIR
-echo PBS: job identifier is $SLURM_JOBID
-echo PBS: array_ID is ${SLURM_ARRAY_TASK_ID}
+echo SBATCH: working directory is $SLURM_SUBMIT_DIR
+echo SBATCH: job identifier is $SLURM_JOBID
+echo SBATCH: array_ID is ${SLURM_ARRAY_TASK_ID}
 echo ------------------------------------------------------
 
 echo working dir is $PWD
