@@ -23,7 +23,7 @@ echo working dir is now $PWD
 
 ########## Modules #################
 
-fastqc/0.11.9-java-11
+module load fastqc/0.11.9-java-11
 
 ########## Set up dirs #################
 
