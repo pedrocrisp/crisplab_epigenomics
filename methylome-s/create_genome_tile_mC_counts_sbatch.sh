@@ -7,7 +7,7 @@ set -xeuo pipefail
 #Bash qsub script for create_genome_tile_mC_counts.R
 
 usage="USAGE:
-create_genome_tile_mC_counts_sbatch <sample_list> <walltime> <memory>
+create_genome_tile_mC_counts_sbatch <sample_list> <walltime> <memory> <account_department>
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -17,6 +17,7 @@ step=create_genome_tile_mC_counts
 sample_list=$1
 walltime=$2
 mem=$3
+account_department=$4
 
 if [ "$#" -lt "3" ]
 then
