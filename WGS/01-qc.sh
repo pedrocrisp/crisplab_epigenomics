@@ -2,8 +2,6 @@
 #SBATCH --job-name fastqc
 #SBATCH --requeue
 #SBATCH --partition=general
-#SBATCH --mail-type ALL
-#SBATCH --mail-user p.crisp@uq.edu.au 
 
 ########## QC #################
 set -xeuo pipefail
