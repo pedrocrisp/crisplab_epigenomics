@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name fastqc
+#SBATCH --job-name tiles
 #SBATCH --requeue
 #SBATCH --partition=general
 
