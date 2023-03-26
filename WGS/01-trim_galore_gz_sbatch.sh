@@ -56,7 +56,7 @@ cat $0 > ${log_folder}/sbatch_runner.log
 
 #submit sbatch and pass args
 #-o and -e pass the file locations for std out/error
-#-v additional variables to pass to the sbatch script including the PBS_array list and the dir structures
+#--export additional variables to pass to the sbatch script including the array list and the dir structures
 sbatch --array $sbatch_t \
 -t ${walltime} \
 -N 1 \
