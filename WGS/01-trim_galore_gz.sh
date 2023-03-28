@@ -27,8 +27,8 @@ module load cutadapt/3.4-gcccore-10.3.0
 ########## Set up dirs #################
 
 #get job ID
-#use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAY_INDEX} eg 2 from {list}
-ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
+#use sed, -n supression pattern space, then 'p' to print item number {SLURM_ARRAY_TASK_ID} eg 2 from {list}
+ID="$(/bin/sed -n ${SLURM_ARRAY_TASK_ID}p ${LIST})"
 
 #make trimmed folder
 trimmedfolder=analysis/trimmed
