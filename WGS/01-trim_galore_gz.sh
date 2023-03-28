@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #SBATCH --job-name trim_galore_gz
 #SBATCH --requeue
-#SBATCH --partition=general
+#SBATCH --partition general
 
 ########## QC #################
 set -xeuo pipefail
