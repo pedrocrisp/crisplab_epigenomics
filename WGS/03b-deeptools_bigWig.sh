@@ -20,7 +20,7 @@ cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
 ########## Modules #################
-conda activate py3.7
+conda activate $conda_enviro
 module load java/11.0.16
 # picard needs R
 module load r/4.2.1-foss-2021a
