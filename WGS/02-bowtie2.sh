@@ -28,7 +28,7 @@ module load samtools/1.13-gcc-10.3.0
 
 #get job ID
 #use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAYID} eg 2 from {list}
-ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
+ID="$(/bin/sed -n ${SLURM_ARRAY_TASK_ID}p ${LIST})"
 
 echo sample being mapped is $ID
 #sample_dir="${reads_folder}/${ID}"
