@@ -67,5 +67,7 @@ sbatch --array $sbatch_t \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
 --export LIST=${sample_list} \
+--mail-user $email \
+--mail-type ALL \
 --account $account_department \
 $script_to_sbatch
