@@ -13,7 +13,7 @@ sample_list=$1
 walltime=$2
 mem=$3
 account_department=$4
-if [ "$#" -lt "3" ]
+if [ "$#" -lt "4" ]
 then
 echo $usage
 exit -1

@@ -18,7 +18,7 @@ walltime=$6
 mem=$7
 account_department=$8
 
-if [ "$#" -lt "7" ]
+if [ "$#" -lt "8" ]
 then
 echo $usage
 exit -1
