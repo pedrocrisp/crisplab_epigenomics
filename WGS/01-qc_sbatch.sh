@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 01-qc_sbatch.sh <sample_list.txt> <walltime> <memory> <email> <account_department>"
+bash 01-qc_sbatch.sh <sample_list.txt> <walltime> <memory> <account_department>"
 
 #define stepo in the pipeline - should be the same name as the script
 step=01-qc
@@ -12,10 +12,9 @@ step=01-qc
 sample_list=$1
 walltime=$2
 mem=$3
-email=$4
-account_department=$5
+account_department=$4
 
-if [ "$#" -lt "5" ]
+if [ "$#" -lt "4" ]
 then
 echo $usage
 exit -1
@@ -69,7 +68,5 @@ sbatch --array $sbatch_t \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
 --export LIST=${sample_list} \
---mail-user=$email \
---mail-type=ALL \
 --account $account_department \
 $script_to_sbatch
