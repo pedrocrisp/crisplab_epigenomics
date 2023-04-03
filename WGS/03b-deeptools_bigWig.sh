@@ -21,9 +21,6 @@ echo working dir is now $PWD
 
 ########## Modules #################
 conda activate $conda_enviro
-module load java/11.0.16
-# picard needs R
-module load r/4.2.1-foss-2021a
 
 ########## Set up dirs #################
 
@@ -61,6 +58,11 @@ bamCoverage \
 ############ get frag sizes ##############
 # get frag sizes to check level of tagmentation using picard
 # path to call picard jar - eg  - "/home/uqpcrisp/software/picard.jar"
+
+########## Modules #################
+module load java/11.0.16
+# picard needs R
+module load r/4.2.1-foss-2021a
 
 java -jar ~/software/picard.jar CollectInsertSizeMetrics \
 I=$bam_dir/${ID}_sorted.bam \
