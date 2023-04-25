@@ -49,7 +49,7 @@ log_folder=logs/${timestamp}_${step}
 mkdir $log_folder
 
 #script path and cat a record of what was run
-script_dir=~/gitrepos/crisplab_epigenomics/methylome
+script_dir=~/gitrepos/crisplab_epigenomics/methylome-s
 script_to_sbatch=${script_dir}/${step}.sh
 cat $script_to_sbatch > ${log_folder}/script.log
 cat $0 > ${log_folder}/sbatch_runner.log
