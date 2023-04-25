@@ -56,17 +56,6 @@ cat $0 > ${log_folder}/sbatch_runner.log
 
 #submit sbatch and pass args
 #-o and -e pass the file locations for std out/error
-#-v additional variables to pass to the sbatch script including the PBS_array list and the dir structures
-sbatch -J $sbatch_t \
--l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
--o ${log_folder}/${step}_o^array_index^ \
--e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list} \
--A $account_department \
-$script_to_sbatch
-
-#submit sbatch and pass args
-#-o and -e pass the file locations for std out/error
 #--export additional variables to pass to the sbatch script including the array list and the dir structures
 sbatch --array $sbatch_t \
 -t ${walltime} \
