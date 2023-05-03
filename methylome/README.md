@@ -338,6 +338,19 @@ lst bwa_summary.tsv
 
 ```
 
+slurm
+
+```
+for i in $(ls 02-bwa-meth_o*); do \
+SAMPLE=$(grep 'sample being mapped is' $i | tr -s ' ' | cut -d " " -f 5); \
+MAPPED_READS=$(grep 'mapped (' $i | grep -v -v 'primary mapped' -); \
+echo -e "$SAMPLE\t$MAPPED_READS"; \
+done > bwa_summary.tsv
+
+lst bwa_summary.tsv
+
+```
+
 ## MarkDuplicates
 
 MarkDuplicates - to get duplication rates
