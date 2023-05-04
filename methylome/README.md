@@ -328,6 +328,8 @@ Total number of sequences analysed:
 
 ## BWA-meth
 
+SE
+
 ```
 for i in $(ls 02-bwa-meth_o*); do \
 SAMPLE=$(grep 'sample being mapped is' $i | tr -s ' ' | cut -d " " -f 5); \
@@ -338,7 +340,7 @@ lst bwa_summary.tsv
 
 ```
 
-slurm
+PE
 
 ```
 for i in $(ls 02-bwa-meth_o*); do \
