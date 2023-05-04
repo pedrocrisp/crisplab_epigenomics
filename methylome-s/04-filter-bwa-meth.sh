@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name fastqc
+#SBATCH --job-name bwa-filter
 #SBATCH --requeue
 #SBATCH --partition=general
 
