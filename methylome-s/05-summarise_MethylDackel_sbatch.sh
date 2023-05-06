@@ -83,16 +83,6 @@ cat $0 > ${log_folder}/sbatch_runner.log
 
 #submit sbatch and pass args
 #-o and -e pass the file locations for std out/error
-#-v additional variables to pass to the sbatch script including the PBS_array list and the dir structures
-sbatch -J $sbatch_t \
--l walltime=${walltime},nodes=1:ppn=${cores},mem=${mem}gb \
--o ${log_folder}/${step}_o^array_index^ \
--e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,cores=$cores,conda_enviro=$conda_enviro \
-$script_to_sbatch
-
-#submit sbatch and pass args
-#-o and -e pass the file locations for std out/error
 #--export additional variables to pass to the sbatch script including the array list and the dir structures
 sbatch --array $sbatch_t \
 -t ${walltime} \
@@ -102,6 +92,6 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,cores=$cores \
+--export LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,cores=$cores,conda_enviro=$conda_enviro \
 --account $account_department \
 $script_to_sbatch
