@@ -94,17 +94,20 @@ MethylDackel_mbias/${ID}_methratio_mbias
 #tail -n+2 MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
 
 # make 4 columns and no header for bedGraphToBigWig
-awk -F$"\\t" \
-'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
-MethylDackel/${ID}_methratio_head_CpG.bedGraph > MethylDackel/${ID}_methratio_CG.bedGraph
+# case-sensitive sort
+LC_COLLATE=C
 
 awk -F$"\\t" \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
-MethylDackel/${ID}_methratio_head_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
+MethylDackel/${ID}_methratio_head_CpG.bedGraph | sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CG.bedGraph
 
 awk -F$"\\t" \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
- MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
+MethylDackel/${ID}_methratio_head_CHG.bedGraph | sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHG.bedGraph
+
+awk -F$"\\t" \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+ MethylDackel/${ID}_methratio_head_CHH.bedGraph | sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHH.bedGraph
 
 # bw
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} \
@@ -116,6 +119,8 @@ bedGraphToBigWig "MethylDackel/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file}
 
 # Now split by chromosome - uncomment if you want to split into per Chr files
 # split bedGraph by chromosome
+# note - you should probably remove contigs before this step or you could end up with 1000s of files
+# eg samtools faidx Vfaba.v1.fasta chr1L chr1S chr2 chr3 chr4 chr5 chr6 > Vfaba.v1_no_contigs.fasta
 
 awk -F$"\\t" -v ID=$ID \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6 > "MethylDackel/"ID"_"$1"_methratio_CG.bedGraph"}' \
