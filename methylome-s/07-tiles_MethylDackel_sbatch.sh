@@ -78,7 +78,7 @@ sbatch --array $sbatch_t \
 --cpus-per-task ${cores} \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
--e ${log_folder}/${step}_e_%A_%a ź
+-e ${log_folder}/${step}_e_%A_%a \
 --export LIST=${sample_list},chromosome_list=${chromosome_list},reference_tile_file_folder=${reference_tile_file_folder} \
 --account $account_department \
 $script_to_sbatch
