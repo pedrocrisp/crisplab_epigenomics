@@ -49,7 +49,7 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome/create_genome_tile_mC_counts_tile
 
 module load bedtools
 
-bedtools getfasta -fi ../${genome}*.{fasta,fa} \
+bedtools getfasta -fi ../${genome}.fa \
 -bed ${genome}_100pb_tiles_for_sites_calc.bed \
 -fo ${genome}_100bp_tiles.fa
 
