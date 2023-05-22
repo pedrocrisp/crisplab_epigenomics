@@ -113,3 +113,5 @@ sbatch --array $sbatch_t \
 --export LIST=samples_${CHROMOSOME}.txt,reference_100bp_tiles=$reference_100bp_tiles,chrom_sizes_path=$chrom_sizes_path,coverage_filter_min=$coverage_filter_min,site_filter_min=$site_filter_min,MR_percent=$MR_percent,UMR_percent=$UMR_percent \
 --account $account_department \
 $script_to_sbatch
+
+done
