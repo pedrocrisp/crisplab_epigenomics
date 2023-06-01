@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 02-bsmap_sbatch.sh <sample_list.txt> <genome.fa> <adapter_seq> <walltime> <memory> <threads>"
+bash 02-bsmap_sbatch.sh <sample_list.txt> <genome.fa> <adapter_seq> <walltime> <memory> <threads> <account_department>" 
 
 #define step in the pipeline - should be the same name as the script
 step=02-bsmap
@@ -15,6 +15,7 @@ adapter_seq=$3
 walltime=$4
 mem=$5
 cores=$6
+account_department=$7
 if [ "$#" -lt "6" ]
 then
 echo $usage
