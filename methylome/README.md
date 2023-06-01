@@ -308,6 +308,20 @@ cat ../total_reads_summary.tsv | column -t
 
 ## Bsmap Scraper
 
+SE
+
+```
+for i in $(ls 02-bsmap_e*); do
+SAMPLE=$(grep 'sample being mapped is' $i | tr -s ' ' | cut -d " " -f 7); \
+MAPPED_READS=$(grep 'Total number of aligned reads' $i | tr -s ' ' | cut -d " " -f 6); \
+MAPPED_READS_PERCENTAGE=$(grep 'Total number of aligned reads' $i | tr -s ' ' | cut -d " " -f 7); \
+echo -e "$SAMPLE\t$MAPPED_READS\t$MAPPED_READS_PERCENTAGE"; \
+done > bsmap_summary.tsv
+
+lst bsmap_summary.tsv
+```
+
+PE
 ```
 cd logs/..._02-bsmap
 
