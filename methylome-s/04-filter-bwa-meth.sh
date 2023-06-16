@@ -89,7 +89,7 @@ then
 
         #index bam
         # index
-        samtools index bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+        samtools index -c -@ 20 bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
 elif [ "$paired_end" == "no" ]
 then
@@ -108,7 +108,7 @@ REMOVE_DUPLICATES=true
 mv bwa-meth-filtered/${ID}_sorted_MarkDup.bam bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
 # index
-samtools index bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
+samtools index -c -@ 20 bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam
 
 
 else
