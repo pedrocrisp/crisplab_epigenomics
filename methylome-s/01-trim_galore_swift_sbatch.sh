@@ -12,7 +12,9 @@ step=01-trim_galore_swift
 sample_list=$1
 walltime=$2
 mem=$3
-account_department=$4
+conda_enviro=$4
+account_department=$5
+
 if [ "$#" -lt "3" ]
 then
 echo $usage
@@ -65,6 +67,6 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list} \
+--export LIST=${sample_list},conda_enviro=${conda_enviro} \
 --account $account_department \
 $script_to_sbatch
