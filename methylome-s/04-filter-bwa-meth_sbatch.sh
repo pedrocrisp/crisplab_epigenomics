@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 04-filter-bwa-meth_sbatch.sh <sample_list.txt> <paired_end> <walltime> <memory> <account_department>
+bash 04-filter-bwa-meth_sbatch.sh <sample_list.txt> <paired_end> <walltime> <memory> <conda_env> <account_department>
 for example:
 bash \
 crisplab_methylation/methylome/04-filter-WGBS-regular_sbatch.sh \
@@ -21,9 +21,10 @@ sample_list=$1
 paired_end=$2
 walltime=$3
 mem=$4
-account_department=$5
+conda_enviro=$5
+account_department=$6
 
-if [ "$#" -lt "5" ]
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
@@ -84,6 +85,6 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},paired_end=$paired_end \
+--export LIST=${sample_list},paired_end=$paired_end,conda_enviro=$conda_enviro \
 --account $account_department \
 $script_to_sbatch
