@@ -20,7 +20,7 @@ cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
 ########## Modules #################
-module load r/4.2.1-foss-2021a
+module load r/4.1.0-foss-2021a
 ########## Set up dirs #################
 
 #get job ID
