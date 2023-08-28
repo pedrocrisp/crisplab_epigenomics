@@ -96,6 +96,8 @@ MethylDackel_mbias/${ID}_methratio_mbias
 # make 4 columns and no header for bedGraphToBigWig
 # NOTE: this whole genome methratio.bedGraph files only have % meethylated nit the conuts of C and CT per cytosine - this is only kept in the per chromosome files below
 # case-sensitive sort
+# printf '%s\n' B A b a | LC_COLLATE=en_US.UTF-8 sort
+# printf '%s\n' B A b a | LC_COLLATE=C sort
 # LC_COLLATE=C
 
 awk -F$"\\t" \
