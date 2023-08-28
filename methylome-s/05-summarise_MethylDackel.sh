@@ -96,19 +96,19 @@ MethylDackel_mbias/${ID}_methratio_mbias
 # make 4 columns and no header for bedGraphToBigWig
 # NOTE: this whole genome methratio.bedGraph files only have % meethylated nit the conuts of C and CT per cytosine - this is only kept in the per chromosome files below
 # case-sensitive sort
-LC_COLLATE=C
+# LC_COLLATE=C
 
 awk -F$"\\t" \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
-MethylDackel/${ID}_methratio_head_CpG.bedGraph | sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CG.bedGraph
+MethylDackel/${ID}_methratio_head_CpG.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CG.bedGraph
 
 awk -F$"\\t" \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
-MethylDackel/${ID}_methratio_head_CHG.bedGraph | sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHG.bedGraph
+MethylDackel/${ID}_methratio_head_CHG.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHG.bedGraph
 
 awk -F$"\\t" \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
- MethylDackel/${ID}_methratio_head_CHH.bedGraph | sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHH.bedGraph
+ MethylDackel/${ID}_methratio_head_CHH.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHH.bedGraph
 
 # bw
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} \
@@ -116,7 +116,7 @@ bedGraphToBigWig "MethylDackel/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} 
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CHG.bedGraph" ${chrom_sizes_file} \
 "MethylDackel_bigwigs/${ID}_MethylDackel_CHG.bigWig"
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file} \
-"MethylDackel_bigwigs/${ID}_MethylDackel_CHH.bigWig"
+"MethylDackel_bigwigs/${ID}_MethylDackel_CHH.bigWi#g"
 
 # Now split by chromosome - uncomment if you want to split into per Chr files
 # split bedGraph by chromosome
