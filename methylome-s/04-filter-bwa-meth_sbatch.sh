@@ -10,7 +10,9 @@ crisplab_methylation/methylome/04-filter-WGBS-regular_sbatch.sh \
 single_sample.txt \
 yes \
 24:00:00 \
-40
+40 \
+bamutil \
+a_crisp
 "
 
 #define stepo in the pipeline - should be the same name as the script
