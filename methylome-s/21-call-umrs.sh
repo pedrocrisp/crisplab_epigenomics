@@ -30,6 +30,9 @@ sample_to_crunch=$ID
 
 echo sample being mapped is $ID
 
+cd analysis
+mkdir -p UMR_tiles_per_chr
+
 annotation_suffix=_mC_domains_II_cov_${coverage_filter_min}_sites_${site_filter_min}_MR_${MR_percent}_UMR_${UMR_percent}
 annotation_suffix2=cov_${coverage_filter_min}_sites_${site_filter_min}_MR_${MR_percent}_UMR_${UMR_percent}
 
@@ -62,14 +65,14 @@ module load bedtools
 #less ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs.bed
 #echo ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs.bed
 #
-sort -k1,1 -k2,2n ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs.bed > ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted.bed
+sort -k1,1 -k2,2n UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs.bed > UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted.bed
 
-bedtools merge -i ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted.bed > ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted_merge.bed
+bedtools merge -i UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted.bed > UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted_merge.bed
 
-wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted.bed
+wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted.bed
 # 1254448 * 100 / 1000000
 
-wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted_merge.bed
+wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted_merge.bed
 # 321464
 
 # less ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_sorted_merge.bed
@@ -81,21 +84,21 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod2.R \
 
 ########## Sort #################
 
-sort -k1,1 -k2,2n ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size.bed > \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size_sorted.bed
+sort -k1,1 -k2,2n UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size.bed > \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size_sorted.bed
 
 
 ########## Run Merge and sort NDs #################
 
-sort -k1,1 -k2,2n ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs.bed > ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted.bed
+sort -k1,1 -k2,2n UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs.bed > UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted.bed
 
-bedtools merge -i ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted.bed > ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted_merge.bed
+bedtools merge -i UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted.bed > UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted_merge.bed
 
-wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted.bed
+wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted.bed
 #3372705
 #5030855-maize
 
-wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted_merge.bed
+wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted_merge.bed
 #821221
 #1520303-maize
 
@@ -104,12 +107,12 @@ wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to
 # I get a warning here due to the name chaecking function... I think its a false negative
 
 bedtools closest \
--a ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted_merge.bed \
--b ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size_sorted.bed \
+-a UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_sorted_merge.bed \
+-b UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size_sorted.bed \
 -t all \
 -d \
 -g $chrom_sizes_path \
-> ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/NDs_Olap_UMTs.bed
+> UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/NDs_Olap_UMTs.bed
 
 # less ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/NDs_Olap_UMTs.bed
 
@@ -123,9 +126,9 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod3.R \
 ### Merge NDs inbetween UMTs
 # combine files and sort
 cat \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size_sorted.bed \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_between_UMTs.bed \
-| sort -k1,1 -k2,2n > ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input.bed
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size_sorted.bed \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_between_UMTs.bed \
+| sort -k1,1 -k2,2n > UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input.bed
 
 # less ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input.bed
 # q
@@ -134,14 +137,14 @@ ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunc
 # col 4 this mark tiles with NDs in them and also retain metafeatures for subsequent filtering for distal tiles and
 # col 5 this is the siz of the tile - I want to filter after merging to mark any tile that is more than 30% (?) NDs - probably have to work backwards to un merge these???
 
-bedtools merge -i ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input.bed \
+bedtools merge -i UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input.bed \
 -c 4,5,6 -o collapse,collapse,collapse > \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_NDs.bed
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_NDs.bed
 
-wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input.bed
+wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input.bed
 # 329888 (maize 241801)
 
-wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_NDs.bed
+wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_NDs.bed
 # 231576 (maize 206976)
 
 # (329888-231576)
@@ -156,9 +159,9 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod4.R \
 
 # combine files and sort
 cat \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size_sorted.bed \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_between_UMTs_pct_filtered.bed \
-| sort -k1,1 -k2,2n > ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input2.bed
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_size_sorted.bed \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_between_UMTs_pct_filtered.bed \
+| sort -k1,1 -k2,2n > UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input2.bed
 
 # less ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input2.bed
 # q
@@ -166,14 +169,14 @@ ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunc
 # col 4 this mark tiles with NDs in them and also retain metafeatures for subsequent filtering for distal tiles and
 # col 5 this is the siz of the tile - I want to filter after merging to mark any tile that is more than 30% (?) NDs - probably have to work backwards to un merge these???
 
-bedtools merge -i ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input2.bed \
+bedtools merge -i UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input2.bed \
 -c 4,5,6 -o collapse,collapse,collapse > \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_NDs_pct_filtered.bed
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_NDs_pct_filtered.bed
 
-wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input2.bed
+wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/input2.bed
 #329888 (maize 241801)
 
-wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_NDs_pct_filtered.bed
+wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs_merge_NDs_pct_filtered.bed
 #274411 (maize 206976)
 
 #(329888-274411)
@@ -184,9 +187,9 @@ wc -l ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to
 
 # combine files and sort
 cat \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data.bed \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_between_UMTs_pct_filtered_4col.bed \
-| sort -k1,1 -k2,2n > ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data.bed \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_NDs_between_UMTs_pct_filtered_4col.bed \
+| sort -k1,1 -k2,2n > UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed
 
 ### UMR final list and Size annotation
 R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod5.R \
@@ -196,25 +199,25 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod5.R \
 # this step puts the final UMR list and the tiles with data bed files in a new folders
 # the remaining files can probably just bed deleted ie delete the whole mC_UMT_annotation_beds folders
 
-mkdir -p ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final
+mkdir -p UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final
 
 # UMRs
 mv \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMRs_6col.bed \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/${sample_to_crunch}_${annotation_suffix2}_UMRs_6col.bed
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMRs_6col.bed \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/${sample_to_crunch}_${annotation_suffix2}_UMRs_6col.bed
 
 # tiles with data
 mv \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data.bed \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data.bed \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/
 
 # tiles with data including the merged ND tiles
 mv \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed \
-${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/
 
 # delete those remaining files
 # if you ever want to look at the intermediate files again comment out the next line
-rm -rv ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds
+rm -rv UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds
 
 echo finished summarising

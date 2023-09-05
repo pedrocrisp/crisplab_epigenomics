@@ -53,7 +53,7 @@ text_size_theme_8 <- theme(axis.text=element_text(size=8),
 #
 ###########################
 
-folder_prefix = paste0(sample_to_crunch, annotation_suffix)
+folder_prefix = paste0("UMR_tiles_per_chr/", sample_to_crunch, annotation_suffix)
 
 dir.create(folder_prefix, showWarnings = F)
 
