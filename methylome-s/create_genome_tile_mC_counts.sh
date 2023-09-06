@@ -39,7 +39,7 @@ cd sites
 ########## Run MODULE 1 #################
 
 # Run R module to creat 100bp tile bed file
-R -f ~/gitrepos/crisplab_epigenomics/methylome/create_genome_tile_mC_counts_tiles.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/create_genome_tile_mC_counts_tiles.R \
 --args $genome
 
 ##########              #################
@@ -128,7 +128,7 @@ csvtk -t freq -k -f 1,2 > ${genome}_100bp_tiles_sites_Ns.tsv
 ##########              #################
 
 # Run R module to count sites in each 100 bp tile
-R -f ~/gitrepos/crisplab_epigenomics/methylome/create_genome_tile_mC_counts.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/create_genome_tile_mC_counts.R \
 --args $genome
 
 echo finished summarising
