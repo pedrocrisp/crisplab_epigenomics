@@ -153,6 +153,6 @@ write.table(reference_tiles_sites, paste0(genome, "_100bp_tiles_zBased_sites_cou
 ##############
 
 #write a bed file (zero based and no head)
-reference_tiles_2_bed <- select(reference_tiles_sites, chr, start_zBased, end, cag_sites, ctg_sites, cgg_sites)
+reference_tiles_2_bed <- select(reference_tiles_sites, chr, start_zBased, end, cag_sites, ctg_sites, ccg_sites)
 
 write.table(reference_tiles_2_bed, paste0(genome, "_100bp_tiles_zBased_sites_counts.bed"), sep = "\t", quote = F, row.names = F, col.names = F)
