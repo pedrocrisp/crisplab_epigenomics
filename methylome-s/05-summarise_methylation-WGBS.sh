@@ -241,7 +241,11 @@ mkdir -p ConversionRate
         # keep bigWigs
 
         # keeing temporarily in case useful for metaplots? Does it have zeros?
+        if [ "$keep_bedgraph" == "no" ]
+        then
         rm -rv BSMAPratio/${ID}*.bedGraph
+        fi
+        
 
         ########################
                 ## Now make stranded bigWigs for IGV
@@ -305,8 +309,11 @@ mkdir -p ConversionRate
                 "BSMAPratio/${ID}_BSMAP_out_-_CHH.bigWig"
 
         #remove bedGraph it is large and not really required
-        # keep bigWigs
+        # keep bigWigs?
+        if [ "$keep_bedgraph" == "no" ]
+        then
         rm -rv BSMAPratio/${ID}*.bedGraph
+        fi
 
         ########################
 

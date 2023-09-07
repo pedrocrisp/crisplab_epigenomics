@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 05-summarise_methylation_sbatch.sh <sample_list.txt> <genome.fa> <chromosome.sizes.file> <walltime> <memory> <make_subcontext> <account_department>
+bash 05-summarise_methylation_sbatch.sh <sample_list.txt> <genome.fa> <chromosome.sizes.file> <walltime> <memory> <make_subcontext> <keep_bedGraphs> <account_department>
 for example:
 bash \
 /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/05-summarise_methylation-WGBS_sbatch.sh \
@@ -12,6 +12,7 @@ single_sample.txt \
 /home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.chrom.sizes \
 12:00:00 \
 60 \
+no \
 no \
 a_crisp
 "
@@ -26,9 +27,10 @@ chrom_sizes_file=$3
 walltime=$4
 mem=$5
 make_subcontext=$6
-account_department=$7
+keep_bedgraph=$7
+account_department=$8
 
-if [ "$#" -lt "7" ]
+if [ "$#" -lt "8" ]
 then
 echo $usage
 exit -1
@@ -90,7 +92,7 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,make_subcontext=$make_subcontext \
+--export LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,make_subcontext=$make_subcontext,keep_bedgraph=$keep_bedgraph \
 --account $account_department \
 $script_to_sbatch
 
