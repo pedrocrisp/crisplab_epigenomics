@@ -118,7 +118,7 @@ bedGraphToBigWig "MethylDackel/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} 
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CHG.bedGraph" ${chrom_sizes_file} \
 "MethylDackel_bigwigs/${ID}_MethylDackel_CHG.bigWig"
 bedGraphToBigWig "MethylDackel/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file} \
-"MethylDackel_bigwigs/${ID}_MethylDackel_CHH.bigWi#g"
+"MethylDackel_bigwigs/${ID}_MethylDackel_CHH.bigWig"
 
 # Now split by chromosome - uncomment if you want to split into per Chr files
 # split bedGraph by chromosome
