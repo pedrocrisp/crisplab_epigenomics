@@ -3,13 +3,14 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 11b-DSS_call_tile_DMRs_sbatch.sh <contrasts_list.txt> <DMR_contrasts_table_file> <path_to_data_files>
+bash 11b-DSS_call_tile_DMRs_sbatch.sh <contrasts_list.txt> <DMR_contrasts_table_file> <path_to_data_files> <account_department>
 for example:
 bash \
 /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/11b-DSS_call_tile_DMRs_sbatch.sh \
 DMR_tests_combos_all_list.txt \
 DMR_tests_combos_all_table.tsv \
-analysis/tiles_filtered_4C_2x
+analysis/tiles_filtered_4C_2x \
+a_crisp
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -21,8 +22,9 @@ mem=$2
 sample_list=$3
 DMR_contrasts_table_file=$4
 path_to_data_files=$5
+account_department=$6
 
-if [ "$#" -lt "5" ]
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
