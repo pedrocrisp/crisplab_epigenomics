@@ -133,21 +133,24 @@ overlaps_distinct_collapsed_filtered
 #######
 # write 100 bp annotation?
 overlaps_distinct_collapsed_filtered_out <- overlaps_distinct_collapsed_filtered %>%
-  mutate(score = ".",
+  mutate(size = end - start,
          strand = ".") %>%
-  select(chr, start, end, classification, score, strand)
+  select(chr, start, end, classification, size, strand)
+
+  overlaps_distinct_collapsed_filtered_out
 
 write.table(overlaps_distinct_collapsed_filtered_out, paste0(sample_prefix, "_annotated_", reference_annotation_mame, ".bed"), sep = "\t", quote = F, row.names = F, col.names = F)
 
 ########
 #summarise
 overlaps_distinct_collapsed_filtered_summary <- overlaps_distinct_collapsed_filtered %>%
+  mutate(size = end - start) %>% 
   group_by(classification) %>%
-  summarise(n = n())
+  summarise(n = n(), Mb = sum(size)/1000000)
 
 overlaps_distinct_collapsed_filtered_summary <- overlaps_distinct_collapsed_filtered_summary %>% 
-  mutate(percentage = n/sum(n)*100,
-         Mb = n * 100 / 1000000)
+  mutate(n_percentage = n/sum(n)*100,
+         Mb_percentage = Mb/sum(Mb)*100)
 
 overlaps_distinct_collapsed_filtered_summary
 # # A tibble: 10 x 4
@@ -170,7 +173,7 @@ write_tsv(overlaps_distinct_collapsed_filtered_summary, paste0(summary_output_fo
 ####### pull distal
 
 distal_only_bed <- overlaps_distinct_collapsed_filtered_out %>% filter(classification == "intergenic") %>% 
-  mutate(name = sample_prefix) %>% select(chr, start, end, name, score, strand)
+  mutate(name = sample_prefix) %>% select(chr, start, end, name, size, strand)
 # 8,972
 # write
 
