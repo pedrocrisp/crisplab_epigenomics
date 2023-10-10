@@ -28,9 +28,9 @@ options(scipen=999)
 
 dir.create(outFolder, showWarnings = F)
 
-cg <- read_tsv(paste0("tiles/", "sample_name", "_merged_BSMAP_out.txt.100.CG.fixed.sorted.txt"))
-chg <- read_tsv(paste0("tiles/", "sample_name", "_merged_BSMAP_out.txt.100.CHG.fixed.sorted.txt"))
-chh <- read_tsv(paste0("tiles/", "sample_name", "_merged_BSMAP_out.txt.100.CHH.fixed.sorted.txt"))
+cg <- read_tsv(paste0("tiles/", sample_name, "_merged_BSMAP_out.txt.100.CG.fixed.sorted.txt"))
+chg <- read_tsv(paste0("tiles/", sample_name, "_merged_BSMAP_out.txt.100.CHG.fixed.sorted.txt"))
+chh <- read_tsv(paste0("tiles/", sample_name, "_merged_BSMAP_out.txt.100.CHH.fixed.sorted.txt"))
 
 cg_filtered <- cg %>% 
   mutate(cov = CT/cg_sites) %>% 
