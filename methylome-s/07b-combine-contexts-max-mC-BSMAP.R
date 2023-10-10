@@ -72,4 +72,4 @@ c_max <- c %>% group_by(chr, start, end) %>%
 #  3 1       200   300 1     
 #  4 1       300   400 0.857 
 
-write.table(c_max, paste0(outFolder,"/", sample_name,"_merged_BSMAP_out.txt.100.C.max.bed.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
+write.table(c_max, paste0(outFolder,"/", sample_name,"_BSMAP_out.txt.100.C.max.bed.txt"), sep = "\t", quote = F, row.names = F, col.names = T)
