@@ -206,7 +206,7 @@ merged_mC_sans_orgs <- merged_mC %>% filter(!chr %in% c("Mt", "Pt"))
 merged_mC_sans_orgs
 
 ###################
-# distributino and averages of mC levels
+# distribution and averages of mC levels
 
 # distro
 plot_data <- merged_mC_sans_orgs %>% slice(1:10000) %>%

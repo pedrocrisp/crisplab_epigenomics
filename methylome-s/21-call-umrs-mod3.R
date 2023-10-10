@@ -78,7 +78,7 @@ dir.create(out_dir_beds, showWarnings = F)
 #############
 
 # read in ref
-# read b_size as ccharacter because there are some dots
+# read b_size as character because there are some dots
 ND_overlaps <- read_tsv(paste0(out_dir_beds, "/NDs_Olap_UMTs.bed"), col_names =  c("chr","start", "end","B_chr", "b_start", "b_end", "b_type","b_size", "b_location", "distance"), 
                         cols(b_size = col_character()))
 
