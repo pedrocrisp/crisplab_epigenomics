@@ -20,6 +20,12 @@ site_filter_min <- as.double(args[4])
 # sample_name = "maize_B73_leaf_EM-2-3"
 # outFolder = "tiles_C"
 
+########
+###########################
+library(tidyverse)
+old.scipen <- getOption("scipen")
+options(scipen=999)
+
 dir.create(outFolder, showWarnings = F)
 
 cg <- read_tsv(paste0("tiles/", "sample_name", "_merged_BSMAP_out.txt.100.CG.fixed.sorted.txt"))
