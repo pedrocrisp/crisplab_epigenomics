@@ -39,7 +39,7 @@ annotation_suffix2=cov_${coverage_filter_min}_sites_${site_filter_min}_MR_${MR_p
 ########## Run MODULE 1 DOMAINS #################
 
 # Run R module to Call mC domains vII
-R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod1.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/21-call-umrs-mod1.R \
 --args $reference_100bp_tiles $ID $annotation_suffix $chrom_sizes_path $coverage_filter_min $site_filter_min $MR_percent $UMR_percent
 
 # Notes
@@ -79,7 +79,7 @@ wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotatio
 # q
 
 # Read into R and filter to add size column
-R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod2.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/21-call-umrs-mod2.R \
 --args $reference_100bp_tiles $ID $annotation_suffix $chrom_sizes_path $coverage_filter_min $site_filter_min $MR_percent $UMR_percent
 
 ########## Sort #################
@@ -120,7 +120,7 @@ bedtools closest \
 # Add a size colum
 # and also a column for their co-ordinates
 # remove black listed regions on second pass
-R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod3.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/21-call-umrs-mod3.R \
 --args $reference_100bp_tiles $ID $annotation_suffix $chrom_sizes_path $coverage_filter_min $site_filter_min $MR_percent $UMR_percent
 
 ### Merge NDs inbetween UMTs
@@ -152,7 +152,7 @@ wc -l UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotatio
 # this reduced the numner of merged UMTs by 98312  or 30% (compared to 15.3% for maize)
 
 # Read into R and filter UMTs that are too high % NDs
-R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod4.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/21-call-umrs-mod4.R \
 --args $reference_100bp_tiles $ID $annotation_suffix $chrom_sizes_path $coverage_filter_min $site_filter_min $MR_percent $UMR_percent
 
 ### Merge filtered NDs inbetween UMTs
@@ -192,7 +192,7 @@ UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds
 | sort -k1,1 -k2,2n > UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_mC_domains_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed
 
 ### UMR final list and Size annotation
-R -f ~/gitrepos/crisplab_epigenomics/methylome/21-call-umrs-mod5.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/21-call-umrs-mod5.R \
 --args $reference_100bp_tiles $ID $annotation_suffix $chrom_sizes_path $coverage_filter_min $site_filter_min $MR_percent $UMR_percent
 
 ############ put the key bed files in new output folder
