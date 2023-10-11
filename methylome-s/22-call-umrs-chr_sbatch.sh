@@ -14,7 +14,7 @@ usage="USAGE:
 <site_filter_min>
 <MR_percent>
 <UMR_percent>
-<walltime> <memory> <cores> <account_department>
+<walltime> <memory> <cores> <chr_or_genome> <account_department>
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -32,9 +32,10 @@ UMR_percent=$8
 walltime=$9
 mem=${10}
 cores=${11}
-account_department=${12}
+chr_or_genome=${12}
+account_department=${13}
 
-if [ "$#" -lt "12" ]
+if [ "$#" -lt "13" ]
 then
 echo $usage
 exit -1
@@ -110,7 +111,7 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=samples_${CHROMOSOME}.txt,reference_100bp_tiles=$reference_100bp_tiles,chrom_sizes_path=$chrom_sizes_path,coverage_filter_min=$coverage_filter_min,site_filter_min=$site_filter_min,MR_percent=$MR_percent,UMR_percent=$UMR_percent \
+--export LIST=samples_${CHROMOSOME}.txt,reference_100bp_tiles=$reference_100bp_tiles,chrom_sizes_path=$chrom_sizes_path,coverage_filter_min=$coverage_filter_min,site_filter_min=$site_filter_min,MR_percent=$MR_percent,UMR_percent=$UMR_percent,chr_or_genome=$chr_or_genome \
 --account $account_department \
 $script_to_sbatch
 
