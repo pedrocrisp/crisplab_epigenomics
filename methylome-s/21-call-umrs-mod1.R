@@ -259,6 +259,7 @@ mC_domains
 # NOTE: include "& !is.na(CHH)" in any greater than tests or else will return NA rather than passing to next arg
 # 2023/10/11 update - this starts with "merged_mC_sans_orgs" now and doesnt include the chg tile filter above
 # 2023/10/11 update - fixed a few hundred occurances of CG-only tiles being called NA beccause of NA in chh or chg ratio columns...
+
 mC_domains2 <- merged_mC_sans_orgs %>%
   mutate(domain_tmp = ifelse(chh_sites == "n", "no_sites", #this will catch the 1.45% of the genome that lack CHH sites (or any other site)
                       ifelse(CHH >= 0.15 & !is.na(CHH), "RdDM", #
@@ -271,7 +272,8 @@ mC_domains2 <- merged_mC_sans_orgs %>%
                       ifelse(cg_sites == "y" & chg_sites == "y" & CG >= UMR_percent & CHG >= UMR_percent & CHH >= UMR_percent & !is.na(CG) & !is.na(CHG) & !is.na(CHH), "Intermediate",
                       ifelse(cg_sites == "n" & chg_sites == "y" & CHG >= UMR_percent & CHH >= UMR_percent & !is.na(CHG) & !is.na(CHH), "Intermediate",
                       ifelse(cg_sites == "y" & chg_sites == "n" & CG >= UMR_percent & CHH >= UMR_percent & !is.na(CG) & !is.na(CHH), "Intermediate",
-                      ifelse(cg_sites == "n" | chg_sites == "n", "no_sites", NA))))))))))))) %>%
+                      ifelse(chg_sites == "y" & CHG >= UMR_percent & !is.na(CHG), "Heterochromatin", # this last one to catch some CHG-only tiles that were getting through and being called UMRs...
+                      ifelse(cg_sites == "n" | chg_sites == "n", "no_sites", NA)))))))))))))) %>%
   mutate(domain = ifelse(is.na(domain_tmp), "Missing_Data", domain_tmp)) %>%
   mutate(domain_simple = ifelse(domain == "Heterochromatin", "MR",
                          ifelse(domain == "Missing_Data", "no_data",
