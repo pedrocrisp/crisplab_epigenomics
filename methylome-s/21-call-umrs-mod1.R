@@ -324,20 +324,20 @@ write.table(mC_domains_freq_simple, paste0(out_dir,"/", sample_to_crunch, "_mC_d
                                            "_UMR_",UMR_percent,
                                            "_freq.tsv"), sep = "\t", quote = F, row.names = F, col.names = T)
 
-mC_domains_freq_CHG <- mC_domains2 %>%
-  group_by(CHG_based_domain) %>%
-  summarise(total = n()) %>%
-  ungroup() %>%
-  mutate(percent = total/sum(total)*100,
-         MB = total*100/1000000)
-mC_domains_freq_CHG
-
-write.table(mC_domains_freq_CHG, paste0(out_dir,"/", sample_to_crunch, "_mC_domains_CHG",
-                                        "_cov_",coverage_filter_min,
-                                        "_sites_",site_filter_min,
-                                        "_MR_",MR_percent,
-                                        "_UMR_",UMR_percent,
-                                        "_freq.tsv"), sep = "\t", quote = F, row.names = F, col.names = T)
+#mC_domains_freq_CHG <- mC_domains2 %>%
+#  group_by(CHG_based_domain) %>%
+#  summarise(total = n()) %>%
+#  ungroup() %>%
+#  mutate(percent = total/sum(total)*100,
+#         MB = total*100/1000000)
+#mC_domains_freq_CHG
+#
+#write.table(mC_domains_freq_CHG, paste0(out_dir,"/", sample_to_crunch, "_mC_domains_CHG",
+#                                        "_cov_",coverage_filter_min,
+#                                        "_sites_",site_filter_min,
+#                                        "_MR_",MR_percent,
+#                                        "_UMR_",UMR_percent,
+#                                        "_freq.tsv"), sep = "\t", quote = F, row.names = F, col.names = T)
 
 
 ######################### #########################
