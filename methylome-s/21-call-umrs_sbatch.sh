@@ -119,3 +119,5 @@ $script_to_sbatch
 else
 
 echo "whole or split genome not specificed, please indicate chromosome or genome"
+
+fi
