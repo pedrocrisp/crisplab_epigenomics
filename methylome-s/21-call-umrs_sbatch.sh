@@ -12,7 +12,7 @@ usage="USAGE:
 <site_filter_min>
 <MR_percent>
 <UMR_percent>
-<walltime> <memory> <cores> <account_department>
+<walltime> <memory> <cores> <chr_or_genome> <account_department>
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -29,9 +29,10 @@ UMR_percent=$7
 walltime=$8
 mem=$9
 cores=${10}
-account_department=${11}
+chr_or_genome=${11}
+account_department=${12}
 
-if [ "$#" -lt "11" ]
+if [ "$#" -lt "12" ]
 then
 echo $usage
 exit -1
@@ -81,6 +82,8 @@ script_to_sbatch=${scriptdir}/${step}.sh
 cat $script_to_sbatch > ${log_folder}/script.log
 cat $0 > ${log_folder}/sbatch_runner.log
 
+if [ "$chr_or_genome" == "chromosome" ]
+then
 #submit sbatch and pass args
 #-o and -e pass the file locations for std out/error
 #--export additional variables to pass to the sbatch script including the array list and the dir structures
@@ -95,3 +98,26 @@ sbatch --array $sbatch_t \
 --export LIST=samples_${CHROMOSOME}.txt,reference_100bp_tiles=$reference_100bp_tiles,chrom_sizes_path=$chrom_sizes_path,coverage_filter_min=$coverage_filter_min,site_filter_min=$site_filter_min,MR_percent=$MR_percent,UMR_percent=$UMR_percent \
 --account $account_department \
 $script_to_sbatch
+
+elif [ "$chr_or_genome" == "genome" ]
+then
+
+then
+#submit sbatch and pass args
+#-o and -e pass the file locations for std out/error
+#--export additional variables to pass to the sbatch script including the array list and the dir structures
+sbatch --array $sbatch_t \
+-t ${walltime} \
+-N 1 \
+-n 1 \
+--cpus-per-task ${cores} \
+--mem ${mem}gb \
+-o ${log_folder}/${step}_o_%A_%a \
+-e ${log_folder}/${step}_e_%A_%a \
+--export LIST=${sample_list},reference_100bp_tiles=$reference_100bp_tiles,chrom_sizes_path=$chrom_sizes_path,coverage_filter_min=$coverage_filter_min,site_filter_min=$site_filter_min,MR_percent=$MR_percent,UMR_percent=$UMR_percent \
+--account $account_department \
+$script_to_sbatch
+
+else
+
+echo "whole or split genome not specificed, please indicate chromosome or genome"
