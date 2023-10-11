@@ -209,7 +209,8 @@ merged_mC_sans_orgs
 # distribution and averages of mC levels
 
 # distro
-plot_data <- merged_mC_sans_orgs %>% slice(1:10000) %>%
+plot_data <- merged_mC_sans_orgs %>% 
+sample_n(1000000) %>%
   select(CG:CHH) %>%
   gather(key = context, value = percent) %>%
   mutate(percent = percent *100)
