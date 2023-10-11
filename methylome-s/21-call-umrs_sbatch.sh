@@ -101,8 +101,6 @@ $script_to_sbatch
 
 elif [ "$chr_or_genome" == "genome" ]
 then
-
-then
 #submit sbatch and pass args
 #-o and -e pass the file locations for std out/error
 #--export additional variables to pass to the sbatch script including the array list and the dir structures
