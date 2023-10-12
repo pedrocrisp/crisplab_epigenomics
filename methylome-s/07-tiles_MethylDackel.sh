@@ -45,14 +45,14 @@ if [ "$chr_or_genome" == "chromosome" ]
 then
 
 for CHROMOSOME in $(cat $chromosome_list); do
-R -f ~/gitrepos/crisplab_epigenomics/methylome/07-tiles_MethylDackel_tile_mod.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/07-tiles_MethylDackel_tile_mod.R \
 --args ${ID}_${CHROMOSOME} MethylDackel ${reference_tile_file_folder_or_file}/${CHROMOSOME}_100bp_tiles_zBased_sites_counts.txt
 done
 
 elif [ "$chr_or_genome" == "genome" ]
 then
 
-R -f ~/gitrepos/crisplab_epigenomics/methylome/07-tiles_MethylDackel_tile_mod.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/07-tiles_MethylDackel_tile_mod.R \
 --args ${ID} MethylDackel ${reference_tile_file_folder_or_file}
 
 else
