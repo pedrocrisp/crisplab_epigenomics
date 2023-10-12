@@ -41,10 +41,25 @@ mkdir -p tiles
 # 3. output one-based coordinate .txt file for analysis in R
 # folder with input files hardcoded "MethylDackel"
 
+if [ "$chr_or_genome" == "chromosome" ]
+then
+
 for CHROMOSOME in $(cat $chromosome_list); do
 R -f ~/gitrepos/crisplab_epigenomics/methylome/07-tiles_MethylDackel_tile_mod.R \
---args ${ID}_${CHROMOSOME} MethylDackel ${reference_tile_file_folder}/${CHROMOSOME}_100bp_tiles_zBased_sites_counts.txt
+--args ${ID}_${CHROMOSOME} MethylDackel ${reference_tile_file_folder_or_file}/${CHROMOSOME}_100bp_tiles_zBased_sites_counts.txt
 done
+
+elif [ "$chr_or_genome" == "genome" ]
+then
+
+R -f ~/gitrepos/crisplab_epigenomics/methylome/07-tiles_MethylDackel_tile_mod.R \
+--args ${ID} MethylDackel ${reference_tile_file_folder_or_file}
+
+else
+
+echo "whole or split genome not specificed, please indicate chromosome or genome"
+
+fi
 
 #make bedGraph by sorting and removing cols 4 and 5 with awk
 

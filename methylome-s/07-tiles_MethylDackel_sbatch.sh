@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 07-summarise_methylation_sbatch.sh <sample_list.txt> <chromosome_list> <reference_tile_file_folder> <walltime> <memory> <cores> <account_department>
+bash 07-summarise_methylation_sbatch.sh <sample_list.txt> <chromosome_list> <reference_tile_file_folder_or_file> <walltime> <memory> <cores> <chr_or_genome> <account_department>
 "
 
 #define stepo in the pipeline - should be the same name as the script
@@ -12,13 +12,14 @@ step=07-tiles_MethylDackel
 ######### Setup ################
 sample_list=$1
 chromosome_list=$2
-reference_tile_file_folder=$3
+reference_tile_file_folder_or_file=$3
 walltime=$4
 mem=$5
 cores=$6
-account_department=$7
+chr_or_genome=$7
+account_department=$8
 
-if [ "$#" -lt "7" ]
+if [ "$#" -lt "8" ]
 then
 echo $usage
 exit -1
@@ -79,6 +80,6 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},chromosome_list=${chromosome_list},reference_tile_file_folder=${reference_tile_file_folder} \
+--export LIST=${sample_list},chromosome_list=${chromosome_list},reference_tile_file_folder_or_file=${reference_tile_file_folder_or_file},chr_or_genome=${chr_or_genome} \
 --account $account_department \
 $script_to_sbatch
