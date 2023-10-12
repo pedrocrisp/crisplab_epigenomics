@@ -3,18 +3,16 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 05-summarise_MethylDackel_sbatch.sh <sample_list.txt> <genome.fa> 
-<chromosome.sizes.file> <walltime> <memory> <cores> <chr_or_genome> <account_department>
-for example:
-bash \
-/home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/05-summarise_methylation-WGBS_sbatch.sh \
-single_sample.txt \
-/home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.fa \
-/home/springer/pcrisp/ws/refseqs/maize/Zea_mays.AGPv4.dna.toplevel.chrom.sizes \
-12:00:00 \
-60 \
-no \
-8
+bash 05-summarise_MethylDackel_sbatch.sh 
+<sample_list.txt> 
+<genome.fa> 
+<chromosome.sizes.file> 
+<walltime> 
+<memory> 
+<cores> 
+<conda_enviro> 
+<chr_or_genome> 
+<account_department>
 "
 
 #define stepo in the pipeline - should be the same name as the script
