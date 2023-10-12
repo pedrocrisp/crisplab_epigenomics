@@ -3,7 +3,8 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 05-summarise_MethylDackel_sbatch.sh <sample_list.txt> <genome.fa> <chromosome.sizes.file> <walltime> <memory> <cores> <account_department>
+bash 05-summarise_MethylDackel_sbatch.sh <sample_list.txt> <genome.fa> 
+<chromosome.sizes.file> <walltime> <memory> <cores> <chr_or_genome> <account_department>
 for example:
 bash \
 /home/springer/pcrisp/gitrepos/springerlab_methylation/SeqCap/05-summarise_methylation-WGBS_sbatch.sh \
@@ -28,9 +29,10 @@ mem=$5
 #ChrC_name=$6
 cores=$6
 conda_enviro=$7
-account_department=$8
+chr_or_genome=$8
+account_department=$9
 
-if [ "$#" -lt "8" ]
+if [ "$#" -lt "9" ]
 then
 echo $usage
 exit -1
@@ -92,6 +94,6 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,cores=$cores,conda_enviro=$conda_enviro \
+--export LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,cores=$cores,conda_enviro=$conda_enviro,chr_or_genome=$chr_or_genome \
 --account $account_department \
 $script_to_sbatch

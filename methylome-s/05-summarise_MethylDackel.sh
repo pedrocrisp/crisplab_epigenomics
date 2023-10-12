@@ -101,15 +101,15 @@ MethylDackel_mbias/${ID}_methratio_mbias
 # LC_COLLATE=C
 
 awk -F$"\\t" \
-'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4 $5, $6}' \
 MethylDackel/${ID}_methratio_head_CpG.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CG.bedGraph
 
 awk -F$"\\t" \
-'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4 $5, $6}' \
 MethylDackel/${ID}_methratio_head_CHG.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHG.bedGraph
 
 awk -F$"\\t" \
-'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4 $5, $6}' \
  MethylDackel/${ID}_methratio_head_CHH.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHH.bedGraph
 
 # bw
