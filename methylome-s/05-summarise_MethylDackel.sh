@@ -101,15 +101,15 @@ MethylDackel_mbias/${ID}_methratio_mbias
 # LC_COLLATE=C
 
 awk -F$"\\t" \
-'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4 $5, $6}' \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6}' \
 MethylDackel/${ID}_methratio_head_CpG.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CG.bedGraph
 
 awk -F$"\\t" \
-'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4 $5, $6}' \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6}' \
 MethylDackel/${ID}_methratio_head_CHG.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHG.bedGraph
 
 awk -F$"\\t" \
-'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4 $5, $6}' \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6}' \
  MethylDackel/${ID}_methratio_head_CHH.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHH.bedGraph
 
 # bw
@@ -125,6 +125,9 @@ bedGraphToBigWig "MethylDackel/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file}
 # note - you should probably remove contigs before this step or you could end up with 1000s of files
 # eg samtools faidx Vfaba.v1.fasta chr1L chr1S chr2 chr3 chr4 chr5 chr6 > Vfaba.v1_no_contigs.fasta
 
+if [ "$chr_or_genome" == "chromosome" ]
+then
+
 awk -F$"\\t" -v ID=$ID \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6 > "MethylDackel/"ID"_"$1"_methratio_CG.bedGraph"}' \
 MethylDackel/${ID}_methratio_head_CpG.bedGraph
@@ -139,6 +142,8 @@ MethylDackel/${ID}_methratio_head_CHH.bedGraph
 ## If you wanted to Add context - modify above:
 # {print $1, $2, $3, $4, $5, $6, "CG" > "MethylDackel/"ID"_"$1"_methratio_CG.bedGraph"}
 # etc
+
+fi
 
 # rm files with header
 rm -rv MethylDackel/${ID}_methratio_head*
