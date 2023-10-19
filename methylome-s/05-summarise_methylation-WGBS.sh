@@ -167,6 +167,12 @@ mkdir -p ConversionRate
         }
         '
 
+        # sum C and CT to get whole genome average methylation most corectly!
+        awk_make_bedGraph_context_summary='BEGIN {OFS = FS} (NR>1) { C += $8, CT += $9 } END {
+        print $5, C, CT > "BSMAPratio/"ID"_BSMAP_out_"$5"_summary.txt"
+        }
+        '
+
         if [ "$make_subcontext" == "yes" ]
         then
         # split bedGraph by sub-contex
@@ -175,6 +181,14 @@ mkdir -p ConversionRate
           print $1, $2, $3, $4 > "BSMAPratio/"ID"_BSMAP_out_subcontext_"$5".bedGraph"
         }
         '
+
+        # sum C and CT to get whole genome average methylation most corectly!
+        awk_make_bedGraph_subcontext_summary='BEGIN {OFS = FS} (NR>1) { C += $8, CT += $9 } END {
+        print $5, C, CT > "BSMAPratio/"ID"_BSMAP_out_subcontext_"$5"_summary.txt"
+        }
+        '
+
+
         fi
 
         #pipe bedGraph to split by context (use dash to read from sdtin)
@@ -183,7 +197,11 @@ mkdir -p ConversionRate
         "BSMAPratio/${ID}_BSMAP_out.txt" | \
         awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" -
 
-
+        #pipe bedGraph to split by context and summarise (use dash to read from sdtin)
+        # 
+        awk -F$"\\t" "$awk_make_bedGraph" \
+        "BSMAPratio/${ID}_BSMAP_out.txt" | \
+        awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context_summary" -
 
         if [ "$make_subcontext" == "yes" ]
         then
@@ -191,6 +209,13 @@ mkdir -p ConversionRate
         awk -F$"\\t" "$awk_make_bedGraph" \
         "BSMAPratio/${ID}_BSMAP_out_subcontext.txt" | \
         awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_subcontext" -
+
+
+        # per sub-context
+        awk -F$"\\t" "$awk_make_bedGraph" \
+        "BSMAPratio/${ID}_BSMAP_out_subcontext.txt" | \
+        awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_subcontext_summary" -
+
         fi
 
         #Make bigWigs per context
