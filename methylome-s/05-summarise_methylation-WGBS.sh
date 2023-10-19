@@ -158,19 +158,13 @@ mkdir -p ConversionRate
 
         # begGraph ratio files for tdfs
         awk_make_bedGraph='BEGIN {OFS = FS} (NR>1){
-          print $1, $2, $3, $8/$9*100, $5
+          print $1, $2, $3, $8/$9*100, $5, $8, $9
         }
         '
 
         # split bedGraph by contex
         awk_make_bedGraph_context='BEGIN {OFS = FS} (NR>1){
           print $1, $2, $3, $4 > "BSMAPratio/"ID"_BSMAP_out_"$5".bedGraph"
-        }
-        '
-
-        # sum C and CT to get whole genome average methylation most corectly!
-        awk_make_bedGraph_context_summary='BEGIN {OFS = FS} (NR>1) { C += $8; CT += $9 } END {
-        print $5, C, CT > "BSMAPratio_genome_mC/"ID"_BSMAP_out_"$5"_summary.txt"
         }
         '
 
@@ -182,27 +176,21 @@ mkdir -p ConversionRate
           print $1, $2, $3, $4 > "BSMAPratio/"ID"_BSMAP_out_subcontext_"$5".bedGraph"
         }
         '
-
-        # sum C and CT to get whole genome average methylation most corectly!
-        awk_make_bedGraph_subcontext_summary='BEGIN {OFS = FS} (NR>1) { C += $8; CT += $9 } END {
-        print $5, C, CT > "BSMAPratio_genome_mC/"ID"_BSMAP_out_subcontext_"$5"_summary.txt"
-        }
-        '
-
-
         fi
 
-        #pipe bedGraph to split by context (use dash to read from sdtin)
+        # pipe bedGraph to split by context (use dash to read from sdtin)
         # per context
         awk -F$"\\t" "$awk_make_bedGraph" \
         "BSMAPratio/${ID}_BSMAP_out.txt" | \
         awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context" -
 
-        #pipe bedGraph to split by context and summarise (use dash to read from sdtin)
-        # 
-        awk -F$"\\t" "$awk_make_bedGraph" \
-        "BSMAPratio/${ID}_BSMAP_out.txt" | \
-        awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_context_summary" -
+        # Summarise genome-wide methylation by suming C and CT per context for whole genome
+        # This will reduce bias from low coverage sites (that are either 0 or 1) in low coverage datasets
+        # use awk array per context ($5)
+        awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} (NR>1){
+          C_context[$5]+=$8; CT_context[$5]+=$9; next} END {
+          for (i in C_context) print ID, i, C_context[i], CT_context[i], C_context[i]/CT_context[i]*100 > "BSMAPratio_genome_mC/"ID"_BSMAP_out_summary.txt" }
+          ' "BSMAPratio/${ID}_BSMAP_out.txt"
 
         if [ "$make_subcontext" == "yes" ]
         then
@@ -212,10 +200,11 @@ mkdir -p ConversionRate
         awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_subcontext" -
 
 
-        # per sub-context
-        awk -F$"\\t" "$awk_make_bedGraph" \
-        "BSMAPratio/${ID}_BSMAP_out_subcontext.txt" | \
-        awk -F$"\\t" -v ID=$ID "$awk_make_bedGraph_subcontext_summary" -
+        # per sub-context genome-wide methylation
+        awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} (NR>1){
+          C_context[$5]+=$8; CT_context[$5]+=$9; next} END {
+          for (i in C_context) print ID, i, C_context[i], CT_context[i], C_context[i]/CT_context[i]*100 > "BSMAPratio_genome_mC/"ID"_BSMAP_out_subcontext_summary.txt" }
+          ' "BSMAPratio/${ID}_BSMAP_out_subcontext.txt"
 
         fi
 
