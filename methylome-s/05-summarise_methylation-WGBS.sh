@@ -89,7 +89,7 @@ mkdir -p ConversionRate
         # CG
         # CHG sub context and minus strand sequence (reverse complement):
         # CAG, CCG, CTG
-        # CTG, CGG, GAC
+        # CTG, CGG, CAG
         # CHH subcontext and reverse complement
         # CAA, CAC, CAT, CCA, CCC, CCT, CTA, CTC, CTT
         # TTG, GTG. ATG, TGG, GGG, AGG, TAG, GAG, AAG
@@ -101,7 +101,7 @@ mkdir -p ConversionRate
                         print $1, $2-1, $2, $3, "CAG", $5, $6, $7, $8, $9, $10, $11, $12;
                       else if(($3=="-" && $4~/^CGG../ ) || ($3=="+" &&  $4~/^..CCG/))
                         print $1, $2-1, $2, $3, "CCG", $5, $6, $7, $8, $9, $10, $11, $12;
-                      else if(($3=="-" && $4~/^GAC../ ) || ($3=="+" &&  $4~/^..CTG/))
+                      else if(($3=="-" && $4~/^CAG../ ) || ($3=="+" &&  $4~/^..CTG/))
                         print $1, $2-1, $2, $3, "CTG", $5, $6, $7, $8, $9, $10, $11, $12;
                       else if(($3=="-" && $4~/^TTG../ ) || ($3=="+" &&  $4~/^..CAA/))
                         print $1, $2-1, $2, $3, "CAA", $5, $6, $7, $8, $9, $10, $11, $12;
