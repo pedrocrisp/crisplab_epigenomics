@@ -44,6 +44,7 @@ echo sample being mapped is $ID
 #make adaligned folder bsmaped
 cd analysis
 mkdir -p BSMAPratio
+mkdir -p BSMAPratio_genome_mC
 mkdir -p TempOut
 #mkdir -p OnTargetCoverage
 mkdir -p ConversionRate
@@ -168,8 +169,8 @@ mkdir -p ConversionRate
         '
 
         # sum C and CT to get whole genome average methylation most corectly!
-        awk_make_bedGraph_context_summary='BEGIN {OFS = FS} (NR>1) { C += $8, CT += $9 } END {
-        print $5, C, CT > "BSMAPratio/"ID"_BSMAP_out_"$5"_summary.txt"
+        awk_make_bedGraph_context_summary='BEGIN {OFS = FS} (NR>1) { C += $8; CT += $9 } END {
+        print $5, C, CT > "BSMAPratio_genome_mC/"ID"_BSMAP_out_"$5"_summary.txt"
         }
         '
 
@@ -183,8 +184,8 @@ mkdir -p ConversionRate
         '
 
         # sum C and CT to get whole genome average methylation most corectly!
-        awk_make_bedGraph_subcontext_summary='BEGIN {OFS = FS} (NR>1) { C += $8, CT += $9 } END {
-        print $5, C, CT > "BSMAPratio/"ID"_BSMAP_out_subcontext_"$5"_summary.txt"
+        awk_make_bedGraph_subcontext_summary='BEGIN {OFS = FS} (NR>1) { C += $8; CT += $9 } END {
+        print $5, C, CT > "BSMAPratio_genome_mC/"ID"_BSMAP_out_subcontext_"$5"_summary.txt"
         }
         '
 
