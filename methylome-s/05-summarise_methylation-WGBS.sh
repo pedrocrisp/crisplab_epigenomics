@@ -44,7 +44,8 @@ echo sample being mapped is $ID
 #make adaligned folder bsmaped
 cd analysis
 mkdir -p BSMAPratio
-mkdir -p BSMAPratio_genome_mC
+mkdir -p BSMAPratio_genome_mC_single_average
+mkdir -p BSMAPratio_genome_mC_average_of_average
 mkdir -p TempOut
 #mkdir -p OnTargetCoverage
 mkdir -p ConversionRate
@@ -189,8 +190,11 @@ mkdir -p ConversionRate
         # use awk array per context ($5)
         awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} (NR>1){
           C_context[$5]+=$8; CT_context[$5]+=$9; next} END {
-          for (i in C_context) print ID, i, C_context[i], CT_context[i], C_context[i]/CT_context[i]*100 > "BSMAPratio_genome_mC/"ID"_BSMAP_out_summary.txt" }
+          for (i in C_context) print ID, i, C_context[i], CT_context[i], C_context[i]/CT_context[i]*100 > "BSMAPratio_genome_mC_single_average/"ID"_BSMAP_out_summary.txt" }
           ' "BSMAPratio/${ID}_BSMAP_out.txt"
+        
+        # add a step as above but taking the average of the average per cytosine ie average of ratio column
+        # need to think though best awk method!
 
         if [ "$make_subcontext" == "yes" ]
         then
@@ -203,7 +207,7 @@ mkdir -p ConversionRate
         # per sub-context genome-wide methylation
         awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} (NR>1){
           C_context[$5]+=$8; CT_context[$5]+=$9; next} END {
-          for (i in C_context) print ID, i, C_context[i], CT_context[i], C_context[i]/CT_context[i]*100 > "BSMAPratio_genome_mC/"ID"_BSMAP_out_subcontext_summary.txt" }
+          for (i in C_context) print ID, i, C_context[i], CT_context[i], C_context[i]/CT_context[i]*100 > "BSMAPratio_genome_mC_single_average/"ID"_BSMAP_out_subcontext_summary.txt" }
           ' "BSMAPratio/${ID}_BSMAP_out_subcontext.txt"
 
         fi
