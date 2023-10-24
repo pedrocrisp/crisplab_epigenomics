@@ -150,6 +150,9 @@ rm -rv MethylDackel/${ID}_methratio_head*
 
 ########################
 
+# I cant remember why i commented this out - maybe when this was in dev, the faba genome didnt have a Chl and the data was published so I didnt bother (and couldnt not QC?)
+# i think i should mandate this though, so better to make this work next time you run this pipeline and mandate a chloroplast for conversion eff calc!!!
+
 #ChrC_name=ChrC
 
 ## conversion rate
