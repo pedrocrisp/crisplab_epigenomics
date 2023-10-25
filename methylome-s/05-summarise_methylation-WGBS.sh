@@ -192,7 +192,15 @@ mkdir -p ConversionRate
           C_context[$5]+=$8; CT_context[$5]+=$9; next} END {
           for (i in C_context) print ID, i, C_context[i], CT_context[i], C_context[i]/CT_context[i]*100 > "BSMAPratio_genome_mC_single_average/"ID"_BSMAP_out_summary.txt" }
           ' "BSMAPratio/${ID}_BSMAP_out.txt"
-        
+
+        # Summarise genome-wide methylation by suming C and effCT per context for whole genome
+        # This will reduce bias from low coverage sites (that are either 0 or 1) in low coverage datasets
+        # use awk array per context ($5)
+        awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} (NR>1){
+          C_context[$5]+=$8; CT_context[$5]+=$7; next} END {
+          for (i in C_context) print ID, i, C_context[i], CT_context[i], C_context[i]/CT_context[i]*100 > "BSMAPratio_genome_mC_single_average/"ID"_BSMAP_out_summary_eff-CT.txt" }
+          ' "BSMAPratio/${ID}_BSMAP_out.txt"
+
         # add a step as above but taking the average of the average per cytosine ie average of ratio column
         # need to think though best awk method!
 
