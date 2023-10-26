@@ -23,9 +23,10 @@ sample_list=$1
 paired_end=$2
 walltime=$3
 mem=$4
-account_department=$5
+conda_enviro=$5
+account_department=$6
 
-if [ "$#" -lt "5" ]
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
