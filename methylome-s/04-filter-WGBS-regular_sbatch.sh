@@ -11,6 +11,7 @@ single_sample.txt \
 yes \
 24:00:00 \
 40 \
+bamutil \
 a_crisp
 "
 
@@ -85,6 +86,6 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},paired_end=$paired_end \
+--export LIST=${sample_list},paired_end=$paired_end,conda_enviro=$conda_enviro \
 --account $account_department \
 $script_to_sbatch

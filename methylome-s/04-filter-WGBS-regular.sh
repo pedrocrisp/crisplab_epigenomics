@@ -20,8 +20,10 @@ cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
 ########## Modules #################
+conda activate $conda_enviro
+# conda needs bamutil
 # requires java 1.8
-module load java/11.0.16
+module load java/11.0.18
 module load bamtools/2.5.2-gcc-10.3.0
 module load samtools/1.13-gcc-10.3.0
 
