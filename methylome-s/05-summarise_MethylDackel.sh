@@ -93,7 +93,7 @@ MethylDackel_mbias/${ID}_methratio_mbias
 #tail -n+2 MethylDackel/${ID}_methratio_head_CHG.bedGraph > MethylDackel/${ID}_methratio_CHG.bedGraph
 #tail -n+2 MethylDackel/${ID}_methratio_head_CHH.bedGraph > MethylDackel/${ID}_methratio_CHH.bedGraph
 
-# make 4 columns and no header for bedGraphToBigWig
+# make 6 columns and no header for possible dowstream analysis and for claculating conversion rate (can delete after calculating conversion rate)
 # NOTE: this whole genome methratio.bedGraph files only have % meethylated nit the conuts of C and CT per cytosine - this is only kept in the per chromosome files below
 # case-sensitive sort
 # printf '%s\n' B A b a | LC_COLLATE=en_US.UTF-8 sort
@@ -112,13 +112,32 @@ awk -F$"\\t" \
 'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4, $5, $6}' \
 MethylDackel/${ID}_methratio_head_CHH.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > MethylDackel/${ID}_methratio_CHH.bedGraph
 
-# bw
-bedGraphToBigWig "MethylDackel/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} \
+# make 4 columns and no header for bedGraphToBigWig
+# bw cant pipe to bedgraph to bigwig...
+mkdir -p tmp_bedgraphs
+
+awk -F$"\\t" \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+MethylDackel/${ID}_methratio_head_CpG.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > tmp_bedgraphs/${ID}_methratio_CG.bedGraph
+
+awk -F$"\\t" \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+MethylDackel/${ID}_methratio_head_CHG.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > tmp_bedgraphs/${ID}_methratio_CHG.bedGraph
+
+awk -F$"\\t" \
+'BEGIN {OFS = FS} (NR>1){print $1, $2, $3, $4}' \
+MethylDackel/${ID}_methratio_head_CHH.bedGraph | LC_COLLATE=C sort -k1,1 -k2,2n - > tmp_bedgraphs/${ID}_methratio_CHH.bedGraph
+
+# make the bedgraphs
+bedGraphToBigWig "tmp_bedgraphs/${ID}_methratio_CG.bedGraph" ${chrom_sizes_file} \
 "MethylDackel_bigwigs/${ID}_MethylDackel_CG.bigWig"
-bedGraphToBigWig "MethylDackel/${ID}_methratio_CHG.bedGraph" ${chrom_sizes_file} \
+bedGraphToBigWig "tmp_bedgraphs/${ID}_methratio_CHG.bedGraph" ${chrom_sizes_file} \
 "MethylDackel_bigwigs/${ID}_MethylDackel_CHG.bigWig"
-bedGraphToBigWig "MethylDackel/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file} \
+bedGraphToBigWig "tmp_bedgraphs/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file} \
 "MethylDackel_bigwigs/${ID}_MethylDackel_CHH.bigWig"
+
+# delete the tmp bedgraphs
+rm -rv tmp_bedgraphs
 
 # Now split by chromosome - uncomment if you want to split into per Chr files
 # split bedGraph by chromosome
