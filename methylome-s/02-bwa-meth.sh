@@ -49,17 +49,22 @@ bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_001_val_1.fq.gz trimmed/${ID}_R2_001_val_2.fq.gz \
-| samtools view -b - \
-> bwa-meth/${ID}_tmp.bam
+> bwa-meth/${ID}_tmp.sam
 
-# sort
-samtools sort -m 3G bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
-#rm tmp unsorted file
-rm bwa-meth/${ID}_tmp.bam
-# get mapping stats
-samtools flagstat -@ $cores bwa-meth/${ID}_sorted.bam > bwa-meth-flagstat/${ID}_flagstat.txt
+# get mapping stats - use unfiltered sam
+samtools flagstat -@ $cores bwa-meth/${ID}_tmp.sam > bwa-meth-flagstat/${ID}_flagstat.txt
 # print mapping stats (to log file) too
 cat bwa-meth-flagstat/${ID}_flagstat.txt
+
+# make bam
+# only keep mapped reads (-F 4)
+# sort
+samtools view --threads $cores -b -F 4 bwa-meth/${ID}_tmp.sam | \
+samtools sort --threads $cores -m 3G - > bwa-meth/${ID}_sorted.bam
+
+#rm tmp unsorted sam file
+# uncomment the below rm after script dev finished
+# rm bwa-meth/${ID}_tmp.sam
 
 # check if single or paired end by looking for R2 file
 elif [ -e "trimmed/${ID}_R2_val_2.fq.gz" ]; then
@@ -70,17 +75,22 @@ bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_val_1.fq.gz trimmed/${ID}_R2_val_2.fq.gz \
-| samtools view -b - \
-> bwa-meth/${ID}_tmp.bam
+> bwa-meth/${ID}_tmp.sam
 
-# sort
-samtools sort -m 3G bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
-#rm tmp unsorted file
-rm bwa-meth/${ID}_tmp.bam
-# get mapping stats
-samtools flagstat -@ $cores bwa-meth/${ID}_sorted.bam > bwa-meth-flagstat/${ID}_flagstat.txt
+# get mapping stats - use unfiltered sam
+samtools flagstat -@ $cores bwa-meth/${ID}_tmp.sam > bwa-meth-flagstat/${ID}_flagstat.txt
 # print mapping stats (to log file) too
 cat bwa-meth-flagstat/${ID}_flagstat.txt
+
+# make bam
+# only keep mapped reads (-F 4)
+# sort
+samtools view --threads $cores -b -F 4 bwa-meth/${ID}_tmp.sam | \
+samtools sort --threads $cores -m 3G - > bwa-meth/${ID}_sorted.bam
+
+#rm tmp unsorted sam file
+# uncomment the below rm after script dev finished
+# rm bwa-meth/${ID}_tmp.sam
 
 
 else
@@ -90,17 +100,22 @@ bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_001_trimmed.fq.gz \
-| samtools view -b --threads $cores - \
-> bwa-meth/${ID}_tmp.bam
+> bwa-meth/${ID}_tmp.sam
 
-# sort
-samtools sort --threads $cores -m 3G bwa-meth/${ID}_tmp.bam > bwa-meth/${ID}_sorted.bam
-#rm tmp unsorted file
-rm bwa-meth/${ID}_tmp.bam
-# get mapping stats
-samtools flagstat -@ $cores bwa-meth/${ID}_sorted.bam > bwa-meth-flagstat/${ID}_flagstat.txt
+# get mapping stats - use unfiltered sam
+samtools flagstat -@ $cores bwa-meth/${ID}_tmp.sam > bwa-meth-flagstat/${ID}_flagstat.txt
 # print mapping stats (to log file) too
 cat bwa-meth-flagstat/${ID}_flagstat.txt
+
+# make bam
+# only keep mapped reads (-F 4)
+# sort
+samtools view --threads $cores -b -F 4 bwa-meth/${ID}_tmp.sam | \
+samtools sort --threads $cores -m 3G - > bwa-meth/${ID}_sorted.bam
+
+#rm tmp unsorted sam file
+# uncomment the below rm after script dev finished
+# rm bwa-meth/${ID}_tmp.sam
 
 fi
 
