@@ -136,9 +136,6 @@ bedGraphToBigWig "tmp_bedgraphs/${ID}_methratio_CHG.bedGraph" ${chrom_sizes_file
 bedGraphToBigWig "tmp_bedgraphs/${ID}_methratio_CHH.bedGraph" ${chrom_sizes_file} \
 "MethylDackel_bigwigs/${ID}_MethylDackel_CHH.bigWig"
 
-# delete the tmp bedgraphs
-rm -rv tmp_bedgraphs
-
 # Now split by chromosome - uncomment if you want to split into per Chr files
 # split bedGraph by chromosome
 # note - you should probably remove contigs before this step or you could end up with 1000s of files
@@ -164,8 +161,9 @@ MethylDackel/${ID}_methratio_head_CHH.bedGraph
 
 fi
 
-# rm files with header
+# rm files with header and tmp bedgraphs
 rm -rv MethylDackel/${ID}_methratio_head*
+rm -rv tmp_bedgraphs/${ID}_methratio_*
 
 ########################
 
