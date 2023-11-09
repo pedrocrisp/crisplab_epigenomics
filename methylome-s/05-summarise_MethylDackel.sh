@@ -23,6 +23,7 @@ echo working dir is now $PWD
 
 ########## Modules #################
 conda activate $conda_enviro
+# conda needs methyldackel and deeptools
 module load bedtools/2.30.0-gcc-10.3.0
 module load samtools/1.13-gcc-10.3.0
 
@@ -40,8 +41,17 @@ mkdir -p MethylDackel
 mkdir -p MethylDackel_bigwigs
 mkdir -p ConversionRate
 mkdir -p MethylDackel_mbias
+mkdir -p ${bam_dir}_bigWigs_deeptools
 
 ########## Run #################
+# make a coverage file to see which regions have data
+bamCoverage \
+--bam bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam \
+-o ${bam_dir}_bigWigs_deeptools/${ID}.bw \
+--binSize 10 \
+--normalizeUsing CPM \
+-p $cores
+
 # MethylDackel
 # extract CHG and CHH too
 # filter sites that have 10% reverse stard 'G' at T's could be mutations, so ignore these if 3 or more reads
