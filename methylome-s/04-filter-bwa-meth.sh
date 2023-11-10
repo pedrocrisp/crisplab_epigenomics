@@ -118,3 +118,5 @@ else
 echo "library type not specified correctly, please indicate yes for PE or no for SE"
 
 fi
+
+echo Done filtering
