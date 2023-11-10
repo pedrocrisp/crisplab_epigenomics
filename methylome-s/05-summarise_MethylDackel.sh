@@ -41,13 +41,13 @@ mkdir -p MethylDackel
 mkdir -p MethylDackel_bigwigs
 mkdir -p ConversionRate
 mkdir -p MethylDackel_mbias
-mkdir -p ${bam_dir}_bigWigs_deeptools
+mkdir -p bwa-meth-filtered_bigWigs_deeptools
 
 ########## Run #################
 # make a coverage file to see which regions have data
 bamCoverage \
 --bam bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam \
--o ${bam_dir}_bigWigs_deeptools/${ID}.bw \
+-o bwa-meth-filtered_bigWigs_deeptools/${ID}.bw \
 --binSize 10 \
 --normalizeUsing CPM \
 -p $cores
