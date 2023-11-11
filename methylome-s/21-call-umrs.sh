@@ -220,4 +220,29 @@ UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds
 # if you ever want to look at the intermediate files again comment out the next line
 rm -rv UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds
 
+### ### ### ### ### ###
+# calculate UMR stats
+
+# total UMR space
+echo total_UMR_space_Mb
+awk -F'\t' 'BEGIN{SUM=0}{ SUM+=$3-$2 }END{print SUM}' \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/${sample_to_crunch}_${annotation_suffix2}_UMRs_6col.bed
+
+# (faba 92,225,000)
+# (wheat 377,485,500)
+
+echo total_space_with_data_Mb
+awk -F'\t' 'BEGIN{SUM=0}{ SUM+=$3-$2 }END{print SUM}' \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/${sample_to_crunch}_${annotation_suffix2}_tiles_with_data.bed
+
+# (faba 8,900,349,200)
+# (wheat 9628001500 9,628,001,500)
+
+echo total_space_analysed_is_data_inc_ND_merged_Mb
+awk -F'\t' 'BEGIN{SUM=0}{ SUM+=$3-$2 }END{print SUM}' \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/${sample_to_crunch}_${annotation_suffix2}_tiles_with_data_inc_NDs_merged.bed
+
+# (faba 8,911,343,500)
+# (wheat 9666967600)
+
 echo finished summarising
