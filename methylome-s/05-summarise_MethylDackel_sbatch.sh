@@ -12,6 +12,7 @@ bash 05-summarise_MethylDackel_sbatch.sh
 <cores> 
 <conda_enviro> 
 <chr_or_genome> 
+<chloroplast_name>
 <account_department>
 "
 
@@ -24,13 +25,13 @@ genome_reference=$2
 chrom_sizes_file=$3
 walltime=$4
 mem=$5
-#ChrC_name=$6
 cores=$6
 conda_enviro=$7
 chr_or_genome=$8
-account_department=$9
+ChrC_name=$9
+account_department=${10}
 
-if [ "$#" -lt "9" ]
+if [ "$#" -lt "10" ]
 then
 echo $usage
 exit -1
@@ -92,6 +93,6 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,cores=$cores,conda_enviro=$conda_enviro,chr_or_genome=$chr_or_genome \
+--export LIST=${sample_list},genome_reference=$genome_reference,chrom_sizes_file=$chrom_sizes_file,cores=$cores,conda_enviro=$conda_enviro,chr_or_genome=$chr_or_genome,ChrC_name=$ChrC_name \
 --account $account_department \
 $script_to_sbatch

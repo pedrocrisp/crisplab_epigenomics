@@ -39,7 +39,7 @@ echo sample being mapped is $ID
 cd analysis
 mkdir -p MethylDackel
 mkdir -p MethylDackel_bigwigs
-mkdir -p ConversionRate
+mkdir -p ConversionRate_bwa-meth
 mkdir -p MethylDackel_mbias
 mkdir -p bwa-meth-filtered_bigWigs_deeptools
 
@@ -56,6 +56,7 @@ bamCoverage \
 # extract CHG and CHH too
 # filter sites that have 10% reverse stard 'G' at T's could be mutations, so ignore these if 3 or more reads
 # if there is M bias - adjust --nOT 0,0,0,0 and --nOB 0,0,0,0
+# default minimums are MAPQ >= 10 and Phred >= 5
 
 MethylDackel extract \
 --CHG \
@@ -176,18 +177,38 @@ rm -rv MethylDackel/${ID}_methratio_head*
 rm -rv tmp_bedgraphs/${ID}_methratio_*
 
 ########################
+## conversion rate
+# using plastid CHH unconverted C rate
 
-# I cant remember why i commented this out - maybe when this was in dev, the faba genome didnt have a Chl and the data was published so I didnt bother (and couldnt not QC?)
-# i think i should mandate this though, so better to make this work next time you run this pipeline and mandate a chloroplast for conversion eff calc!!!
+if [ "$chr_or_genome" == "chromosome" ]
+then
 
 #ChrC_name=ChrC
 
 ## conversion rate
-#awk -F$"\\t" \
-#'BEGIN {OFS = FS} {sum1 += $6; sum2 +=$5} END {print sum1, sum2 , 100-((sum2/sum1)*100)}' \
-#MethylDackel/${ID}_${ChrC_name}_MethylDackel.bedGraph > ConversionRate/${ID}_conversion_rate.txt
+awk -F$"\\t" \
+'BEGIN {OFS = FS} {sum1 += $6; sum2 +=$5} END {print sum1, sum2 , 100-((sum2/sum1)*100)}' \
+MethylDackel/${ID}_${ChrC_name}_methratio_CHH.bedGraph > ConversionRate_bwa-meth/${ID}_conversion_rate.txt
 ## CT  C Conversion_rate
 ## 365     2       99.4521
 
+elif [ "$paired_end" == "genome" ]
+then
+
+## conversion rate
+## ChrC_name=Pt
+## ID=Sb_mc_01
+awk -F$"\\t" -v ChrC_name=$ChrC_name \
+'BEGIN {OFS = FS} {if($1==ChrC_name) print}' \
+MethylDackel/${ID}_methratio_CHH.bedGraph | \
+awk -F$"\\t" 'BEGIN {OFS = FS} {sum1 += $6; sum2 +=$5} END {print sum1+sum2, sum2 , 100-((sum2/(sum1+sum2))*100)}' \
+- > ConversionRate_bwa-meth/${ID}_conversion_rate.txt
+## C+T(total C)  C(mC) Conversion_rate
+#27030197        99216   99.6329
+
+fi
+
+## Calculate total cytosine covered and average coverage? (like the automated output in BSMAP)
+# could add this using something simlar to above, but would need to combine contexts
 
 echo finished summarising
