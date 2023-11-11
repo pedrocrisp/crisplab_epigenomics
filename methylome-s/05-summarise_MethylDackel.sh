@@ -192,7 +192,7 @@ MethylDackel/${ID}_${ChrC_name}_methratio_CHH.bedGraph > ConversionRate_bwa-meth
 ## CT  C Conversion_rate
 ## 365     2       99.4521
 
-elif [ "$paired_end" == "genome" ]
+elif [ "$chr_or_genome" == "genome" ]
 then
 
 ## conversion rate
