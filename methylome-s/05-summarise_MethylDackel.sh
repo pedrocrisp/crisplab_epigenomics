@@ -42,6 +42,7 @@ mkdir -p MethylDackel_bigwigs
 mkdir -p ConversionRate_bwa-meth
 mkdir -p MethylDackel_mbias
 mkdir -p bwa-meth-filtered_bigWigs_deeptools
+mkdir -p MethylDackel_C_summaries
 
 ########## Run #################
 # make a coverage file to see which regions have data
@@ -210,5 +211,24 @@ fi
 
 ## Calculate total cytosine covered and average coverage? (like the automated output in BSMAP)
 # could add this using something simlar to above, but would need to combine contexts
+
+## Averge mC levels per cytosine by sum of all cytosines calls = C/(C+T)
+# this may be biased towards more mapable regions of the genome eg if unmethylated regison have more data, this could bring average down?
+# output format:
+# ID total_cytosines total_C_T_calls total_C_calls ratio coverage
+# Lab_1_Tobacco_Leaf_Kimmy_22FMHYLT3_CACTGTAG-AAGCGACT_L008       45289383        58587473        54036666        92.2325 1.29362
+
+awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} {Cs ++; sum1 += $6; sum2 +=$5} END {print ID, Cs, sum1+sum2, sum2 , (sum2/(sum1+sum2)*100), (sum1+sum2)/Cs}' \
+MethylDackel/${ID}_methratio_CG.bedGraph > MethylDackel_C_summaries/${ID}_whole_genome_percent_CG.txt
+
+awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} {Cs ++; sum1 += $6; sum2 +=$5} END {print ID, sum1+sum2, sum2 , (sum2/(sum1+sum2)*100)}' \
+MethylDackel/${ID}_methratio_CHG.bedGraph > MethylDackel_C_summaries/${ID}_whole_genome_percent_CHG.txt
+
+awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} {Cs ++; sum1 += $6; sum2 +=$5} END {print ID, sum1+sum2, sum2 , (sum2/(sum1+sum2)*100)}' \
+MethylDackel/${ID}_methratio_CHH.bedGraph > MethylDackel_C_summaries/${ID}_whole_genome_percent_CHH.txt
+
+# to combine the samples - do something like this:
+# cat MethylDackel_C_summaries/*whole_genome_percent_CHG.txt > MethylDackel_C_summaries/Summary_whole_genome_percent_CHG.txt
+# cat MethylDackel_C_summaries/Summary_whole_genome_percent_CHG.txt
 
 echo finished summarising
