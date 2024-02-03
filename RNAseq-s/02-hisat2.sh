@@ -19,11 +19,6 @@ echo changing to SLURM_SUBMIT_DIR
 cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
-#cd into work dir
-echo changing to PBS_O_WORKDIR
-cd "$PBS_O_WORKDIR"
-echo working dir is now $PWD
-
 ########## Modules #################
 
 module load hisat2/2.2.1--h87f3376_4/module
