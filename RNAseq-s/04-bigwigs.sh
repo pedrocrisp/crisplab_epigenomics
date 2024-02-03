@@ -26,7 +26,7 @@ module load bedtools/2.30.0-gcc-10.3.0
 
 #get job ID
 #use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAYID} eg 2 from {list}
-ID="$(/bin/sed -n ${SLURM_SUBMIT_DIR}p ${LIST})"
+ID="$(/bin/sed -n ${SLURM_ARRAY_TASK_ID}p ${LIST})"
 
 sample=$ID
 sample_dir=analysis/${alignFolder}
