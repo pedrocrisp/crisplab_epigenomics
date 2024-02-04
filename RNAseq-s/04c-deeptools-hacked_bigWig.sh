@@ -118,7 +118,7 @@ module load java/11.0.18
 module load r/4.2.1-foss-2022a
 
 java -jar ~/software/picard.jar CollectInsertSizeMetrics \
-I=$bam_dir/${ID}_sorted.bam \
+I=$bam_dir/${ID}.bam \
 O=${bam_dir}_insert_metrics/${ID}_insert_size_metrics.txt \
 H=${bam_dir}_insert_metrics/${ID}_insert_size_histogram.pdf \
 M=0.5

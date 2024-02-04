@@ -81,7 +81,7 @@ fi
 # also probably sufficient res for most coverage comparisons
 ## (use for IGV)
 bamCoverage \
---bam $bam_dir/${ID}_sorted.bam \
+--bam $bam_dir/${ID}.bam \
 -o ${bam_dir}_bigWigs_deeptools/${ID}.bw \
 --binSize 10 \
 --normalizeUsing CPM \
@@ -91,7 +91,7 @@ bamCoverage \
 
 # also make 100bp tile coverage plots to compare to other 100bp tile data (eg WGBS)
 bamCoverage \
---bam $bam_dir/${ID}_sorted.bam \
+--bam $bam_dir/${ID}.bam \
 -o ${bam_dir}_100bp_tiles/${ID}.bedgraph \
 --binSize 100 \
 --normalizeUsing CPM \
@@ -109,7 +109,7 @@ module load java/11.0.18
 module load r/4.2.1-foss-2022a
 
 java -jar ~/software/picard.jar CollectInsertSizeMetrics \
-I=$bam_dir/${ID}_sorted.bam \
+I=$bam_dir/${ID}.bam \
 O=${bam_dir}_insert_metrics/${ID}_insert_size_metrics.txt \
 H=${bam_dir}_insert_metrics/${ID}_insert_size_histogram.pdf \
 M=0.5
