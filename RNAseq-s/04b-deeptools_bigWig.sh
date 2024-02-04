@@ -59,12 +59,34 @@ mkdir -p ${bam_dir}_100bp_tiles
 ########## Run #################
 # make normalised bigWigs
 # using --extendReads as suggested for contiguous mapping data like ChIP to map whole of PE frag
+
+if [ "$highres" == "highres" ]
+then
+echo making high-res 1bp resolution bigwig files **caution** these are big files
+# 1 bp bins for higher res
+# use for measuring and comparing coverage
+bamCoverage \
+--bam $bam_dir/${ID}.bam \
+-o ${bam_dir}_bigWigs_deeptools/${ID}.1.bw \
+--binSize 1 \
+--normalizeUsing CPM \
+--extendReads \
+--skipNAs \
+-p 2
+fi
+
+# 10 bp bins for smaller files
+# 10x smaller than the 1bp files
+# this size is probably enough if all we want to do is visualise in igv 
+# also probably sufficient res for most coverage comparisons
+## (use for IGV)
 bamCoverage \
 --bam $bam_dir/${ID}_sorted.bam \
 -o ${bam_dir}_bigWigs_deeptools/${ID}.bw \
 --binSize 10 \
 --normalizeUsing CPM \
 --extendReads \
+--skipNAs \
 -p 2
 
 # also make 100bp tile coverage plots to compare to other 100bp tile data (eg WGBS)
