@@ -78,6 +78,7 @@ bamCoverage \
 --binSize 1 \
 --normalizeUsing CPM \
 --extendReads \
+--skipNAs \
 -p 2
 fi
 
@@ -92,6 +93,7 @@ bamCoverage \
 --binSize 10 \
 --normalizeUsing CPM \
 --extendReads \
+--skipNAs \
 -p 2
 
 # also make 100bp tile coverage plots to compare to other 100bp tile data (eg WGBS)
