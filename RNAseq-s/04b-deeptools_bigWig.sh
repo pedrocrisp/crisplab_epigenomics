@@ -82,7 +82,7 @@ fi
 ## (use for IGV)
 bamCoverage \
 --bam $bam_dir/${ID}.bam \
--o ${bam_dir}_bigWigs_deeptools/${ID}.bw \
+-o ${bam_dir}_bigWigs_deeptools/${ID}.10.bw \
 --binSize 10 \
 --normalizeUsing CPM \
 --extendReads \
