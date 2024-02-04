@@ -7,7 +7,7 @@ bash 03-bed_bigWig_tiles_sbatch.sh <sample_list.txt> <walltime> <memory> <bam_di
 "
 
 #define stepo in the pipeline - should be the same name as the script
-step=03c-deeptools-hacked_bigWig
+step=04c-deeptools-hacked_bigWig
 
 ######### Setup ################
 sample_list=$1

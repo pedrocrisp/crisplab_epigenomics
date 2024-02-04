@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name bigWig
+#SBATCH --job-name deeptools
 #SBATCH --requeue
 #SBATCH --partition=general
 
