@@ -60,7 +60,7 @@ mkdir -p ${bam_dir}_big_tiles
 
 ########## Run #################
 # make normalised bigWigs
-# using --extendReads as suggested for contiguous mapping data like ChIP to map whole of PE frag
+# dont use --extendReads as this is RNAseq and eg pair may span intron, which is confusing to look at... and incorrect
 # try making 1bp bins for higher res coverage calculation 
 # if we are going to use the .bw for pulling coverage, this may increase precision eg in correlations between samples?
 
@@ -78,7 +78,6 @@ bamCoverage \
 -o ${bam_dir}_bigWigs_deeptools/${ID}.1.bw \
 --binSize 1 \
 --normalizeUsing CPM \
---extendReads \
 -p 2
 fi
 
@@ -92,7 +91,6 @@ bamCoverage \
 -o ${bam_dir}_bigWigs_deeptools/${ID}.10.bw \
 --binSize 10 \
 --normalizeUsing CPM \
---extendReads \
 -p 2
 
 # also make 100bp tile coverage plots to compare to other 100bp tile data (eg WGBS)
@@ -103,7 +101,6 @@ bamCoverage \
 -o ${bam_dir}_100bp_tiles/${ID}.bed \
 --binSize 100 \
 --normalizeUsing CPM \
---extendReads \
 --skipNAs \
 --outFileFormat bedgraph \
 -p 2
