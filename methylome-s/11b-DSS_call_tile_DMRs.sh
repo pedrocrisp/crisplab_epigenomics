@@ -34,7 +34,7 @@ echo data folder is $path_to_data_files
 ########## Run #################
 
 #Run R moudle to:
-R -f ~/gitrepos/crisplab_epigenomics/methylome/11b-DSS_call_tile_DMRs.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/11b-DSS_call_tile_DMRs.R \
 --args ${ID} $DMR_contrasts_table_file $path_to_data_files
 
 echo finished summarising
