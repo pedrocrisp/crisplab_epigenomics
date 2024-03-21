@@ -37,7 +37,7 @@ echo tile list is $tile_list
 ########## Run #################
 #Run R moudle to:
 # 1. make CHH coverage files for summary stats analysis
-R -f ~/gitrepos/crisplab_epigenomics/methylome/08-alternate-tiles_analysis_filter_list.R \
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/08-alternate-tiles_analysis_filter_list.R \
 --args ${ID} $data_folder $tile_list $output_folder $minCHHs $minCHH_cov $minCHGs $minCHG_cov $minCGs $minCG_cov
 
 echo finished summarising
