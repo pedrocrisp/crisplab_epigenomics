@@ -3,28 +3,25 @@
 set -xeuo pipefail
 
 usage="USAGE:
-bash 08-cov_multi_feature_qsub.sh <sample_list.txt> <walltime> <memory> <region_dir> <suffix> <out folder> <CG_bigWig> <CHG_bigWig> <CHH_bigWig>
+bash 03-bed_bigWig_tiles_qsub.sh <sample_list.txt> <walltime> <memory> <bigWig folder> <out folder> <feature bed file>
 
 This script is designed for determining the WGBS coverage over regions of interest
-Where there is one reference WGBS bigwigs dataset but multiple region of interest files (eg genotypes or conditions or digests)
-Each WGBS bigwig should still be a single context.
+Where there is one reference region of interest dataset but multiple WGBS bigwigs
+Each WGBS bigwig should be a single context.
 "
 
 #define stepo in the pipeline - should be the same name as the script
-step=08-cov_multi_feature
+step=08-cov_feature
 
 ######### Setup ################
 sample_list=$1
 walltime=$2
 mem=$3
-region_dir=$4
-suffix=$5
-out_dir=$6
-CG_bigWig=$7
-CHG_bigWig=$8
-CHH_bigWig=$9
+bigwig_dir=$4
+out_dir=$5
+feature_bed=$6
 
-if [ "$#" -lt "9" ]
+if [ "$#" -lt "6" ]
 then
 echo $usage
 exit -1
@@ -81,5 +78,5 @@ qsub -J $qsub_t \
 -l walltime=${walltime},nodes=1:ppn=2,mem=${mem}gb \
 -o ${log_folder}/${step}_o^array_index^ \
 -e ${log_folder}/${step}_e^array_index^ \
--v LIST=${sample_list},region_dir=${region_dir},out_dir=${out_dir},suffix=${suffix},CG_bigWig=${CG_bigWig},CHG_bigWig=${CHG_bigWig},CHH_bigWig=${CHH_bigWig} \
+-v LIST=${sample_list},bigwig_dir=${bigwig_dir},out_dir=${out_dir},feature_bed=${feature_bed} \
 $script_to_qsub
