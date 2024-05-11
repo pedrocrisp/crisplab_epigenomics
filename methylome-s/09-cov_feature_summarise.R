@@ -70,11 +70,12 @@ matrix_test_zero_gather <- matrix_test_zero %>%
 
 matrix_test_zero_gather
 
-write.table(matrix_test_zero_gather, paste0(out_dir, "/", sample_ID, "_mat_values_summarised.tab"), sep = "\t", quote = F, row.names = F)
+write.table(matrix_test_zero_gather, paste0(out_dir, "/", sample_ID, "_mat_values_summarised.tsv"), sep = "\t", quote = F, row.names = F)
 
 
 g <- ggplot(matrix_test_zero_gather, aes(x = bin, y = average_coverage)) +
   geom_line() +
+  xlim(0, 100)
   theme_classic() +
   text_size_theme_8
 # g
