@@ -77,6 +77,6 @@ g <- ggplot(matrix_test_zero_gather, aes(x = bin, y = average_coverage)) +
   geom_line() +
   theme_classic() +
   text_size_theme_8
-g
+# g
 
 ggsave(filename =paste0(out_dir, "/", sample_ID, "_mat_metaplot_2.pdf"), plot =  g, width = 3, height = 3)

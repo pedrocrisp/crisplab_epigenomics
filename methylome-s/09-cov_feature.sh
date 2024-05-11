@@ -65,6 +65,7 @@ computeMatrix scale-regions \
 -S ${bigwig_dir}/${ID}.bigWig \
 -b 2000 -a 2000 \
 -p 2 \
+-bs 100 \
 --regionBodyLength 300 \
 --sortRegions descend \
 -o ${out_dir}/${ID}.mat.gz \
@@ -83,6 +84,8 @@ plotProfile \
 plotHeatmap \
 -m ${out_dir}/${ID}.mat.gz \
 -out ${out_dir}/${ID}.mat_heatmap.png \
+--interpolationMethod nearest \
+--dpi 1200 \
 --zMin 0 \
 --zMax 100
 
