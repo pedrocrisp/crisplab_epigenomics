@@ -36,7 +36,7 @@ minCGs=${11}
 minCG_cov=${12}
 account_department=${13}
 
-if [ "$#" -lt "12" ]
+if [ "$#" -lt "13" ]
 then
 echo $usage
 exit -1
