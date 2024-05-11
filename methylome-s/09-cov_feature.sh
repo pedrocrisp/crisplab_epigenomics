@@ -1,44 +1,49 @@
 #!/bin/bash -l
-#PBS -A UQ-SCI-SAFS
-#PBS -N deeptools
-#PBS -r y
-#PBS -m abej
-#PBS -M p.crisp@uq.edu.au
+#SBATCH --job-name coverage
+#SBATCH --requeue
+#SBATCH --partition=general
+
 
 ########## QC #################
 set -xeuo pipefail
 
 echo ------------------------------------------------------
-echo -n 'Job is running on node '; cat $PBS_NODEFILE
-echo ------------------------------------------------------
-echo PBS: qsub is running on $PBS_O_HOST
-echo PBS: originating queue is $PBS_O_QUEUE
-echo PBS: executing queue is $PBS_QUEUE
-echo PBS: working directory is $PBS_O_WORKDIR
-echo PBS: execution mode is $PBS_ENVIRONMENT
-echo PBS: job identifier is $PBS_JOBID
-echo PBS: job name is $PBS_JOBNAME
-echo PBS: node file is $PBS_NODEFILE
-echo PBS: current home directory is $PBS_O_HOME
-echo PBS: PATH = $PBS_O_PATH
-echo PBS: array_ID is ${PBS_ARRAY_INDEX}
+echo SBATCH: working directory is $SLURM_SUBMIT_DIR
+echo SBATCH: job identifier is $SLURM_JOBID
+echo SBATCH: array_ID is ${SLURM_ARRAY_TASK_ID}
 echo ------------------------------------------------------
 
 echo working dir is $PWD
 
 #cd into work dir
-echo changing to PBS_O_WORKDIR
-cd "$PBS_O_WORKDIR"
+echo changing to SLURM_SUBMIT_DIR
+cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
 ########## Modules #################
-conda activate py3.7
-# module load R/3.5.0-gnu
+conda activate $conda_enviro
+# dependencies
+# conda env with deeptools-hacked and mosdepth installed
+# conda create deeptools-hacked python=3.7
+# conda activate deeptools-hacked
+# conda install -c bioconda mosdepth
+# conda install -c bioconda deeptools=3.5.1
+# in "writeBedGraph.py"
+# eg found in: ~/miniconda3/pkgs/deeptools-3.5.1-pyhdfd78af_1/site-packages/deeptools
+# uncomment:
+#  # uncomment these lines if fixed step bedgraph is required
+#            if not np.isnan(value):
+#                writeStart = start + tileIndex * self.binLength
+#                writeEnd  =  min(writeStart + self.binLength, end)
+#                _file.write(line_string.format(chrom, writeStart,
+#                                               writeEnd, value))
+#            continue
+#
 ########## Set up dirs #################
 
 #get job ID
 #use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAY_INDEX} eg 2 from {list}
-ID="$(/bin/sed -n ${PBS_ARRAY_INDEX}p ${LIST})"
+ID="$(/bin/sed -n ${SLURM_ARRAY_TASK_ID}p ${LIST})"
 
 echo sample being mapped is $ID
 
@@ -80,5 +85,10 @@ plotHeatmap \
 -out ${out_dir}/${ID}.mat_heatmap.png \
 --zMin 0 \
 --zMax 100
+
+# Run R module to creat 100bp tile bed file
+module load r/4.2.1-foss-2022a
+R -f ~/gitrepos/crisplab_epigenomics/methylome-s/09-cov_feature_summarise.R \
+--args $ID $out_dir
 
 echo finished summarising
