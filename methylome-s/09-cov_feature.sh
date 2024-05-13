@@ -87,7 +87,9 @@ plotHeatmap \
 --interpolationMethod nearest \
 --dpi 1200 \
 --zMin 0 \
---zMax 100
+--zMax 100 \
+--colorMap RdYlBu_r
+
 
 # Run R module to creat 100bp tile bed file
 module load r/4.2.1-foss-2022a
