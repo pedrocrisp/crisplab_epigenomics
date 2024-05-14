@@ -88,7 +88,8 @@ plotHeatmap \
 --dpi 1200 \
 --zMin 0 \
 --zMax 100 \
---colorMap RdYlBu_r
+--colorMap RdYlBu
+#--colorMap RdYlBu_r
 
 
 # Run R module to creat 100bp tile bed file
