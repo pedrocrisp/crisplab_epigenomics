@@ -38,6 +38,16 @@ sbatch_t="1-${number_of_samples}"
 fi
 echo "argument to be passed to sbatch -t is '$sbatch_t'"
 
+#find script to run, makes it file system agnostic
+if
+[[ $OSTYPE == darwin* ]]
+then
+readlink=$(which greadlink)
+scriptdir="$(dirname $($readlink -f $0))"
+else
+scriptdir="$(dirname $(readlink -f $0))"
+fi
+
 ########## Run #################
 
 #make log and analysis folders
