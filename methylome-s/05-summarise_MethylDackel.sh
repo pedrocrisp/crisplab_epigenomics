@@ -48,7 +48,7 @@ mkdir -p MethylDackel_C_summaries
 # make a coverage file to see which regions have data - MAPQ >=10
 bamCoverage \
 --bam bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam \
--o bwa-meth-filtered_bigWigs_deeptools/${ID}.bw \
+-o bwa-meth-filtered_bigWigs_deeptools/${ID}_MAPQ10.bw \
 --binSize 10 \
 --normalizeUsing CPM \
 --minMappingQuality 10 \
@@ -57,7 +57,7 @@ bamCoverage \
 # make a coverage file to see which regions have data - compare to non-filtered
 bamCoverage \
 --bam bwa-meth-filtered/${ID}_sorted_MarkDup_pairs_clipOverlap.bam \
--o bwa-meth-filtered_bigWigs_deeptools/${ID}_MAPQ10.bw \
+-o bwa-meth-filtered_bigWigs_deeptools/${ID}.bw \
 --binSize 10 \
 --normalizeUsing CPM \
 -p $cores
