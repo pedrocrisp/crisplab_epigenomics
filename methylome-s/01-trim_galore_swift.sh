@@ -90,6 +90,19 @@ elif [ -e "reads/${ID}_R1_001.fastq.gz" ]; then
 
   trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" --clip_R1 20 -o $trimmedfolder reads/${ID}_R1_001.fastq.gz
 
+elif [ -e "reads/${ID}_R1.fastq.gz" ]; then
+
+echo "single end reads non-swift"
+# this assumes if lib do not have R1_001, then they are older non-swift libs and only trims 10 bp
+  
+  # single end compressed
+  ########## Run #################
+  # for swift libraries this trimms 20bp from the 5' end of the R2 read to remove the adaptase tail.
+  # Swift recommends symetrical trimming, so I trim from the R1 read too...
+
+  trim_galore --phred33 --fastqc --fastqc_args "--noextract --outdir $fastqcfolder" --clip_R1 10 -o $trimmedfolder reads/${ID}_R1.fastq.gz
+
+
 else
 echo "assuming single end uncompresed"
 
