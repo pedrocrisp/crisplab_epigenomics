@@ -86,13 +86,34 @@ cat bwa-meth-flagstat/${ID}_flagstat.txt
 samtools view --threads $cores -b -F 4 bwa-meth/${ID}_tmp.bam | \
 samtools sort --threads $cores -m 3G - > bwa-meth/${ID}_sorted.bam
 
-else
+elif [ -e "trimmed/${ID}_R1_001_trimmed.fq.gz" ]; then
 echo "assuming single end"
 
 bwameth.py \
 --threads $cores \
 --reference ${genome_reference} \
 trimmed/${ID}_R1_001_trimmed.fq.gz \
+| samtools view --threads $cores -b - \
+> bwa-meth/${ID}_tmp.bam
+
+# get mapping stats - use unfiltered bam
+samtools flagstat -@ $cores bwa-meth/${ID}_tmp.bam > bwa-meth-flagstat/${ID}_flagstat.txt
+# print mapping stats (to log file) too
+cat bwa-meth-flagstat/${ID}_flagstat.txt
+
+# make bam
+# only keep mapped reads (-F 4)
+# sort
+samtools view --threads $cores -b -F 4 bwa-meth/${ID}_tmp.bam | \
+samtools sort --threads $cores -m 3G - > bwa-meth/${ID}_sorted.bam
+
+else
+echo "assuming single end"
+
+bwameth.py \
+--threads $cores \
+--reference ${genome_reference} \
+trimmed/${ID}_R1_trimmed.fq.gz \
 | samtools view --threads $cores -b - \
 > bwa-meth/${ID}_tmp.bam
 
