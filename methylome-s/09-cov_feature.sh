@@ -66,7 +66,7 @@ computeMatrix scale-regions \
 -b 2000 -a 2000 \
 -p 2 \
 -bs 100 \
---regionBodyLength 300 \
+--regionBodyLength 1000 \
 --sortRegions descend \
 -o ${out_dir}/${ID}.mat.gz \
 --outFileNameMatrix ${out_dir}/${ID}.mat_values.tab \
