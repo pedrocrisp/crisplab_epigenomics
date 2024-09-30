@@ -208,9 +208,14 @@ merged_mC_sans_orgs
 ###################
 # distribution and averages of mC levels
 
+n_for_sample_n = ifelse(nrow(merged_mC_sans_orgs) > 1000000, 1000000, nrow(merged_mC_sans_orgs))
+
+# size of dataframe
+n_for_sample_n
+
 # distro
 plot_data <- merged_mC_sans_orgs %>% 
-sample_n(1000000) %>%
+sample_n(n_for_sample_n) %>%
   select(CG:CHH) %>%
   gather(key = context, value = percent) %>%
   mutate(percent = percent *100)
