@@ -19,7 +19,7 @@ echo changing to SLURM_SUBMIT_DIR
 cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
-########## Modules #################
+########## Modules ##################
 # activate conda with python 3 and the bwa-meth install
 conda activate $conda_enviro
 module load bwa/0.7.17-gcc-10.3.0
