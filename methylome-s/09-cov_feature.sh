@@ -91,6 +91,16 @@ plotHeatmap \
 --colorMap RdYlBu
 #--colorMap RdYlBu_r
 
+# heatmap
+plotHeatmap \
+-m ${out_dir}/${ID}.mat.gz \
+-out ${out_dir}/${ID}.mat_heatmap_bilinear.png \
+--interpolationMethod bilinear \
+--dpi 1200 \
+--zMin 0 \
+--zMax 100 \
+--colorMap RdYlBu
+
 
 # Run R module to creat 100bp tile bed file
 module load r/4.2.1-foss-2022a
