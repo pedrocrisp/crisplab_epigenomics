@@ -30,7 +30,9 @@ conda activate $conda_enviro
 #use sed, -n supression pattern space, then 'p' to print item number {PBS_ARRAYID} eg 2 from {list}
 ID="$(/bin/sed -n ${SLURM_ARRAY_TASK_ID}p ${LIST})"
 
-outdir=analysis/${alignFolder}_featureCounts
+cd analysis
+
+outdir=${alignFolder}_featureCounts
 mkdir -p ${outdir}
 
 # check if single or paired end by looking for R2 file
@@ -47,6 +49,7 @@ featureCounts \
 -T 6 \
 -o "$outdir/${ID}.counts" \
 "${alignFolder}/${ID}.bam"
+
 elif ([ ${format} == "PE" ])
 then
 echo paired reads
