@@ -112,8 +112,8 @@ samtools view -c ${outsam}
 # -q 10 i think will remove multimapping, not sure anything >2 makes a difference until 60... - https://www.biostars.org/p/244106/
 samtools view -bhu -q 10 -@ $threads $outsam | \
 samtools sort -T ${ID} -m 2G -o $outbam -
-#Make an index of the sorted bam file
-samtools index ${outbam}
+#Make an index of the sorted bam file (make a .csi index in case of big genomes - beware this could break other downstream tools...)
+samtools index -c ${outbam}
 
 # count total reads after filtering
 echo "${ID} total alignments after MAPQ filter (should only include reads that map to one location)"
