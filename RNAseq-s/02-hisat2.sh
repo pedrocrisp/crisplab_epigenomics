@@ -48,20 +48,9 @@ fastqs="$(find $fastqcfolder -type f -name ${ID}*.fq.gz)"
 fastqs_count=($fastqs)
 
 # check if single or paired end by looking for R2 file
-if ([ "${#fastqs_count[@]}" == 1 ] && [ ${aligner} == "hisat2" ])
+if ([ "${#fastqs_count[@]}" == 1 ] && [ ${aligner} == "hisat2" ] && [ ${strandedness} == "unstranded" ])
 then
-echo single reads
-echo aligning with hisat2
-hisat2 \
---rna-strandness $strandedness \
--x $index \
--p $threads \
--U $fastqs \
--S "$outsam"
-
-elif ([ "${#fastqs_count[@]}" == 1 ] && [ ${aligner} == "hisat2" ] && [ ${strandedness} == "unstranded" ])
-then
-echo single reads
+echo single reads unstranded
 echo aligning with hisat2
 hisat2 \
 -x $index \
@@ -69,22 +58,20 @@ hisat2 \
 -U $fastqs \
 -S "$outsam"
 
-elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "hisat2" ])
+elif ([ "${#fastqs_count[@]}" == 1 ] && [ ${aligner} == "hisat2" ])
 then
-echo paired reads
+echo single reads stranded
 echo aligning with hisat2
-fq1="$(echo $fastqs |cut -d ' ' -f 1)"
-fq2="$(echo $fastqs |cut -d ' ' -f 2)"
 hisat2 \
 --rna-strandness $strandedness \
 -x $index \
 -p $threads \
--1 $fq1 -2 $fq2 \
+-U $fastqs \
 -S "$outsam"
 
 elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "hisat2" ] && [ ${strandedness} == "unstranded" ])
 then
-echo paired reads
+echo paired reads unstranded
 echo aligning with hisat2
 fq1="$(echo $fastqs |cut -d ' ' -f 1)"
 fq2="$(echo $fastqs |cut -d ' ' -f 2)"
@@ -93,6 +80,20 @@ hisat2 \
 -p $threads \
 -1 $fq1 -2 $fq2 \
 -S "$outsam"
+
+elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "hisat2" ])
+then
+echo paired reads stranded
+echo aligning with hisat2
+fq1="$(echo $fastqs |cut -d ' ' -f 1)"
+fq2="$(echo $fastqs |cut -d ' ' -f 2)"
+hisat2 \
+--rna-strandness $strandedness \
+-x $index \
+-p $threads \
+-1 $fq1 -2 $fq2 \
+-S "$outsam"
+
 
 else
 echo "ERROR: not able to align multiple fq files per pair"
