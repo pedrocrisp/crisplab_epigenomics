@@ -59,6 +59,16 @@ hisat2 \
 -U $fastqs \
 -S "$outsam"
 
+elif ([ "${#fastqs_count[@]}" == 1 ] && [ ${aligner} == "hisat2" ] && [ ${strandedness} == "unstranded" ])
+then
+echo single reads
+echo aligning with hisat2
+hisat2 \
+-x $index \
+-p $threads \
+-U $fastqs \
+-S "$outsam"
+
 elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "hisat2" ])
 then
 echo paired reads
@@ -67,6 +77,18 @@ fq1="$(echo $fastqs |cut -d ' ' -f 1)"
 fq2="$(echo $fastqs |cut -d ' ' -f 2)"
 hisat2 \
 --rna-strandness $strandedness \
+-x $index \
+-p $threads \
+-1 $fq1 -2 $fq2 \
+-S "$outsam"
+
+elif ([ "${#fastqs_count[@]}" == 2 ] && [ ${aligner} == "hisat2" ] && [ ${strandedness} == "unstranded" ])
+then
+echo paired reads
+echo aligning with hisat2
+fq1="$(echo $fastqs |cut -d ' ' -f 1)"
+fq2="$(echo $fastqs |cut -d ' ' -f 2)"
+hisat2 \
 -x $index \
 -p $threads \
 -1 $fq1 -2 $fq2 \
