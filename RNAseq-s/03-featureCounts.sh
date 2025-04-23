@@ -20,8 +20,10 @@ cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
 ########## Modules #################
-
-
+# conda create --name featurecounts
+# conda activate featurecounts
+# conda install -c bioconda subread
+conda activate $conda_enviro
 ########## Set up dirs #################
 
 #get job ID

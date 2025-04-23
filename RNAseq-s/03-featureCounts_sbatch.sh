@@ -16,9 +16,10 @@ alignFolder=$4
 strand=$5
 format=$6
 reference=$7
-account_department=$8
+conda_enviro=$8
+account_department=$9
 
-if [ "$#" -lt "8" ]
+if [ "$#" -lt "9" ]
 then
 echo $usage
 exit -1
@@ -80,7 +81,7 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},strand=$strand,format=$format,reference=$reference,alignFolder=$alignFolder \
+--export LIST=${sample_list},strand=$strand,format=$format,reference=$reference,alignFolder=$alignFolder,conda_enviro=$conda_enviro \
 --account $account_department \
 $script_to_sbatch
 
