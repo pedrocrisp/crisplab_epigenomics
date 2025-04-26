@@ -26,6 +26,7 @@ module load fastqc/0.11.9-java-11
 # conda create --name cutadapt python=3.7
 # conda activate cutadapt
 # conda install -c bioconda cutadapt
+# conda install trim-galore
 conda activate $conda_enviro
 
 ########## Set up dirs #################
