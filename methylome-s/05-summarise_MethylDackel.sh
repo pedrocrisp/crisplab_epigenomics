@@ -201,10 +201,10 @@ rm -rv tmp_bedgraphs/${ID}_methratio_*
 awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} {Cs ++; sum1 += $6; sum2 +=$5} END {print ID, Cs, sum1+sum2, sum2 , (sum2/(sum1+sum2)*100), (sum1+sum2)/Cs}' \
 MethylDackel/${ID}_methratio_CG.bedGraph > MethylDackel_C_summaries/${ID}_whole_genome_percent_CG.txt
 
-awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} {Cs ++; sum1 += $6; sum2 +=$5} END {print ID, sum1+sum2, sum2 , (sum2/(sum1+sum2)*100)}' \
+awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} {Cs ++; sum1 += $6; sum2 +=$5} END {print ID, Cs, sum1+sum2, sum2 , (sum2/(sum1+sum2)*100), (sum1+sum2)/Cs}' \
 MethylDackel/${ID}_methratio_CHG.bedGraph > MethylDackel_C_summaries/${ID}_whole_genome_percent_CHG.txt
 
-awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} {Cs ++; sum1 += $6; sum2 +=$5} END {print ID, sum1+sum2, sum2 , (sum2/(sum1+sum2)*100)}' \
+awk -F$"\\t" -v ID=$ID 'BEGIN {OFS = FS} {Cs ++; sum1 += $6; sum2 +=$5} END {print ID, Cs, sum1+sum2, sum2 , (sum2/(sum1+sum2)*100), (sum1+sum2)/Cs}' \
 MethylDackel/${ID}_methratio_CHH.bedGraph > MethylDackel_C_summaries/${ID}_whole_genome_percent_CHH.txt
 
 # to combine the samples - do something like this:
