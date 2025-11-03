@@ -57,7 +57,7 @@ label_size = 25.4/72 * 8
 context = "CG"
 matrix_test <- read_tsv(paste0(out_dir, "/",sample_ID, "_", context,".mat_values.tab"), skip = 3)
 # Rename columns to character numbers
-names(matrix_test) <- as.character(1:ncol(matrix_test))
+names(matrix_test) <- as.character(seq_len(ncol(matrix_test)))
 
 # DONT replace NaN with 0 for mC data!
 matrix_test_zero <- matrix_test
@@ -90,7 +90,7 @@ ggsave(filename =paste0(out_dir, "/", sample_ID, "_", context, ".mat_metaplot_2.
 context = "CHG"
 matrix_test <- read_tsv(paste0(out_dir, "/",sample_ID, "_", context,".mat_values.tab"), skip = 3)
 # Rename columns to character numbers
-names(matrix_test) <- as.character(1:ncol(matrix_test))
+names(matrix_test) <- as.character(seq_len(ncol(matrix_test)))
 
 # DONT replace NaN with 0 for mC data!
 matrix_test_zero <- matrix_test
@@ -123,7 +123,7 @@ ggsave(filename =paste0(out_dir, "/", sample_ID, "_", context, ".mat_metaplot_2.
 context = "CHH"
 matrix_test <- read_tsv(paste0(out_dir, "/",sample_ID, "_", context,".mat_values.tab"), skip = 3)
 # Rename columns to character numbers
-names(matrix_test) <- as.character(1:ncol(matrix_test))
+names(matrix_test) <- as.character(seq_len(ncol(matrix_test)))
 
 # DONT replace NaN with 0 for mC data!
 matrix_test_zero <- matrix_test
