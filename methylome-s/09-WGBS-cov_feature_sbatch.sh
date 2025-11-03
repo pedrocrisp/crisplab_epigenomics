@@ -8,6 +8,7 @@ bash 08-WGBS-cov_feature_qsub.sh <sample_list.txt> <walltime> <memory> <region_d
 This script is designed for determining the WGBS coverage over regions of interest
 Where there is one reference WGBS bigwigs dataset but multiple region of interest files (eg genotypes or conditions or digests)
 Each WGBS bigwig should be a single context.
+It is run from the region project folder, eg if determining the WGBS coverage over a set of UMR-seq peaks, run in the UMR project folder.
 "
 
 #define stepo in the pipeline - should be the same name as the script
