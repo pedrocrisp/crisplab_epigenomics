@@ -60,6 +60,8 @@ then
         #INPUT=bsmapped/${ID}.bam \
         #OUTPUT=bsmapped/${ID}_sorted.bam \
         #SORT_ORDER=coordinate
+        # $TMPDIR currently provides upto 10TB (soft limit) and 11TB (hard limit) of temporary space. 
+        # These limits apply to the aggregate across all running jobs for each user.
 
         #mark duplicates
         #requires sorted input - using samtools sort in bsmap step (co-ordinate sorted)
@@ -72,6 +74,7 @@ then
         ASSUME_SORTED=true \
         CREATE_INDEX=False \
         VALIDATION_STRINGENCY=LENIENT \
+        TMP_DIR=$TMPDIR \
         REMOVE_DUPLICATES=true
 
         # keep properly paired reads using bamtools package
@@ -104,6 +107,7 @@ METRICS_FILE=bwa-meth-filtered/${ID}_MarkDupMetrics.txt \
 ASSUME_SORTED=true \
 CREATE_INDEX=False \
 VALIDATION_STRINGENCY=LENIENT \
+TMP_DIR=$TMPDIR \
 REMOVE_DUPLICATES=true
 
 # rename to keep script naming convention consistent
