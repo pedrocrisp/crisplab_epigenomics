@@ -22,7 +22,11 @@ echo working dir is now $PWD
 ########## Modules #################
 
 module load hisat2/2.2.1--h87f3376_4/module
-module load samtools/1.13-gcc-10.3.0
+
+# *** updating samtools to gcc-11.3 (but v11 also being phased out in 2026 - test samtools/1.18-gcc-12.3.0) ***
+module load samtools/1.13-gcc-11.3.0
+# module load samtools/1.13-gcc-10.3.0
+# module load samtools/1.18-gcc-12.3.0
 
 ########## Set up dirs #################
 
