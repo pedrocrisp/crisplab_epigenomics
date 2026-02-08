@@ -27,7 +27,11 @@ echo working dir is now $PWD
 # module load python/2.7.14
 module load python/2.7.18-gcccore-11.3.0-bare
 #module load java
-module load bedtools/2.30.0-gcc-10.3.0
+
+# *** bedtools needs updatign to gcc-12 or 13 in 2026, but module not yet available ***
+module load bedtools/2.30.0-gcc-11.3.0
+# module load bedtools/2.30.0-gcc-10.3.0
+
 #module load bamtools
 #bsmap requires samtools < 1.0.0
 # module load samtools/0.1.18
