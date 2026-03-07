@@ -61,7 +61,7 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome-s/21-call-umrs-mod1.R \
 # Do I need to keep the domain column?
 
 ########## Merge #################
-module load bedtools
+module load bedtools/2.30.0-gcc-11.3.0
 
 #less ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs.bed
 #echo ${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds/${sample_to_crunch}_UMTs.bed
