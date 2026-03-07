@@ -40,7 +40,7 @@ scriptdir="$(dirname $(readlink -f $0))"
 
 ########## Modules #################
 module load R/3.5.0-gnu
-module load bedtools
+module load bedtools/2.30.0-gcc-11.3.0
 
 fi
 #
