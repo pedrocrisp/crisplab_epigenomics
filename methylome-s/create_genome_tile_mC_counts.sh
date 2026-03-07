@@ -47,7 +47,7 @@ R -f ~/gitrepos/crisplab_epigenomics/methylome-s/create_genome_tile_mC_counts_ti
 ##########              #################
 # Run module to count number of CG/CHG/CHH sites in Each 100bp tile
 
-module load bedtools
+module load bedtools/2.30.0-gcc-11.3.0
 
 bedtools getfasta -fi ../${genome}.fa \
 -bed ${genome}_100pb_tiles_for_sites_calc.bed \
