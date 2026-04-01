@@ -81,7 +81,7 @@ mkdir -p logs
 
 ########## Modules #################
 
-module load r/4.2.1-foss-2022a
+module load r/4.4.2-gfbf-2024a
 module load bedtools/2.30.0-gcc-11.3.0
 
 ########## overlaps #################
