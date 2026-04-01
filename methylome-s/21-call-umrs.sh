@@ -20,8 +20,7 @@ cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
 ########## Modules #################
-#  *** R needs to be updated to 2023a in 2026 ***
-module load r/4.2.1-foss-2022a
+module load r/4.4.2-gfbf-2024a
 ########## Set up dirs #################
 
 #get job ID
