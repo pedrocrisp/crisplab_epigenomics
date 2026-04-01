@@ -25,8 +25,7 @@ conda activate $conda_enviro
 # conda needs bamutil
 module load java/11.0.18
 
-# *** bamtools needs updating to gcc-12 or 13 in 2026, but module not yet available ***
-module load bamtools/2.5.2-gcc-11.3.0
+module load bamtools/2.5.2-gcc-12.3.0
 # module load bamtools/2.5.2-gcc-10.3.0
 
 # *** updating samtools to gcc-11.3 (but v11 also being phased out in 2026 - test samtools/1.18-gcc-12.3.0) ***
