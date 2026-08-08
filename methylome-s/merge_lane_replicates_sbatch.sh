@@ -41,10 +41,10 @@ input_dir=$5
 output_dir=$6
 walltime=$7
 mem=$8
-conda_enviro=$9
-account_department=${10}
+#conda_enviro=$9
+account_department=$9
 
-if [ "$#" -lt "10" ]
+if [ "$#" -lt "9" ]
 then
 echo "$usage"
 exit -1
@@ -119,7 +119,7 @@ sbatch --array $sbatch_t \
 --mem ${mem}gb \
 -o ${log_folder}/${step}_o_%A_%a \
 -e ${log_folder}/${step}_e_%A_%a \
---export LIST=${sample_list},SUFFIX=${file_suffix},LANE1=${lane1_tag},LANE2=${lane2_tag},INPUT_DIR=${input_dir},OUTPUT_DIR=${output_dir},conda_enviro=${conda_enviro} \
+--export LIST=${sample_list},SUFFIX=${file_suffix},LANE1=${lane1_tag},LANE2=${lane2_tag},INPUT_DIR=${input_dir},OUTPUT_DIR=${output_dir} \
 --account $account_department \
 $script_to_sbatch
 
