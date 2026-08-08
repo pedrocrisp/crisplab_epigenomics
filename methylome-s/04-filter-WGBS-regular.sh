@@ -23,7 +23,7 @@ echo working dir is now $PWD
 conda activate $conda_enviro
 # conda needs bamutil
 # requires java 1.8
-module load java/11.0.18
+module load java/11.0.27
 
 module load bamtools/2.5.2-gcc-12.3.0
 # module load bamtools/2.5.2-gcc-10.3.0
