@@ -19,6 +19,9 @@ echo changing to SLURM_SUBMIT_DIR
 cd "$SLURM_SUBMIT_DIR"
 echo working dir is now $PWD
 
+# run in analysis folder
+cd analysis
+
 ########## Modules #################
 
 module load samtools/1.13-gcc-11.3.0
