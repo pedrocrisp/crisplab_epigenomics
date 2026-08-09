@@ -223,6 +223,11 @@ rm -rv UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotati
 ### ### ### ### ### ###
 # calculate UMR stats
 
+# total number of UMRs
+echo total_UMRs
+wc -l \
+UMR_tiles_per_chr/${sample_to_crunch}${annotation_suffix}/mC_UMT_annotation_beds_final/${sample_to_crunch}_${annotation_suffix2}_UMRs_6col.bed
+
 # total UMR space
 echo total_UMR_space_Mb
 awk -F'\t' 'BEGIN{SUM=0}{ SUM+=$3-$2 }END{print SUM}' \
