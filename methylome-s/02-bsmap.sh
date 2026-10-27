@@ -35,7 +35,7 @@ echo sample being mapped is $ID
 
 #make adaligned folder bsmaped
 cd analysis
-mkdir -p bsmapped
+mkdir -p bsmapped_original
 
 ########## Run #################
 
@@ -69,13 +69,13 @@ bsmap \
 -a trimmed/${ID}_R1_val_1.fq.gz \
 -b trimmed/${ID}_R2_val_2.fq.gz \
 -d ${genome_reference} \
--o bsmapped/${ID}.sam \
--r 1 \
+-o bsmapped_original/${ID}.sam \
+-v 5 \
+-r 0 \
 -p $cores \
 -q 20 \
 -A $adapter_seq
 
-# removed -v 5 \ and relaxed -r from 0 to 1to allow multimappers for testing - change back after test.
 
 else
 echo "assuming single end"
