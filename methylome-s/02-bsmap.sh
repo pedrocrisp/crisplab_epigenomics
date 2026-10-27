@@ -70,12 +70,12 @@ bsmap \
 -b trimmed/${ID}_R2_val_2.fq.gz \
 -d ${genome_reference} \
 -o bsmapped/${ID}.sam \
--v 5 \
--r 0 \
+-r 1 \
 -p $cores \
 -q 20 \
 -A $adapter_seq
 
+# removed -v 5 \ and relaxed -r from 0 to 1to allow multimappers for testing - change back after test.
 
 else
 echo "assuming single end"
