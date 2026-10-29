@@ -274,6 +274,7 @@ mC_domains2 <- merged_mC_sans_orgs %>%
                       ifelse(cg_sites == "y" & chg_sites == "y" & CG < UMR_percent & CHG < UMR_percent & CHH < UMR_percent & !is.na(CG) & !is.na(CHG) & !is.na(CHH), "Unmethylated",
                       ifelse(cg_sites == "n" & chg_sites == "y" & CHG < UMR_percent & CHH < UMR_percent & !is.na(CHG) & !is.na(CHH), "Unmethylated",
                       ifelse(cg_sites == "y" & chg_sites == "n" & CG < UMR_percent & CHH < UMR_percent & !is.na(CG) & !is.na(CHH), "Unmethylated",
+                      ifelse(cg_sites == "n" & chg_sites == "n" & chh_sites == "y" & CHH < UMR_percent & !is.na(CHH), "Unmethylated", # NEW: CHH-only tiles with low CHH
                       ifelse(cg_sites == "y" & chg_sites == "y" & CG >= UMR_percent & CHG >= UMR_percent & CHH >= UMR_percent & !is.na(CG) & !is.na(CHG) & !is.na(CHH), "Intermediate",
                       ifelse(cg_sites == "n" & chg_sites == "y" & CHG >= UMR_percent & CHH >= UMR_percent & !is.na(CHG) & !is.na(CHH), "Intermediate",
                       ifelse(cg_sites == "y" & chg_sites == "n" & CG >= UMR_percent & CHH >= UMR_percent & !is.na(CG) & !is.na(CHH), "Intermediate",
@@ -281,7 +282,7 @@ mC_domains2 <- merged_mC_sans_orgs %>%
                       ifelse(cg_sites == "y" & CG >= UMR_percent & !is.na(CG), "Intermediate", # these are to catch any remaining intermediate mC, so its not counted as a UMR
                       ifelse(chg_sites == "y" & CHG >= UMR_percent & !is.na(CHG), "Intermediate", # these are to catch any remaining intermediate mC, so its not counted as a UMR
                       ifelse(chh_sites == "y" & CHH >= UMR_percent & !is.na(CHH), "Intermediate", # these are to catch any remaining intermediate mC, so its not counted as a UMR
-                      ifelse(cg_sites == "n" | chg_sites == "n", "no_sites", NA))))))))))))))))) %>%
+                      ifelse(cg_sites == "n" | chg_sites == "n", "no_sites", NA)))))))))))))))))) %>%
   mutate(domain = ifelse(is.na(domain_tmp), "Missing_Data", domain_tmp)) %>%
   mutate(domain_simple = ifelse(domain == "Heterochromatin", "MR",
                          ifelse(domain == "Missing_Data", "no_data",
